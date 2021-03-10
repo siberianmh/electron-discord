@@ -1,0 +1,106 @@
+name: Electron Discord Bot
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  #############
+  # Compiling #
+  #############
+  compile-bot:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Compile bot
+        run: |
+          bazel build //packages/electron-discord/bot
+
+  compile-server:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Compile server
+        run: bazel build //packages/electron-discord/server
+
+  #################
+  # Docker Builds #
+  #################
+  docker-bot:
+    runs-on: ubuntu-20.04
+    if: github['ref'] == 'refs/heads/master'
+
+    needs:
+      - compile-bot
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Docker Image
+        run: |
+          echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u pacificocean-bot --password-stdin
+          bazel build //packages/electron-discord/bot:docker-bot
+      - name: Publish Latest Docker Image
+        run: |
+          bazel run //packages/electron-discord/bot:push-bot
+
+  docker-server:
+    runs-on: ubuntu-20.04
+    if: github['ref'] == 'refs/heads/master'
+
+    needs:
+      - compile-server
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Docker Image
+        run: |
+          echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u pacificocean-bot --password-stdin
+          bazel build //packages/electron-discord/server:docker
+      - name: Public Latest Docker Image
+        run: |
+          bazel run //packages/electron-discord/server:push-server
+
+  #############
+  # Deploying #
+  #############
+  deploy-bot:
+    runs-on: ubuntu-20.04
+    if: github['ref'] == 'refs/heads/master'
+
+    needs:
+      - docker-bot
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Save DigitalOcean kubeconfig
+        run: doctl kubernetes cluster kubeconfig save siberianmh-core
+      - name: Rollout
+        run: |
+          kubectl rollout restart deploy/edis-bot
+
+  deploy-server:
+    runs-on: ubuntu-20.04
+    if: github['ref'] == 'refs/heads/master'
+
+    needs:
+      - docker-server
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Save DigitalOcean kubeconfig
+        run: doctl kubernetes cluster kubeconfig save siberianmh-core
+      - name: Rollout
+        run: |
+          kubectl rollout restart deploy/edis-server

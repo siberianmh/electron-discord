@@ -1,0 +1,16 @@
+# Node JS
+node_modules
+
+coverage
+dist
+.npmrc
+e2e-realtesting
+.eslintcache
+
+# Global
+*.log
+.env
+.DS_Store
+
+# Bazel
+bazel-*
