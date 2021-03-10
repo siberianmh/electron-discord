@@ -1,4 +1,4 @@
-load("//:tools/ts_utils.bzl", "ts_library")
+load("//:tools/ts_library.bzl", "ts_library")
 load("@npm//jest-cli:index.bzl", "jest_test")
 load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary")
 load("@io_bazel_rules_docker//nodejs:image.bzl", "nodejs_image")
