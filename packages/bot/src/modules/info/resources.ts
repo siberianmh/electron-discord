@@ -20,12 +20,6 @@ export class ResourcesModule extends ExtendedModule {
         return this.getFiddleInfo(msg)
       case 'forge':
         return this.getForgeInfo(msg)
-      //#region Electron region itself
-      case 'e':
-        return this.getElectronInfo(msg)
-      case 'electron':
-        return this.getElectronInfo(msg)
-      //#endregion
       default:
         // assertNever(arg, `${arg} is not implemented`)
         return await this.listOfResources(msg)
@@ -49,18 +43,6 @@ export class ResourcesModule extends ExtendedModule {
       title: 'Electron Forge',
       description:
         'Electron Forge is a complete tool for creating, publishing, and installing modern Electron applications.\n\n[Learn More](https://electronforge.io)',
-    })
-
-    return createSelfDestructMessage(msg, embed)
-  }
-
-  private getElectronInfo(msg: Message) {
-    const embed = this.createEmbed({
-      title: 'Electron',
-      thumbnail:
-        'https://raw.githubusercontent.com/electron/electron/master/default_app/icon.png',
-      description:
-        'Electron is an open-source software framework developed and maintained by GitHub. It allows for the development of desktop GUI applications using web technologies: it combines the Chromium rendering engine and the Node.js runtime.\n\n[Learn more](https://electronjs.org)',
     })
 
     return createSelfDestructMessage(msg, embed)

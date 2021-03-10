@@ -26,6 +26,7 @@ ts_library(
         "@npm//discord.js",
         "@npm//dotenv",
         "@npm//fs-extra",
+        "@npm//gray-matter",
         "@npm//humanize-duration",
         "@npm//ioredis",
         "@npm//luxon",

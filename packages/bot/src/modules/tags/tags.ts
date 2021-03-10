@@ -1,6 +1,7 @@
 import { default as CookiecordClient, optional } from 'cookiecord'
 import * as fs from 'fs-extra'
 import * as path from 'path'
+import grayMatter = require('gray-matter')
 import { Message, MessageEmbed } from 'discord.js'
 import { extendedCommand } from '../../lib/extended-command'
 import { ExtendedModule } from '../../lib/extended-module'
@@ -30,7 +31,19 @@ export class TagsModule extends ExtendedModule {
       return await this.notFoundEmbed(msg, tag)
     }
 
-    const embed = new MessageEmbed().setDescription(tagData)
+    const parsed = grayMatter(tagData)
+
+    const embed = new MessageEmbed()
+
+    if (parsed.data.title) {
+      embed.setTitle(parsed.data.title)
+    }
+
+    if (parsed.data.thumbnail) {
+      embed.setThumbnail(parsed.data.thumbnail)
+    }
+
+    embed.setDescription(parsed.content)
 
     return createSelfDestructMessage(msg, embed)
   }
