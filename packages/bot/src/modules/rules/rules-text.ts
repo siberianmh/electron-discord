@@ -23,6 +23,10 @@ export const rulesText = () =>
       "Please be kind! We understand times are tough, but it's no reason to take it out on others. Please keep the Electron Discord a positive, safe space, and treat other community members with respect.",
     )
     .addField(
-      'Rule 5 (Not Applicable)',
+      'Rule 5',
       "Have a problem? Ask an Admin! Please DM if you ever have issues with other community members, parts of the Discord, or specific questions. We're here to help!",
+    )
+    .addField(
+      'Rule 6',
+      'Do not provide or request help on projects that may break laws, breach terms of services, be considered malicious or inappropriate. The moderation team can take action against you without a reason or appeals.',
     )
