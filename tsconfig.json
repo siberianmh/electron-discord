@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "siberianmh/*": ["*", "bazel-bin/*", "bazel-out", "bazel-genfiles/*"]
+      "edis/*": ["*", "bazel-bin/*", "bazel-out", "bazel-genfiles/*"]
     },
     "target": "es2019",
     "allowUnreachableCode": false,
