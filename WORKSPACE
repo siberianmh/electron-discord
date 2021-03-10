@@ -23,9 +23,6 @@ node_repositories(
 
 yarn_install(
     name = "npm",
-    data = [
-        "//:patches/jest-haste-map+26.6.2.patch",
-    ],
     package_json = "//:package.json",
     strict_visibility = False,
     yarn_lock = "//:yarn.lock",
