@@ -4,6 +4,7 @@ import { ExtendedModule } from '../../lib/extended-module'
 import { style } from '../../lib/config'
 import { rblxAutoKicker, redis } from '../../lib/redis'
 import { ModLogModule } from './modlog'
+import { InfractionType } from '../../lib/types'
 
 export class RblxGamePresenceModule extends ExtendedModule {
   private modLog: ModLogModule
@@ -44,8 +45,16 @@ export class RblxGamePresenceModule extends ExtendedModule {
       triggeredTimes = parseInt(triggeredTimes, 10)
     }
 
-    if (triggeredTimes >= 3) {
+    if (triggeredTimes >= 1) {
+      const reason = 'You are using the bad Electron'
       await presence.member?.kick('You are using the bad Electron 😥')
+
+      await this.api.post('/infractions', {
+        user_id: presence.member?.id,
+        actor_id: '762678768032546819',
+        reason: reason,
+        type: InfractionType.Kick,
+      })
 
       return await this.modLog.sendLogMessage({
         colour: style.colors.red,

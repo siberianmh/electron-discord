@@ -28,53 +28,15 @@ export class InfractionsModule extends ExtendedModule {
       )
     }
 
-    const userId = splitArgs.shift()
+    const user_id = splitArgs.shift()
 
-    if (!userId) {
+    if (!user_id) {
       return await msg.channel.send(':warning: invalid syntax')
     }
 
     const reason = splitArgs.join(' ')
-    if (!reason) {
-      return msg.channel.send('Unable to kick the person without reason')
-    }
 
-    const member = await msg.guild?.members.fetch(userId)
-
-    if (!member) {
-      return msg.channel.send('Unable to find specified user.')
-    }
-
-    if (
-      member.hasPermission('MANAGE_MESSAGES') ||
-      member.roles.cache.has(guild.roles.maintainer)
-    ) {
-      return msg.channel.send(
-        "Well you can't kick Admins, but it is be a good option",
-      )
-    }
-
-    if (process.env.NODE_ENV !== 'development') {
-      await member.kick(reason)
-    }
-
-    const embed = new MessageEmbed()
-      .setAuthor(
-        `${member.user.tag} has been kicked`,
-        member.user.displayAvatarURL({ dynamic: false }) || undefined,
-      )
-      .setDescription(`**Reason**: ${reason}`)
-
-    await msg.channel.send({ embed })
-
-    await this.api.post('/infactions', {
-      user_id: member.user.id,
-      actor_id: msg.author.id,
-      reason: reason,
-      type: InfractionType.Kick,
-    })
-
-    return
+    return await this.performKick(msg, user_id, reason)
   }
 
   @extendedCommand({
@@ -221,5 +183,46 @@ export class InfractionsModule extends ExtendedModule {
       .setDescription(`**Reason**: ${reason}`)
 
     return ctx.channel.send({ embed })
+  }
+
+  protected async performKick(
+    ctx: Message,
+    user_id: Snowflake,
+    reason: string,
+  ) {
+    if (!reason) {
+      return ctx.channel.send('Unable to kick without reason')
+    }
+
+    const member = await ctx.guild?.members.fetch(user_id)
+
+    if (!member) {
+      return ctx.channel.send('Unable to find specified user.')
+    }
+
+    if (
+      member.hasPermission('MANAGE_MESSAGES') ||
+      member.roles.cache.has(guild.roles.maintainer)
+    ) {
+      return ctx.channel.send(
+        "Well you can't kick Admins, but it is be a good option",
+      )
+    }
+
+    if (process.env.NODE_ENV !== 'development') {
+      await member.kick(reason)
+    }
+
+    const message = `Applied **kick** to <@${member.id}>, reason: ${reason}`
+    await ctx.channel.send(message)
+
+    await this.api.post('/infractions', {
+      user_id: member?.user.id,
+      actor_id: ctx?.author.id ?? '762678768032546819',
+      reason: reason,
+      type: InfractionType.Kick,
+    })
+
+    return
   }
 }
