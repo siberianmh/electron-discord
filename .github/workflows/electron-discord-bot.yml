@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Compile bot
         run: |
-          bazel build //packages/electron-discord/bot
+          bazel build //packages/bot
 
   compile-server:
     runs-on: ubuntu-20.04
@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Compile server
-        run: bazel build //packages/electron-discord/server
+        run: bazel build //packages/server
 
   #################
   # Docker Builds #
@@ -42,10 +42,10 @@ jobs:
       - name: Build Docker Image
         run: |
           echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u pacificocean-bot --password-stdin
-          bazel build //packages/electron-discord/bot:docker-bot
+          bazel build //packages/bot:docker-bot
       - name: Publish Latest Docker Image
         run: |
-          bazel run //packages/electron-discord/bot:push-bot
+          bazel run //packages/bot:push-bot
 
   docker-server:
     runs-on: ubuntu-20.04
@@ -59,10 +59,10 @@ jobs:
       - name: Build Docker Image
         run: |
           echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u pacificocean-bot --password-stdin
-          bazel build //packages/electron-discord/server:docker
+          bazel build //packages/server:docker
       - name: Public Latest Docker Image
         run: |
-          bazel run //packages/electron-discord/server:push-server
+          bazel run //packages/server:push-server
 
   #############
   # Deploying #
