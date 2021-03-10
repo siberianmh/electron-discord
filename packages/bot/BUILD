@@ -1,5 +1,4 @@
 load("//:tools/ts_library.bzl", "ts_library")
-load("@npm//jest-cli:index.bzl", "jest_test")
 load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary")
 load("@io_bazel_rules_docker//nodejs:image.bzl", "nodejs_image")
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
@@ -35,37 +34,6 @@ ts_library(
     ],
 )
 
-ts_library(
-    name = "bot-tests",
-    srcs = glob(["test/**/*.test.ts"]),
-    deps = [
-        ":bot",
-        "@npm//@types/jest",
-        "@npm//discord.js",
-        "@npm//jest",
-    ],
-)
-
-jest_test(
-    name = "test",
-    args = [
-        "--no-cache",
-        "--no-watchman",
-        "--ci",
-        "--colors",
-        "--config",
-        "jest.config.js",
-    ],
-    data = [
-        ":bot-tests",
-        "//:jest.config.js",
-    ],
-    tags = [
-        "no-bazelci-mac",
-        "no-bazelci-windows",
-    ],
-)
-
 nodejs_binary(
     name = "serve",
     data = [
@@ -90,14 +58,5 @@ container_push(
     image = ":docker-bot",
     registry = "ghcr.io",
     repository = "siberianmh/edis-bot",
-    tag = "latest",
-)
-
-container_push(
-    name = "push-heroku",
-    format = "Docker",
-    image = ":docker-bot",
-    registry = "registry.heroku.com",
-    repository = "edis-bot/bot",
     tag = "latest",
 )
