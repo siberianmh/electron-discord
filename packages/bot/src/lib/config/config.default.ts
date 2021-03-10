@@ -85,8 +85,7 @@ export const guild = {
 }
 
 export const urls = {
-  githubBotURL:
-    'https://github.com/siberianmh/siberianmh/tree/master/packages/electron-discord',
+  githubBotURL: 'https://github.com/siberianmh/electron-discord',
 }
 
 export const helpChannels = {
