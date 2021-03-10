@@ -4,9 +4,15 @@ import { style } from './config'
 
 export const createSelfDestructMessage = async (
   msg: Message,
-  messageContent: MessageEmbed,
+  messageContent: MessageEmbed | string,
 ) => {
-  const createdMessage = await msg.channel.send({ embed: messageContent })
+  let createdMessage: Message
+
+  if (typeof messageContent === 'string') {
+    createdMessage = await msg.channel.send(messageContent)
+  } else {
+    createdMessage = await msg.channel.send({ embed: messageContent })
+  }
 
   await redis.set(
     selfDestructMessage(createdMessage.id),
