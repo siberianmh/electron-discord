@@ -1,5 +1,4 @@
 export * from './docs'
 export * from './help'
 export * from './information'
-export * from './resources'
 export * from './source'

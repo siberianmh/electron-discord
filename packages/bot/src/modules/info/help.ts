@@ -42,7 +42,7 @@ export class HelpMessageModule extends ExtendedModule {
         )
         .addField(
           '**Experimental Commands**',
-          '`resources` ► Get a list of useful resources to start with Electron',
+          '`tags` ► Get a list of useful tags and resources to start with Electron',
         )
         .addField(
           '**Help Channels Commands:**',

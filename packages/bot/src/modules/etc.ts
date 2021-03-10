@@ -46,8 +46,8 @@ export class EtcModule extends ExtendedModule {
   public async setPresence() {
     await this.client.user?.setPresence({
       activity: {
-        type: 'WATCHING',
-        name: 'Starship landing',
+        type: 'PLAYING',
+        name: 'Of Course I Still Love You',
       },
     })
   }
