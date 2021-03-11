@@ -54,6 +54,10 @@ export class EtcModule extends ExtendedModule {
 
   @listener({ event: 'ready' })
   public async ensureHashimotoIsBanned() {
+    if (process.env.NODE_ENV === 'development') {
+      return
+    }
+
     const fetchedGuild = await this.client.guilds.fetch(guild.id)
 
     try {

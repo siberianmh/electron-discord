@@ -16,7 +16,7 @@ export class SourceModule extends ExtendedModule {
   @extendedCommand({ aliases: ['src'] })
   public async source(msg: Message) {
     const embed = new MessageEmbed()
-      .setTitle("Bot's GitHub Repository")
+      .setTitle('Bot GitHub Repository')
       .addField(
         'Electron Discord Repository',
         `[Go to GitHub](${urls.githubBotURL})`,

@@ -43,7 +43,7 @@ export class TagsModule extends ExtendedModule {
       embed.setThumbnail(parsed.data.thumbnail)
     }
 
-    embed.setDescription(parsed.content)
+    embed.setDescription(parsed.content.split('\n').join(' '))
 
     return createSelfDestructMessage(msg, embed)
   }
