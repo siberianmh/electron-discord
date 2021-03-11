@@ -52,6 +52,22 @@ export class EtcModule extends ExtendedModule {
     })
   }
 
+  @listener({ event: 'ready' })
+  public async ensureHashimotoIsBanned() {
+    const fetchedGuild = await this.client.guilds.fetch(guild.id)
+
+    try {
+      const ban = await fetchedGuild.fetchBan('145300108567773184')
+      if (ban) {
+        return
+      }
+    } catch {
+      return await fetchedGuild.members.ban('145300108567773184')
+    }
+
+    return
+  }
+
   @listener({ event: 'messageReactionAdd' })
   public async bucketEmojiClicked(reaction: MessageReaction, user: User) {
     if (user.id === this.client.user?.id) {
