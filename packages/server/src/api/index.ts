@@ -1,6 +1,7 @@
 import * as express from 'express'
 import { verifyKeyMiddleware } from 'discord-interactions'
 import { requiresBotAuth } from '../lib/requires-auth'
+import { discordPublicKey } from '../lib/config'
 
 const router = express.Router()
 
@@ -66,9 +67,7 @@ router.post('/message-roles/actions', requiresBotAuth, createMessageRolesAction)
 // Discord Iteractions
 router.post(
   '/iteractions',
-  verifyKeyMiddleware(
-    '022e1697356b583999a0ed92bc1e05c26d4e422d385f2d174b13be88b7d2eb35',
-  ),
+  verifyKeyMiddleware(discordPublicKey),
   handleDiscordInteraction,
 )
 
