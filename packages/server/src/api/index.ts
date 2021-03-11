@@ -1,8 +1,8 @@
 import * as express from 'express'
+import { verifyKeyMiddleware } from 'discord-interactions'
+import { requiresBotAuth } from '../lib/requires-auth'
 
 const router = express.Router()
-
-import { requiresBotAuth } from '../lib/requires-auth'
 
 //#region Imports
 
@@ -28,6 +28,9 @@ import {
   getMessageRolesActions,
   createMessageRolesAction,
 } from './message-roles'
+
+// Interactions
+import { handleDiscordInteraction } from './interactions'
 
 // Webhooks
 import { handleEpuppyHook } from './webhooks'
@@ -59,6 +62,15 @@ router.get('/message-roles/:id', requiresBotAuth, getMessageRole)
 router.post('/message-roles', requiresBotAuth, createMessageRole)
 router.get('/message-roles/actions', requiresBotAuth, getMessageRolesActions)
 router.post('/message-roles/actions', requiresBotAuth, createMessageRolesAction)
+
+// Discord Iteractions
+router.post(
+  '/iteractions',
+  verifyKeyMiddleware(
+    '022e1697356b583999a0ed92bc1e05c26d4e422d385f2d174b13be88b7d2eb35',
+  ),
+  handleDiscordInteraction,
+)
 
 // Discord Webhooks
 router.post('/epuppy-hook', handleEpuppyHook)

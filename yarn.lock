@@ -703,6 +703,13 @@ destroy@~1.0.4:
   resolved "https://registry.yarnpkg.com/destroy/-/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
   integrity sha1-l4hXRCxEdJ5CBmE+N5RiBYJqvYA=
 
+discord-interactions@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/discord-interactions/-/discord-interactions-2.0.2.tgz#d82ea63517ec43666bce63288315f269958ff5e3"
+  integrity sha512-zKQB63xWLYbOZMyU+EcLrXnUCMuWkU8/SoH7jFvc99Y1amHqli3oPEkgoLWUmYckL+HCPuA7LXpNyXaFvoqIww==
+  dependencies:
+    tweetnacl "^1.0.3"
+
 discord.js@^12.5.1, discord.js@discordjs/discord.js#stable:
   version "12.5.1"
   resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/8a7abc9f06d44bf693e35a615bb6ba2c3eb1d6e7"

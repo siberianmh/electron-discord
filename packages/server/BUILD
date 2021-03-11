@@ -14,6 +14,7 @@ ts_library(
         "@npm//@types/node",
         "@npm//axios",
         "@npm//body-parser",
+        "@npm//discord-interactions",
         "@npm//express",
         "@npm//ioredis",
         "@npm//mysql",

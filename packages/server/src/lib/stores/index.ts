@@ -1,4 +1,5 @@
 export * from './help-chan'
 export * from './infractions'
+export * from './interactions'
 export * from './message-roles'
 export * from './webhook'
