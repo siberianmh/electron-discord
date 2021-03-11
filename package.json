@@ -11,7 +11,7 @@
     "@bazel/bazelisk": "^1.7.5",
     "@bazel/ibazel": "^0.14.0",
     "@bazel/typescript": "^3.2.2",
-    "@sentry/node": "^6.2.1",
+    "@sentry/node": "^6.2.2",
     "algoliasearch": "^4.8.6",
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
