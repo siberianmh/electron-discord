@@ -1,10 +1,10 @@
 import { default as CookiecordClient, listener } from 'cookiecord'
 import { Message, MessageEmbed, MessageReaction, User } from 'discord.js'
 import * as humanizeDuration from 'humanize-duration'
-import { ExtendedModule } from '../lib/extended-module'
-import { extendedCommand } from '../lib/extended-command'
-import { guild } from '../lib/config'
-import { redis, selfDestructMessage } from '../lib/redis'
+import { ExtendedModule } from '../../lib/extended-module'
+import { extendedCommand } from '../../lib/extended-command'
+import { guild } from '../../lib/config'
+import { redis, selfDestructMessage } from '../../lib/redis'
 
 export class EtcModule extends ExtendedModule {
   public constructor(client: CookiecordClient) {
@@ -50,26 +50,6 @@ export class EtcModule extends ExtendedModule {
         name: 'Of Course I Still Love You',
       },
     })
-  }
-
-  @listener({ event: 'ready' })
-  public async ensureHashimotoIsBanned() {
-    if (process.env.NODE_ENV === 'development') {
-      return
-    }
-
-    const fetchedGuild = await this.client.guilds.fetch(guild.id)
-
-    try {
-      const ban = await fetchedGuild.fetchBan('145300108567773184')
-      if (ban) {
-        return
-      }
-    } catch {
-      return await fetchedGuild.members.ban('145300108567773184')
-    }
-
-    return
   }
 
   @listener({ event: 'messageReactionAdd' })

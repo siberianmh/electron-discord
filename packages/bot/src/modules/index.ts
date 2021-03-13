@@ -5,6 +5,5 @@ export * from './roles'
 export * from './rules'
 export * from './tags'
 export * from './utils'
-
-export * from './etc'
-export * from './unfurling'
+export * from './utils/etc'
+export * from './utils/unfurling'
