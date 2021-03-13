@@ -1,4 +1,4 @@
-load("//:tools/ts_library.bzl", "ts_library")
+load("//:tools/ts_library.bzl", "ts_project")
 load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary")
 load("@io_bazel_rules_docker//nodejs:image.bzl", "nodejs_image")
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
@@ -10,7 +10,7 @@ filegroup(
     srcs = glob(["src/resources/tags/**/*.md"]),
 )
 
-ts_library(
+ts_project(
     name = "bot",
     srcs = glob(["src/**/*.ts"]),
     deps = [
