@@ -296,7 +296,7 @@ export class ModLogModule extends ExtendedModule {
       colour: constants.style.colors.softRed,
       title: 'User Banned',
       text: formatUser(member),
-      thumbnail: member.user.displayAvatarURL({ format: 'png' }) || undefined,
+      // thumbnail: member.user.avatar || undefined,
     })
   }
 }
