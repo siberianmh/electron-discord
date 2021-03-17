@@ -6,6 +6,7 @@ import { MessageRoles, MessageRolesActions } from '../entities/roles'
 
 export const connectMySQL = (): Promise<Connection> => {
   const entitiesDir = path.resolve(__dirname, '../entities/**/*.js')
+
   return process.env.NODE_ENV === 'development'
     ? createConnection({
         type: 'mysql',
@@ -41,7 +42,7 @@ export const connectMySQL = (): Promise<Connection> => {
         cache: {
           type: 'ioredis',
           options: {
-            host: process.env.REDIS_HOST,
+            host: process.env.REDIS_URL,
             port: 6379,
           },
         },
