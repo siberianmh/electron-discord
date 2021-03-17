@@ -18,7 +18,7 @@ export class TagsModule extends ExtendedModule {
   }
 
   @extendedCommand({
-    aliases: ['t', 'topic'],
+    aliases: ['t', 'topic', 'r', 'resources'],
   })
   public async tags(msg: Message, @optional tag?: string) {
     if (!tag) {
