@@ -9,6 +9,8 @@ ts_project(
     name = "server",
     srcs = glob(["src/**/*.ts"]),
     deps = [
+        "@npm//@sentry/node",
+        "@npm//@sentry/tracing",
         "@npm//@types/body-parser",
         "@npm//@types/express",
         "@npm//@types/node",
