@@ -106,13 +106,15 @@ export class HelpChanModule extends ExtendedModule {
 
   //#region Listeners
   @listener({ event: 'ready' })
-  async startDormantLoop() {
+  async onReady() {
     setInterval(() => {
       this.checkDormantPossibilities()
     }, helpChannels.dormantChannelLoop)
 
+    const guild = await this.client.guilds.fetch(config.guild.id)
     await this.syncHowToGetHelp()
     await this.verifyNumberOfChannels()
+    await this.fixCooldowns(guild)
   }
 
   @listener({ event: 'message' })
@@ -336,7 +338,7 @@ export class HelpChanModule extends ExtendedModule {
   public async removelock(msg: Message) {
     if (this.busyChannels.has(msg.channel.id)) {
       this.busyChannels.delete(msg.channel.id)
-      return await msg.channel.send('')
+      return await msg.channel.send('Channel unlocked')
     }
     return await msg.channel.send('Channel is not locked')
   }
