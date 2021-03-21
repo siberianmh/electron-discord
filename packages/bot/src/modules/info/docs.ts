@@ -16,11 +16,11 @@ export class DocsModule extends ExtendedModule {
 
     // I stole this from https://github.com/electron/algolia-indices/blob/master/demo.js#L31
     this.searchClient = algoliasearch(
-      'L9LD9GHGQJ',
-      '24e7e99910a15eb5d9d93531e5682370',
+      'BH4D9OD16A',
+      'c9e8f898b3b32afe40f0a96637e7ea85',
     )
 
-    this.apiIndex = this.searchClient.initIndex('apis')
+    this.apiIndex = this.searchClient.initIndex('electronjs')
     this.guidesIndex = this.searchClient.initIndex('tutorials')
   }
 
@@ -33,16 +33,17 @@ export class DocsModule extends ExtendedModule {
   public async docs(msg: Message, searchIndex: string) {
     const { hits } = await this.apiIndex.search(searchIndex)
 
-    if (!hits.length) {
-      return msg.channel.send({ embed: this.NOT_FOUND_EMBED(searchIndex) })
-    }
+    console.log(hits)
+    // if (!hits.length) {
+    //   return msg.channel.send({ embed: this.NOT_FOUND_EMBED(searchIndex) })
+    // }
 
-    // Let's take the first result for now
-    // TODO: Add Types maybe 😒
-    const result: $TSFixMe = hits[0]
-    const embed = this.createEmbed(result)
+    // // Let's take the first result for now
+    // // TODO: Add Types maybe 😒
+    // const result: $TSFixMe = hits[0]
+    // const embed = this.createEmbed(result)
 
-    return createSelfDestructMessage(msg, embed)
+    // return createSelfDestructMessage(msg, embed)
   }
 
   @extendedCommand({
