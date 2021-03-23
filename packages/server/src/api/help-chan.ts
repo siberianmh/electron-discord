@@ -16,7 +16,12 @@ export const getHelpChannelByUserId = async (
   res: express.Response,
 ) => {
   const resp = await store.getHelpChannelByUserId(req)
-  return res.json(resp)
+
+  if ('id' in resp) {
+    return res.json(resp)
+  }
+
+  return res.status(resp.status).json(resp)
 }
 
 export const getHelpChannelByChannelId = async (

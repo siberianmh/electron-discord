@@ -361,17 +361,20 @@ export class HelpChanModule extends ExtendedModule {
       )
     }
 
-    const {
-      data: helpChannel,
-    } = await this.api.get<IGetHelpChanByUserIdResponse>(
-      `/helpchan/${member.id}`,
-    )
-
-    // @ts-expect-error We know, we know
-    if (helpChannel.status !== 404 && helpChannel) {
-      return await msg.channel.send(
-        `${member.displayName} already has <#${helpChannel.channel_id}>`,
+    try {
+      const {
+        data: helpChannel,
+      } = await this.api.get<IGetHelpChanByUserIdResponse>(
+        `/helpchan/${member.id}`,
       )
+
+      if (helpChannel) {
+        return await msg.channel.send(
+          `${member.displayName} already has <#${helpChannel.channel_id}>`,
+        )
+      }
+    } catch {
+      // It's fine because it's that what's we search
     }
 
     const claimedChannel = msg.guild?.channels.cache.find(
@@ -620,16 +623,11 @@ export class HelpChanModule extends ExtendedModule {
     }
 
     cooldownedByRole.forEach(async (member) => {
-      const {
-        data: cooldowned,
-      } = await this.api.get<IGetHelpChanByUserIdResponse>(
-        `/helpchan/${member.id}`,
-      )
-
-      // @ts-expect-error
-      if (cooldowned.status === 404 && !cooldowned) {
-        await member.roles.remove(guild.roles.helpCooldown)
-      }
+      await this.api
+        .get<IGetHelpChanByUserIdResponse>(`/helpchan/${member.id}`)
+        .catch(async () => {
+          await member.roles.remove(guild.roles.helpCooldown)
+        })
     })
   }
 
