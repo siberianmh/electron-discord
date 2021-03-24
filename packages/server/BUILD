@@ -11,11 +11,9 @@ ts_project(
     deps = [
         "@npm//@sentry/node",
         "@npm//@sentry/tracing",
-        "@npm//@types/body-parser",
         "@npm//@types/express",
         "@npm//@types/node",
         "@npm//axios",
-        "@npm//body-parser",
         "@npm//discord-interactions",
         "@npm//express",
         "@npm//ioredis",

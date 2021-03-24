@@ -1,6 +1,5 @@
 import 'reflect-metadata'
 import * as express from 'express'
-import * as bodyParser from 'body-parser'
 import * as Sentry from '@sentry/node'
 import * as Tracing from '@sentry/tracing'
 
@@ -23,8 +22,8 @@ Sentry.init({
 app.use(Sentry.Handlers.requestHandler())
 app.use(Sentry.Handlers.tracingHandler())
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 app.use('/', apiRoutes)
 
