@@ -4,22 +4,22 @@ import { ExtendedModule } from '../../lib/extended-module'
 // TODO: add auto kicking of 2 times
 // import { redis, rblxDownloadCounter } from '../../lib/redis'
 import { extendedCommand } from '../../lib/extended-command'
-import { ModLogModule } from '../moderation/modlog'
 import { createSelfDestructMessage } from '../../lib/self-destruct-messages'
 
 export class DownloadModule extends ExtendedModule {
-  private modlog: ModLogModule
-
   public constructor(client: CookiecordClient) {
     super(client)
-
-    this.modlog = new ModLogModule(client)
   }
 
-  private DOWNLOAD_MESSAGE =
-    'So you have been write this command in waiting to get the download link to Roblox Electron Exploit. However this is server for Electron JavaScript framework (<https://electronjs.org>), we awaiting that you just leave and start more deeper searching.'
+  private DOWNLOAD_MESSAGE = `⚠⚠⚠ PLEASE READ THIS BEFORE WRITING ANYTHING ⚠⚠⚠
 
-  @extendedCommand({ aliases: ['dwnload', 'dowload'] })
+So you write this command in waiting to get a download link to Roblox Electron Exploit. However, this is a server for the Electron JavaScript framework (<https://electronjs.org>).
+
+You didn't find any links or resources on how to download or use this software on this server, we expect you just leave.
+
+⚠⚠⚠ USING AND SHARING EXPLOITS VIOLATES THE TOS OF DISCORD, YOU HAS A RISK OF BAN ⚠⚠⚠`
+
+  @extendedCommand({ aliases: ['dwnload', 'dowload', 'dowland'] })
   public async download(msg: Message) {
     try {
       await msg.author.send(this.DOWNLOAD_MESSAGE)
@@ -27,6 +27,6 @@ export class DownloadModule extends ExtendedModule {
       await createSelfDestructMessage(msg, this.DOWNLOAD_MESSAGE)
     }
 
-    return
+    return await msg.delete({ reason: 'Nothing to search here' })
   }
 }
