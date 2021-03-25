@@ -19,7 +19,9 @@ You didn't find any links or resources on how to download or use this software o
 
 ⚠⚠⚠ USING AND SHARING EXPLOITS VIOLATES THE TOS OF DISCORD, YOU HAS A RISK OF BAN ⚠⚠⚠`
 
-  @extendedCommand({ aliases: ['dwnload', 'dowload', 'dowland'] })
+  @extendedCommand({
+    aliases: ['dwnload', 'dowload', 'dowland', 'downlaod', 'downlpad'],
+  })
   public async download(msg: Message) {
     try {
       await msg.author.send(this.DOWNLOAD_MESSAGE)
