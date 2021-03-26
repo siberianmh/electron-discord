@@ -20,7 +20,14 @@ You didn't find any links or resources on how to download or use this software o
 ⚠⚠⚠ USING AND SHARING EXPLOITS VIOLATES THE TOS OF DISCORD, YOU HAS A RISK OF BAN ⚠⚠⚠`
 
   @extendedCommand({
-    aliases: ['dwnload', 'dowload', 'dowland', 'downlaod', 'downlpad'],
+    aliases: [
+      'dwnload',
+      'dowload',
+      'dowland',
+      'downlaod',
+      'downlpad',
+      'downlad',
+    ],
   })
   public async download(msg: Message) {
     try {
