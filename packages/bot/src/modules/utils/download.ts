@@ -28,6 +28,7 @@ You didn't find any links or resources on how to download or use this software o
       'downlpad',
       'downlad',
       'downloads',
+      'downlands',
     ],
   })
   public async download(msg: Message) {
