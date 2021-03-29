@@ -2,6 +2,7 @@ import { default as CookiecordClient, listener } from 'cookiecord'
 import { Message, MessageEmbed, TextChannel } from 'discord.js'
 import { style } from '../../lib/config'
 import { ExtendedModule } from '../../lib/extended-module'
+import { createSelfDestructMessage } from '../../lib/self-destruct-messages'
 
 const DSRegex = /https:\/\/discord(app)?.com\/channels\/([\d]{18})\/([\d]{18})\/([\d]{18})/gm
 
@@ -56,10 +57,12 @@ export class UnfurlModule extends ExtendedModule {
           return
         }
 
-        await new Promise((resolve) => setTimeout(resolve, 5000))
-        return await msg.channel.send({
-          embed: this.UNFURL_EMBED(fetchedMessage, msg),
-        })
+        await new Promise((resolve) => setTimeout(resolve, 3000))
+
+        return createSelfDestructMessage(
+          msg,
+          this.UNFURL_EMBED(fetchedMessage, msg),
+        )
       }
     }
 
