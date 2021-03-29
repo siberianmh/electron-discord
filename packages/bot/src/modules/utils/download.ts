@@ -29,6 +29,8 @@ You didn't find any links or resources on how to download or use this software o
       'downlad',
       'downloads',
       'downlands',
+      'dowlaud',
+      'dowlaid',
     ],
   })
   public async download(msg: Message) {
