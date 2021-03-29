@@ -1,8 +1,6 @@
 import { default as CookiecordClient } from 'cookiecord'
 import { Message } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
-// TODO: add auto kicking of 2 times
-// import { redis, rblxDownloadCounter } from '../../lib/redis'
 import { extendedCommand } from '../../lib/extended-command'
 import { createSelfDestructMessage } from '../../lib/self-destruct-messages'
 
@@ -36,7 +34,7 @@ You didn't find any links or resources on how to download or use this software o
   public async download(msg: Message) {
     try {
       await msg.author.send(this.DOWNLOAD_MESSAGE)
-    } catch (e) {
+    } catch {
       await createSelfDestructMessage(msg, this.DOWNLOAD_MESSAGE)
     }
 
