@@ -44,14 +44,8 @@ router.get('/', hello)
 
 // Help Channels
 router.get('/helpchan', requiresBotAuth, listHelpChannels)
-// TODO: In some period of life this should be changed to /helpchan/user/:user_id
-//       and /helpchan/:channel_id
-router.get('/helpchan/:user_id', requiresBotAuth, getHelpChannelByUserId)
-router.get(
-  '/helpchan/custom/:channel_id',
-  requiresBotAuth,
-  getHelpChannelByChannelId,
-)
+router.get('/helpchan/user/:user_id', requiresBotAuth, getHelpChannelByUserId)
+router.get('/helpchan/:channel_id', requiresBotAuth, getHelpChannelByChannelId)
 router.post('/helpchan', requiresBotAuth, createHelpChannel)
 router.delete('/helpchan/:channel_id', requiresBotAuth, deleteHelpChannel)
 
@@ -72,7 +66,7 @@ router.post(
 )
 
 // Discord Webhooks
-router.post('/epuppy-hook', handleEpuppyHook)
+router.post('/epuppy-hook', requiresBotAuth, handleEpuppyHook)
 //#endregion
 
 export const apiRoutes = router as express.Router

@@ -24,8 +24,8 @@ export const requiresBotAuth = (
   }
 
   const [prefix, token] = req.headers['authorization'].split(' ')
-  // Ensure prefix is Bot
-  if (prefix !== 'Bot') {
+  // Ensure prefix is Bot or Bearer
+  if (prefix !== 'Bot' && prefix !== 'Bearer') {
     return res.status(401).json({
       message: 'Bad credentials',
       status: 401,

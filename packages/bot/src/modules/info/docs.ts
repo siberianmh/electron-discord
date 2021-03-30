@@ -47,7 +47,10 @@ export class DocsModule extends ExtendedModule {
     const { hits } = await this.apiIndex.search(searchIndex)
 
     if (!hits.length) {
-      return msg.channel.send({ embed: this.NOT_FOUND_EMBED(searchIndex) })
+      return await createSelfDestructMessage(
+        msg,
+        this.NOT_FOUND_EMBED(searchIndex),
+      )
     }
 
     // Let's take the first result for now
@@ -55,7 +58,7 @@ export class DocsModule extends ExtendedModule {
     const result: $TSFixMe = hits[0]
     const embed = this.createEmbed(result)
 
-    return createSelfDestructMessage(msg, embed)
+    return await createSelfDestructMessage(msg, embed)
   }
 
   @extendedCommand({
@@ -66,13 +69,16 @@ export class DocsModule extends ExtendedModule {
     const { hits } = await this.guidesIndex.search(searchIndex)
 
     if (!hits.length) {
-      return msg.channel.send({ embed: this.NOT_FOUND_EMBED(searchIndex) })
+      return await createSelfDestructMessage(
+        msg,
+        this.NOT_FOUND_EMBED(searchIndex),
+      )
     }
 
     const result: $TSFixMe = hits[0]
     const embed = this.createEmbed(result)
 
-    return createSelfDestructMessage(msg, embed)
+    return await createSelfDestructMessage(msg, embed)
   }
 
   @extendedCommand({
@@ -83,7 +89,10 @@ export class DocsModule extends ExtendedModule {
     const { hits } = await this.newIndex.search(searchIndex)
 
     if (!hits.length) {
-      return msg.channel.send({ embed: this.NOT_FOUND_EMBED(searchIndex) })
+      return await createSelfDestructMessage(
+        msg,
+        this.NOT_FOUND_EMBED(searchIndex),
+      )
     }
 
     const result: $TSFixMe = hits[0]

@@ -152,7 +152,7 @@ export class HelpChanModule extends ExtendedModule {
     const {
       data: channel,
     } = await this.api.get<IGetHelpChanByChannelIdResponse>(
-      `/helpchan/custom/${msg.channel.id}`,
+      `/helpchan/${msg.channel.id}`,
     )
 
     if (msg.id === channel.message_id) {
@@ -174,7 +174,8 @@ export class HelpChanModule extends ExtendedModule {
     ) {
       return
     }
-    await msg.delete({ reason: 'Pin system message' })
+
+    return await msg.delete({ reason: 'Pin system message' })
   }
   //#endregion
 
@@ -197,14 +198,13 @@ export class HelpChanModule extends ExtendedModule {
     }
 
     const { data: owner } = await this.api.get<IGetHelpChanByChannelIdResponse>(
-      `/helpchan/custom/${msg.channel.id}`,
+      `/helpchan/${msg.channel.id}`,
     )
 
     if (
       (owner && owner.user_id === msg.author.id) ||
       msg.member?.hasPermission('MANAGE_MESSAGES') ||
-      msg.member?.roles.cache.has(guild.roles.maintainer) ||
-      this.client.botAdmins.includes(msg.author.id)
+      msg.member?.roles.cache.has(guild.roles.maintainer)
     ) {
       return await this.markChannelAsDormant(msg.channel as TextChannel)
     } else {
@@ -304,8 +304,7 @@ export class HelpChanModule extends ExtendedModule {
     // Inhibitor
     if (
       !msg.member?.hasPermission('MANAGE_MESSAGES') &&
-      !msg.member?.roles.cache.has(guild.roles.maintainer) &&
-      !this.client.botAdmins.includes(msg.author.id)
+      !msg.member?.roles.cache.has(guild.roles.maintainer)
     ) {
       return msg.channel.send(
         `Hello <@${msg.author.id}>, however, this command is can be only used by the moderation team, if you are searching for help you can read the guide at <#${guild.channels.askHelpChannel}> channel, and claim a channel from the \`Help: Available\` category.`,
@@ -365,7 +364,7 @@ export class HelpChanModule extends ExtendedModule {
       const {
         data: helpChannel,
       } = await this.api.get<IGetHelpChanByUserIdResponse>(
-        `/helpchan/${member.id}`,
+        `/helpchan/user/${member.id}`,
       )
 
       if (helpChannel) {
@@ -444,7 +443,7 @@ export class HelpChanModule extends ExtendedModule {
     const {
       data: helpChannel,
     } = await this.api.get<IGetHelpChanByChannelIdResponse>(
-      `/helpchan/custom/${channel.id}`,
+      `/helpchan/${channel.id}`,
     )
 
     try {
@@ -624,7 +623,7 @@ export class HelpChanModule extends ExtendedModule {
 
     cooldownedByRole.forEach(async (member) => {
       await this.api
-        .get<IGetHelpChanByUserIdResponse>(`/helpchan/${member.id}`)
+        .get<IGetHelpChanByUserIdResponse>(`/helpchan/user/${member.id}`)
         .catch(async () => {
           await member.roles.remove(guild.roles.helpCooldown)
         })
