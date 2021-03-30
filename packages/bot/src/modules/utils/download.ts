@@ -9,13 +9,13 @@ export class DownloadModule extends ExtendedModule {
     super(client)
   }
 
-  private DOWNLOAD_MESSAGE = `⚠⚠⚠ PLEASE READ THIS BEFORE WRITING ANYTHING ⚠⚠⚠
+  private DOWNLOAD_MESSAGE = `⚠⚠⚠ PLEASE READ THIS BEFORE CONTINUING IN THE ELECTRON DISCORD SERVER ⚠⚠⚠
 
-So you write this command in waiting to get a download link to Roblox Electron Exploit. However, this is a server for the Electron JavaScript framework (<https://electronjs.org>).
+We have detected that you have tried to execute a command related to getting a download link to the Roblox Electron Exploit. However, this is a server for the Electron JavaScript framework (<https://electronjs.org/>).
 
-You didn't find any links or resources on how to download or use this software on this server, we expect you just leave.
+The members of this server will not help you download the exploit or get information about the exploit, even if you ask.
 
-⚠⚠⚠ USING AND SHARING EXPLOITS VIOLATES THE TOS OF DISCORD, YOU HAS A RISK OF BAN ⚠⚠⚠`
+⚠⚠⚠ USING AND SHARING EXPLOITS VIOLATES THE DISCORD TERMS OF SERVICE AND MAY RESULT IN A DISCORD-WIDE BAN. ⚠⚠⚠`
 
   @extendedCommand({
     aliases: [
