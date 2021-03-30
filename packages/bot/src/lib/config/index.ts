@@ -1,7 +1,7 @@
 let config: typeof import('./config.default')
 
 try {
-  config = require('./config-that-just-used-for.dev.ts')
+  config = require('./config-that-just-used-for.dev')
 } catch (err) {
   if (!err || err.code !== 'MODULE_NOT_FOUND') {
     throw err

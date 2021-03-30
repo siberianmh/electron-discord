@@ -15,7 +15,7 @@ export class HelpMessageModule extends ExtendedModule {
   @extendedCommand({
     aliases: ['help', 'commands', 'h'],
     inhibitors: [CommonInhibitors.guildsOnly],
-    description: 'Sends what you&quotre looking right now',
+    description: "Sends what you're looking right now",
   })
   async help(msg: Message, @optional cmdTrigger?: string) {
     if (!msg.guild) {
@@ -38,11 +38,7 @@ export class HelpMessageModule extends ExtendedModule {
         )
         .addField(
           '**Documentation** (Experimental)',
-          '`docs` ► Show the API documentation entry for specific search result.\n`guide` ► Show the Guide documentation entry for specific saerch result.',
-        )
-        .addField(
-          '**Experimental Commands**',
-          '`tags` ► Get a list of useful tags and resources to start with Electron',
+          '`docs` ► Show the documentation entry for specific search result.\n`resources` ► Get a list of useful resources to start with Electron',
         )
         .addField(
           '**Help Channels Commands:**',

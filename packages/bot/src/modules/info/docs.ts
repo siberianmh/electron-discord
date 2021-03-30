@@ -1,38 +1,48 @@
 import { default as CookiecordClient } from 'cookiecord'
 import { Message, MessageEmbed } from 'discord.js'
 import algoliasearch, { SearchClient, SearchIndex } from 'algoliasearch'
+import type { Hit } from '@algolia/client-search'
 import { ExtendedModule } from '../../lib/extended-module'
 import { createSelfDestructMessage } from '../../lib/self-destruct-messages'
 import { extendedCommand } from '../../lib/extended-command'
-import { $TSFixMe } from '../../lib/types'
 
+interface IHitHierarchy {
+  readonly lvl0: string | null
+  readonly lvl1: string | null
+  readonly lvl2: string | null
+  readonly lvl3: string | null
+  readonly lvl4: string | null
+  readonly lvl5: string | null
+  readonly lvl6: string | null
+}
+
+interface IHitResult {
+  readonly anchor: string
+  readonly content: string | null
+  readonly hierarchy: IHitHierarchy
+  readonly url: string
+  readonly objectID: string
+  readonly hierarchy_camel?: Record<string, string>
+}
+
+/**
+ * This module is basically based on `algolia/docsearch` implementation,
+ * the main difference it's that we don't have visual (user input)
+ * implementation and always return the first hit.
+ */
 export class DocsModule extends ExtendedModule {
-  private searchClient: SearchClient
-
   private newSearchClient: SearchClient
-
-  private apiIndex: SearchIndex
-  private guidesIndex: SearchIndex
 
   private newIndex: SearchIndex
 
   public constructor(client: CookiecordClient) {
     super(client)
 
-    // I stole this from https://github.com/electron/algolia-indices/blob/master/demo.js#L31
-    this.searchClient = algoliasearch(
-      'L9LD9GHGQJ',
-      '24e7e99910a15eb5d9d93531e5682370',
-    )
-
-    // I stole this from https://github.com/electron/electronjs.org/pull/5233
+    // I stole this from https://github.com/electron/electronjs.org/blob/master/views/layouts/main.hbs#L27
     this.newSearchClient = algoliasearch(
       'BH4D9OD16A',
       'c9e8f898b3b32afe40f0a96637e7ea85',
     )
-
-    this.apiIndex = this.searchClient.initIndex('apis')
-    this.guidesIndex = this.searchClient.initIndex('tutorials')
 
     this.newIndex = this.newSearchClient.initIndex('electronjs')
   }
@@ -44,7 +54,9 @@ export class DocsModule extends ExtendedModule {
 
   @extendedCommand({ aliases: ['d', 'doc'], single: true })
   public async docs(msg: Message, searchIndex: string) {
-    const { hits } = await this.apiIndex.search(searchIndex)
+    const { hits } = await this.newIndex.search<IHitResult>(searchIndex, {
+      hitsPerPage: 5,
+    })
 
     if (!hits.length) {
       return await createSelfDestructMessage(
@@ -53,12 +65,23 @@ export class DocsModule extends ExtendedModule {
       )
     }
 
-    // Let's take the first result for now
-    // TODO: Add Types maybe 😒
-    const result: $TSFixMe = hits[0]
-    const embed = this.createEmbed(result)
+    const result = hits[0]
 
-    return await createSelfDestructMessage(msg, embed)
+    const url = this.formatURL(result)
+    const category = this.getHighlightedValue(result, 'lvl0')
+    const subcategory = this.getHighlightedValue(result, 'lvl1') || category
+    const displayTitle = this.compact([
+      this.getHighlightedValue(result, 'lvl2') || subcategory,
+      this.getHighlightedValue(result, 'lvl3'),
+      this.getHighlightedValue(result, 'lvl4'),
+      this.getHighlightedValue(result, 'lvl5'),
+      this.getHighlightedValue(result, 'lvl6'),
+    ]).join(' › ')
+    const text = this.getSnippedValue(result, 'content')!
+
+    const embed = this.createEmbed(displayTitle, url, text)
+
+    return createSelfDestructMessage(msg, embed)
   }
 
   @extendedCommand({
@@ -66,70 +89,57 @@ export class DocsModule extends ExtendedModule {
     single: true,
   })
   public async guides(msg: Message, searchIndex: string) {
-    const { hits } = await this.guidesIndex.search(searchIndex)
-
-    if (!hits.length) {
-      return await createSelfDestructMessage(
-        msg,
-        this.NOT_FOUND_EMBED(searchIndex),
-      )
-    }
-
-    const result: $TSFixMe = hits[0]
-    const embed = this.createEmbed(result)
-
-    return await createSelfDestructMessage(msg, embed)
+    return this.docs(msg, searchIndex)
   }
 
-  @extendedCommand({
-    aliases: ['docs-new', 'dd', 'dn'],
-    single: true,
-  })
-  public async docsd(msg: Message, searchIndex: string) {
-    const { hits } = await this.newIndex.search(searchIndex)
-
-    if (!hits.length) {
-      return await createSelfDestructMessage(
-        msg,
-        this.NOT_FOUND_EMBED(searchIndex),
-      )
-    }
-
-    const result: $TSFixMe = hits[0]
-
-    console.log(result)
-    const embed = this.createNewEmbed(result)
-
-    return createSelfDestructMessage(msg, embed)
-  }
-
-  private createEmbed(result: $TSFixMe) {
-    const title = result.fullSignature ?? result.title
-    let description = result.description ?? result.body
-
-    if (description.length >= 2048) {
-      description =
-        result.tldr ?? 'Unable to show preview because the body is too long.'
-    }
-
-    const embed = new MessageEmbed()
-      .setTitle(title)
-      .setURL(result.url)
-      .setDescription(description)
-
-    return embed
-  }
-
-  private createNewEmbed(result: $TSFixMe) {
+  private createEmbed(title: string, url: string, content?: string) {
     // NOTE: This probably should be the latest level in hierarchy
-    const title = result.anchor
-    const description = result.content ?? 'Unable to find description'
+    const description = content ?? 'Unable to find description'
 
     const embed = new MessageEmbed()
       .setTitle(title)
-      .setURL(result.url)
+      .setURL(url)
       .setDescription(description)
 
     return embed
+  }
+
+  private formatURL(hit: Hit<IHitResult>) {
+    const { url, anchor } = hit
+    if (url) {
+      const containsAnchor = url.includes('#')
+      if (containsAnchor) {
+        return url
+      } else if (anchor) {
+        return `${hit.url}#${hit.anchor}`
+      }
+      return url
+    } else if (anchor) {
+      return `#${hit.anchor}`
+    }
+
+    return ''
+  }
+
+  private getHighlightedValue(
+    object: Hit<IHitResult>,
+    property: 'lvl0' | 'lvl1' | 'lvl2' | 'lvl3' | 'lvl4' | 'lvl5' | 'lvl6',
+  ) {
+    return object.hierarchy[property]
+  }
+
+  private getSnippedValue(object: Hit<IHitResult>, property: 'content') {
+    return object[property]
+  }
+
+  private compact(array: Array<unknown>) {
+    const results: Array<unknown> = []
+    array.forEach((value) => {
+      if (!value) {
+        return
+      }
+      results.push(value)
+    })
+    return results
   }
 }
