@@ -23,7 +23,7 @@
     "fs-extra": "^9.1.0",
     "gray-matter": "^4.0.2",
     "humanize-duration": "^3.25.1",
-    "ioredis": "^4.24.5",
+    "ioredis": "^4.24.6",
     "luxon": "^1.26.0",
     "mysql": "^2.18.1",
     "parse-duration": "^1.0.0",
