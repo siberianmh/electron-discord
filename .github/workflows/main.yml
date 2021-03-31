@@ -41,7 +41,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build Docker Image
         run: |
-          echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u pacificocean-bot --password-stdin
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u pacificocean-bot --password-stdin
           bazel build //packages/bot:docker-bot
       - name: Publish Latest Docker Image
         run: |
@@ -58,7 +58,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build Docker Image
         run: |
-          echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u pacificocean-bot --password-stdin
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u pacificocean-bot --password-stdin
           bazel build //packages/server:docker
       - name: Public Latest Docker Image
         run: |
