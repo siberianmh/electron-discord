@@ -22,7 +22,6 @@ interface IHitResult {
   readonly hierarchy: IHitHierarchy
   readonly url: string
   readonly objectID: string
-  readonly hierarchy_camel?: Record<string, string>
 }
 
 /**
@@ -52,7 +51,10 @@ export class DocsModule extends ExtendedModule {
       .setTitle(`\`${searchIndex}\``)
       .setDescription('Unable to find result for searching string.')
 
-  @extendedCommand({ aliases: ['d', 'doc'], single: true })
+  @extendedCommand({
+    aliases: ['d', 'doc', 'tutorials', 'tutorial', 'guide', 'guides'],
+    single: true,
+  })
   public async docs(msg: Message, searchIndex: string) {
     const { hits } = await this.newIndex.search<IHitResult>(searchIndex, {
       hitsPerPage: 5,
@@ -82,14 +84,6 @@ export class DocsModule extends ExtendedModule {
     const embed = this.createEmbed(displayTitle, url, text)
 
     return createSelfDestructMessage(msg, embed)
-  }
-
-  @extendedCommand({
-    aliases: ['tutorials', 'tutorial', 'guide'],
-    single: true,
-  })
-  public async guides(msg: Message, searchIndex: string) {
-    return this.docs(msg, searchIndex)
   }
 
   private createEmbed(title: string, url: string, content?: string) {
