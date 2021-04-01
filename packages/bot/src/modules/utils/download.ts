@@ -29,6 +29,7 @@ The members of this server will not help you download the exploit or get informa
       'downlands',
       'dowlaud',
       'dowlaid',
+      'dowloand',
     ],
   })
   public async download(msg: Message) {
