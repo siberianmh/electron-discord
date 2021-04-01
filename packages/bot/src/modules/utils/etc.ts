@@ -42,16 +42,6 @@ export class EtcModule extends ExtendedModule {
     await msg.react('🤷')
   }
 
-  @listener({ event: 'ready' })
-  public async setPresence() {
-    await this.client.user?.setPresence({
-      activity: {
-        type: 'PLAYING',
-        name: 'Of Course I Still Love You',
-      },
-    })
-  }
-
   @listener({ event: 'messageReactionAdd' })
   public async bucketEmojiClicked(reaction: MessageReaction, user: User) {
     if (user.id === this.client.user?.id) {

@@ -8,5 +8,11 @@ export const client = new CookiecordClient(
   {
     ws: { intents: Intents.ALL },
     partials: ['REACTION', 'MESSAGE', 'USER', 'CHANNEL'],
+    presence: {
+      activity: {
+        type: 'WATCHING',
+        name: "Dota: Dragon's Blood",
+      },
+    },
   },
 )
