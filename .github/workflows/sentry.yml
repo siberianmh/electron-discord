@@ -1,0 +1,22 @@
+name: Create Sentry Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  createSentryRelease:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create a sentry release
+        uses: tclindner/sentry-releases-action@v1.2.0
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: siberianmh
+          SENTRY_PROJECT: edis
+        with:
+          tagName: ${{ github.sha }}
+          environmnet: production
+          releaseNamePrefix: edis

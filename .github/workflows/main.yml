@@ -68,6 +68,7 @@ jobs:
   # Deploying #
   #############
   deploy-bot:
+    environment: production
     runs-on: ubuntu-20.04
     if: github['ref'] == 'refs/heads/main'
 
@@ -87,6 +88,7 @@ jobs:
           kubectl rollout restart deploy/edis-bot
 
   deploy-server:
+    environment: production
     runs-on: ubuntu-20.04
     if: github['ref'] == 'refs/heads/main'
 
