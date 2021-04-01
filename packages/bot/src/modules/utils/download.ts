@@ -32,6 +32,10 @@ The members of this server will not help you download the exploit or get informa
     ],
   })
   public async download(msg: Message) {
+    if (msg.channel.type === 'dm') {
+      return
+    }
+
     try {
       await msg.author.send(this.DOWNLOAD_MESSAGE)
     } catch {
