@@ -18,5 +18,5 @@ jobs:
           SENTRY_PROJECT: edis
         with:
           tagName: ${{ github.sha }}
-          environmnet: production
+          environment: production
           releaseNamePrefix: edis
