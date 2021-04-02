@@ -118,12 +118,16 @@ export class InteractionsStore {
     if (message.type === InteractionType.APPLICATION_COMMAND) {
       let quote: string = ''
       if (message.data && message.data.options) {
-        const character = message.data.options[0].value
-        // @ts-expect-error
+        const character = message.data.options[0].value as
+          | 'max_caulfield'
+          | 'chloe_price'
+
         quote = this.random(quotes[character])
       } else {
-        const character = this.random(['max_caulfield', 'chloe_price'])
-        // @ts-expect-error
+        const character = this.random(['max_caulfield', 'chloe_price']) as
+          | 'max_caulfield'
+          | 'chloe_price'
+
         quote = this.random(quotes[character])
       }
 
@@ -138,6 +142,6 @@ export class InteractionsStore {
     return
   }
 
-  private random = (array: Array<string>) =>
+  private random = (array: Array<string>): string =>
     array[Math.floor(Math.random() * array.length)]
 }
