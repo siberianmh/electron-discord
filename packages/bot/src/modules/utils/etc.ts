@@ -29,6 +29,15 @@ export class EtcModule extends ExtendedModule {
 
     await msg.channel.send({ embed })
   }
+
+  @extendedCommand()
+  public async unregular(msg: Message) {
+    if (msg.member?.roles.cache.has(guild.roles.regular)) {
+      await msg.member.roles.remove(guild.roles.regular)
+    }
+
+    return
+  }
   //#endregion
 
   //#region Listeners

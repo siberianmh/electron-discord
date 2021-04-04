@@ -61,6 +61,7 @@ export const guild = {
     everyone: '745037351163527189',
     maintainer: '745039155498582067',
     helpCooldown: '772835574197256199',
+    regular: '828009346251227148',
 
     //#region etc
 
