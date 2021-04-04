@@ -27,7 +27,7 @@ export class UnfurlModule extends ExtendedModule {
   //#region Listeners
   @listener({ event: 'message' })
   public async maybeNeedUnfuring(msg: Message) {
-    let parsed: string[] | null = null
+    let parsed: Array<string> | null = null
 
     while ((parsed = DSRegex.exec(msg.content))) {
       const server = parsed[2]

@@ -221,7 +221,7 @@ export class HelpChanModule extends ExtendedModule {
   public async helpchan(
     msg: Message,
     subcommand: Subcommands,
-    @optional ...args: string[]
+    @optional ...args: Array<string>
   ) {
     const helpString: string =
       'Available commands: `status`, `create`, `update`, `sync`, `lock`, `unlock`, `help`.'
