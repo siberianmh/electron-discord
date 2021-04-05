@@ -2,7 +2,6 @@ import { default as CookiecordClient, listener } from 'cookiecord'
 import { GuildMember, Message, TextChannel } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import * as config from '../../lib/config'
-import { statsd } from '../../lib/statsd'
 
 export class StatsModule extends ExtendedModule {
   public constructor(client: CookiecordClient) {
@@ -22,8 +21,8 @@ export class StatsModule extends ExtendedModule {
     // @ts-expect-error
     console.log(msg.channel.name.replace(/-/g, '_'))
     const format = (msg.channel as TextChannel).name.replace(/-/g, '_')
-    statsd.increment(`channels.${format}`)
-    return statsd.increment('messages')
+    this.stats.increment(`channels.${format}`)
+    return this.stats.increment('messages')
   }
 
   @listener({ event: 'guildMemberAdd' })
@@ -32,7 +31,7 @@ export class StatsModule extends ExtendedModule {
       return
     }
 
-    return statsd.gauge('guild.total_members', member.guild.memberCount)
+    return this.stats.gauge('guild.total_members', member.guild.memberCount)
   }
 
   @listener({ event: 'guildMemberRemove' })
@@ -41,6 +40,6 @@ export class StatsModule extends ExtendedModule {
       return
     }
 
-    return statsd.gauge('guild.total_members', member.guild.memberCount)
+    return this.stats.gauge('guild.total_members', member.guild.memberCount)
   }
 }
