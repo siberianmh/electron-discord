@@ -7,8 +7,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 
-@Entity('acl')
-export class ACL extends BaseEntity {
+@Entity('access-token')
+export class AccessToken extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
 
@@ -17,6 +17,9 @@ export class ACL extends BaseEntity {
 
   @Column('varchar', { nullable: false })
   token: string
+
+  @Column('varchar', { nullable: false })
+  user_id: string
 
   @CreateDateColumn()
   created_at: Date

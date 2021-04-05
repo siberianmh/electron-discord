@@ -1,6 +1,10 @@
 import * as express from 'express'
+import { validate } from 'uuid'
+import { AccessTokenStore } from './stores'
 
-export const requiresBotAuth = (
+const store = new AccessTokenStore()
+
+export const requiresBotAuth = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,
@@ -32,7 +36,18 @@ export const requiresBotAuth = (
     })
   }
 
-  if (process.env.SERVER_TOKEN !== token) {
+  const validUUID = validate(token)
+
+  if (!validUUID) {
+    return res.status(401).json({
+      message: 'Bad credentials',
+      status: 401,
+    })
+  }
+
+  const valid = await store.validateToken(token)
+
+  if (!valid) {
     return res.status(401).json({
       message: 'Bad credentials',
       status: 401,

@@ -13,6 +13,7 @@ ts_project(
         "@npm//@sentry/tracing",
         "@npm//@types/express",
         "@npm//@types/node",
+        "@npm//@types/uuid",
         "@npm//axios",
         "@npm//discord-interactions",
         "@npm//express",
@@ -20,6 +21,7 @@ ts_project(
         "@npm//mysql",
         "@npm//reflect-metadata",
         "@npm//typeorm",
+        "@npm//uuid",
     ],
 )
 

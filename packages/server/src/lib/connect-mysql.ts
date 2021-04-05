@@ -3,6 +3,7 @@ import * as path from 'path'
 import { HelpChannel } from '../entities/help-channel'
 import { Infractions } from '../entities/infractions'
 import { MessageRoles, MessageRolesActions } from '../entities/roles'
+import { AccessToken } from '../entities/access-token'
 
 export const connectMySQL = (): Promise<Connection> => {
   const entitiesDir = path.resolve(__dirname, '../entities/**/*.js')
@@ -37,7 +38,13 @@ export const connectMySQL = (): Promise<Connection> => {
         // It's bad but we don't have here any strong data in db
         synchronize: true,
         logging: true,
-        entities: [Infractions, HelpChannel, MessageRoles, MessageRolesActions],
+        entities: [
+          AccessToken,
+          Infractions,
+          HelpChannel,
+          MessageRoles,
+          MessageRolesActions,
+        ],
         charset: 'utf8mb4_unicode_ci',
         cache: {
           type: 'ioredis',
