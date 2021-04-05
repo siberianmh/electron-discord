@@ -290,7 +290,7 @@
     "@types/qs" "*"
     "@types/range-parser" "*"
 
-"@types/express@^4.17.11":
+"@types/express@*", "@types/express@^4.17.11":
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.11.tgz#debe3caa6f8e5fcda96b47bd54e2f40c4ee59545"
   integrity sha512-no+R6rW60JEc59977wIxreQVsIEOAYwgCqldrA/vkpCnbD7MqTefO97lmoBe4WE0F156bC4uLSP1XHDOySnChg==
@@ -366,6 +366,13 @@
   dependencies:
     "@types/mime" "^1"
     "@types/node" "*"
+
+"@types/statsd-client@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@types/statsd-client/-/statsd-client-0.4.1.tgz#bb10534df83c2651d77316812db00c344ecfa058"
+  integrity sha512-IjLR4oEHUJA2yetsnXF5twUfQI9KKPhbylqp2x51T6x5pEWw5ymuPGEFSaxNyQFYUA9boxDRw+QdeSs/3SQX4A==
+  dependencies:
+    "@types/express" "*"
 
 "@types/uuid@^8.3.0":
   version "8.3.0"
@@ -1537,6 +1544,11 @@ standard-as-callback@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/standard-as-callback/-/standard-as-callback-2.1.0.tgz#8953fc05359868a77b5b9739a665c5977bb7df45"
   integrity sha512-qoRRSyROncaz1z0mvYqIE4lCd9p2R90i6GxW3uZv5ucSu8tU7B5HXUP1gG8pVZsYNVaXjk8ClXHPttLyxAL48A==
+
+statsd-client@^0.4.5:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/statsd-client/-/statsd-client-0.4.5.tgz#71751d16714ed899e481630751fe540b32b62a7d"
+  integrity sha512-tmTpFMxpBcq92CTMq81d1W47GEazy76Hi+aNKvKJloMplQZe+L1jekSg95YG8ieq6j2Q9MboCaLIMdsF20+eGg==
 
 "statuses@>= 1.5.0 < 2", statuses@~1.5.0:
   version "1.5.0"

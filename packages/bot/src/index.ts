@@ -20,6 +20,7 @@ import {
   RulesModule,
   SlowmodeModule,
   SourceModule,
+  StatsModule,
   TagsModule,
   UnfurlModule,
 } from './modules'
@@ -47,6 +48,7 @@ for (const mod of [
   RulesModule,
   SlowmodeModule,
   SourceModule,
+  StatsModule,
   TagsModule,
   UnfurlModule,
 ]) {

@@ -20,6 +20,7 @@ ts_project(
         "@npm//@types/ioredis",
         "@npm//@types/luxon",
         "@npm//@types/node",
+        "@npm//@types/statsd-client",
         "@npm//algoliasearch",
         "@npm//axios",
         "@npm//cookiecord",
@@ -32,6 +33,7 @@ ts_project(
         "@npm//luxon",
         "@npm//parse-duration",
         "@npm//reflect-metadata",
+        "@npm//statsd-client",
     ],
 )
 
