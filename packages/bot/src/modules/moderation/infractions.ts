@@ -93,7 +93,6 @@ export class InfractionsModule extends ExtendedModule {
   public async unban(msg: Message, snowflake: Snowflake) {
     try {
       const user = await msg.guild?.members.unban(snowflake)
-      console.log(`UNBAN: ${user}`)
 
       return msg.channel.send('🤗 pardonned')
     } catch (e) {
@@ -129,7 +128,6 @@ export class InfractionsModule extends ExtendedModule {
         'Unable to give warning to the person without reason',
       )
     }
-    console.log(reason)
 
     return msg.channel.send('not today')
   }
@@ -139,9 +137,8 @@ export class InfractionsModule extends ExtendedModule {
     description: 'Pardon the warning to the person',
     aliases: ['unwarn'],
   })
-  public async unwarning(msg: Message, snowflake: Snowflake) {
+  public async unwarning(_msg: Message, _snowflake: Snowflake) {
     // TODO: Implement this command
-    console.log(msg, snowflake)
   }
   //#endregion
 

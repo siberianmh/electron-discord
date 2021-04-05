@@ -31,7 +31,7 @@ export function extendedCommand(
           text: `\`\`\`${error}\`\`\``,
         })
       } catch (e) {
-        console.log(`Unable to send modlog message: ${e}`)
+        this.logger.(`Unable to send modlog message: ${e}`)
       }
 
       return msg.channel.send({ embed })

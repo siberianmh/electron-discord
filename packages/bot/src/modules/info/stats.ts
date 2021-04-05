@@ -18,8 +18,6 @@ export class StatsModule extends ExtendedModule {
       return
     }
 
-    // @ts-expect-error
-    console.log(msg.channel.name.replace(/-/g, '_'))
     const format = (msg.channel as TextChannel).name.replace(/-/g, '_')
     this.stats.increment(`channels.${format}`)
     return this.stats.increment('messages')

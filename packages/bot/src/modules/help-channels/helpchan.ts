@@ -511,6 +511,9 @@ export class HelpChanModule extends ExtendedModule {
   private async claimChannel(msg: Message) {
     this.busyChannels.add(msg.channel.id)
 
+    this.logger.info(
+      `Channel #${msg.channel.id} was cliamed by '${msg.author.id}'`,
+    )
     await msg.pin()
     await this.addCooldown(msg.member!)
     await this.moveChannel(
@@ -518,6 +521,9 @@ export class HelpChanModule extends ExtendedModule {
       guild.categories.helpOngoing,
     )
     await this.updateEmbedToClaimed(msg.channel as TextChannel, msg.author.id)
+
+    this.stats.increment('help.claimed')
+
     await this.populateHelpChannel(msg.member!, msg.channel as TextChannel, msg)
     await this.ensureAskChannels(msg.guild!)
     await this.syncHowToGetHelp(msg.guild!)

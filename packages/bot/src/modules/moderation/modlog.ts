@@ -198,13 +198,10 @@ export class ModLogModule extends ExtendedModule {
    * TODO: Finish this listener.
    */
   @listener({ event: 'roleUpdate' })
-  public async onGuildRoleUpdate(before: Role, after: Role) {
+  public async onGuildRoleUpdate(before: Role, _after: Role) {
     if (before.guild.id !== constants.guild.id) {
       return
     }
-
-    console.log(before)
-    console.log(after)
   }
 
   /**
@@ -213,13 +210,10 @@ export class ModLogModule extends ExtendedModule {
    * TODO: Finish this listener.
    */
   @listener({ event: 'guildUpdate' })
-  public async onGuildUpdate(before: Guild, after: Guild) {
+  public async onGuildUpdate(before: Guild, _after: Guild) {
     if (before.id !== constants.guild.id) {
       return
     }
-
-    console.log(before)
-    console.log(after)
   }
 
   /**
