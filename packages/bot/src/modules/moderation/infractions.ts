@@ -92,7 +92,7 @@ export class InfractionsModule extends ExtendedModule {
   })
   public async unban(msg: Message, snowflake: Snowflake) {
     try {
-      const user = await msg.guild?.members.unban(snowflake)
+      await msg.guild?.members.unban(snowflake)
 
       return msg.channel.send('🤗 pardonned')
     } catch (e) {
