@@ -312,10 +312,10 @@
   resolved "https://registry.yarnpkg.com/@types/humanize-duration/-/humanize-duration-3.18.1.tgz#10090d596053703e7de0ac43a37b96cd9fc78309"
   integrity sha512-MUgbY3CF7hg/a/jogixmAufLjJBQT7WEf8Q+kYJkOc47ytngg1IuZobCngdTjAgY83JWEogippge5O5fplaQlw==
 
-"@types/ioredis@^4.22.2":
-  version "4.22.2"
-  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.22.2.tgz#a4fddabd6032dc31f243498a6ac6d920eca12ba9"
-  integrity sha512-32nEh2Eq20xlgtIqVx1kkJkpqh5V1wqMsumK8Y9Izma/vW9k8Ro7sD+y4G6SyCqz8u9+HcssZ6+E83Modta38w==
+"@types/ioredis@^4.22.3":
+  version "4.22.3"
+  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.22.3.tgz#72762efa0374c4a2e879ef697c6c3e4a47f9d641"
+  integrity sha512-V23g0XZUmkm0Hp/GsQYV5Wz12ynm6h6lyi5v/o63iyqFV7+8t3k5YxCnFWVWFEjO6mvRI7V6f7YxNVxIjPsSUw==
   dependencies:
     "@types/node" "*"
 
