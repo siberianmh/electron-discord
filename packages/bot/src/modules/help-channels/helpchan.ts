@@ -24,6 +24,7 @@ import { extendedCommand } from '../../lib/extended-command'
 import { availableEmbed } from './embeds/available'
 import { claimedEmbed } from './embeds/claimed'
 import { dormantEmbed } from './embeds/dormant'
+import { CloseReason } from '../../lib/types/help-chan'
 
 /**
  * Manage the help channel system of the guild.
@@ -156,7 +157,7 @@ export class HelpChanModule extends ExtendedModule {
     )
 
     if (msg.id === channel.message_id) {
-      return this.markChannelAsDormant(msg.channel)
+      return this.markChannelAsDormant(msg.channel, CloseReason.Deleted)
     }
 
     return
@@ -206,7 +207,10 @@ export class HelpChanModule extends ExtendedModule {
       msg.member?.hasPermission('MANAGE_MESSAGES') ||
       msg.member?.roles.cache.has(guild.roles.maintainer)
     ) {
-      return await this.markChannelAsDormant(msg.channel as TextChannel)
+      return await this.markChannelAsDormant(
+        msg.channel as TextChannel,
+        CloseReason.Command,
+      )
     } else {
       return await msg.channel.send(
         ':warning: you have to be the asker to close the channel.',
@@ -434,7 +438,10 @@ export class HelpChanModule extends ExtendedModule {
     return await member.roles.add(guild.roles.helpCooldown)
   }
 
-  private async markChannelAsDormant(channel: TextChannel) {
+  private async markChannelAsDormant(
+    channel: TextChannel,
+    closeReason: CloseReason,
+  ) {
     this.busyChannels.add(channel.id)
 
     const pinned = await channel.messages.fetchPinned()
@@ -454,6 +461,7 @@ export class HelpChanModule extends ExtendedModule {
       await member.roles.remove(guild.roles.helpCooldown)
     } catch {}
 
+    this.statsReportComplete(channel, helpChannel, closeReason)
     await this.api.delete(`/helpchan/${channel.id}`)
     await this.moveChannel(channel, guild.categories.helpDormant)
 
@@ -501,11 +509,15 @@ export class HelpChanModule extends ExtendedModule {
     if (parent === null) {
       return
     }
+
+    this.logger.info(
+      `Moving #${channel.name} (${channel.id}) to the ${category} category`,
+    )
     const data: ChannelData = {
       parentID: parent.id,
       permissionOverwrites: parent.permissionOverwrites,
     }
-    await channel.edit(data)
+    return await channel.edit(data)
   }
 
   private async claimChannel(msg: Message) {
@@ -613,7 +625,10 @@ export class HelpChanModule extends ExtendedModule {
       const diff = (Date.now() - messages.array()[0].createdAt.getTime()) / 1000
 
       if (diff > helpChannels.dormantChannelTimeout * 60 * 60) {
-        await this.markChannelAsDormant(channel as TextChannel)
+        await this.markChannelAsDormant(
+          channel as TextChannel,
+          CloseReason.Timeout,
+        )
       }
     }
   }
@@ -746,5 +761,35 @@ export class HelpChanModule extends ExtendedModule {
       channel_id: channel.id,
       message_id: msg.id,
     })
+  }
+
+  private statsReportComplete(
+    channel: TextChannel,
+    helpChanData: IGetHelpChanByChannelIdResponse,
+    closeReason: CloseReason,
+  ) {
+    this.stats.increment(`help.dormant_calls.${closeReason}`)
+
+    const inUseTime = this.getInUseTime(helpChanData)
+    if (inUseTime) {
+      this.stats.timing('help.in_use_time', inUseTime)
+    }
+
+    if (channel.lastMessage?.author.id !== helpChanData.user_id) {
+      return this.stats.increment('help.sessions.unanswered')
+    } else {
+      return this.stats.increment('help.sessions.answered')
+    }
+  }
+
+  private getInUseTime(helpChanData: IGetHelpChanByChannelIdResponse) {
+    const createdAt = helpChanData.created_at
+
+    if (createdAt) {
+      const claimDate = new Date(createdAt)
+      return +new Date() - +claimDate
+    }
+
+    return null
   }
 }
