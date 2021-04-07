@@ -72,7 +72,7 @@ export class ModLogModule extends ExtendedModule {
   }
 
   /**
-   * Log channel create event to mode log.
+   * Log channel create event to moderation log.
    */
   @listener({ event: 'channelCreate' })
   public async onGuildChannelCreate(channel: GuildChannel) {

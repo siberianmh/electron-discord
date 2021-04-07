@@ -27,6 +27,7 @@ ts_project(
         "@npm//discord.js",
         "@npm//dotenv",
         "@npm//fs-extra",
+        "@npm//fuzzball",
         "@npm//gray-matter",
         "@npm//humanize-duration",
         "@npm//ioredis",

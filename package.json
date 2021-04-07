@@ -21,6 +21,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "fs-extra": "^9.1.0",
+    "fuzzball": "^1.4.0",
     "gray-matter": "^4.0.2",
     "humanize-duration": "^3.25.1",
     "ioredis": "^4.25.0",

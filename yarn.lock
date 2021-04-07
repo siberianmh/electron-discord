@@ -924,6 +924,16 @@ fsevents@~2.3.1:
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.2.tgz#8a526f78b8fdf4623b709e0b975c52c24c02fd1a"
   integrity sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
 
+fuzzball@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/fuzzball/-/fuzzball-1.4.0.tgz#d4ae8b596d6e7cb7cc86425d7d02fa563ad94057"
+  integrity sha512-ufKO0SHW65RSqZNu4rmLmraQVuwb8kVf8S/ICpkih/PfIff2YW3sa8zTvt7d7hJFXY1IvOOGJTeXxs69XLBd4Q==
+  dependencies:
+    heap ">=0.2.0"
+    setimmediate "^1.0.5"
+    string.fromcodepoint "^0.2.1"
+    string.prototype.codepointat "^0.2.0"
+
 get-caller-file@^2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-2.0.5.tgz#4f94412a82db32f36e3b0b9741f8a97feb031f7e"
@@ -974,6 +984,11 @@ has-flag@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-4.0.0.tgz#944771fd9c81c81265c4d6941860da06bb59479b"
   integrity sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==
+
+heap@>=0.2.0:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/heap/-/heap-0.2.6.tgz#087e1f10b046932fc8594dd9e6d378afc9d1e5ac"
+  integrity sha1-CH4fELBGky/IWU3Z5tN4r8nR5aw=
 
 highlight.js@^10.0.0:
   version "10.6.0"
@@ -1563,6 +1578,16 @@ string-width@^4.1.0, string-width@^4.2.0:
     emoji-regex "^8.0.0"
     is-fullwidth-code-point "^3.0.0"
     strip-ansi "^6.0.0"
+
+string.fromcodepoint@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/string.fromcodepoint/-/string.fromcodepoint-0.2.1.tgz#8d978333c0bc92538f50f383e4888f3e5619d653"
+  integrity sha1-jZeDM8C8klOPUPOD5IiPPlYZ1lM=
+
+string.prototype.codepointat@^0.2.0:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/string.prototype.codepointat/-/string.prototype.codepointat-0.2.1.tgz#004ad44c8afc727527b108cd462b4d971cd469bc"
+  integrity sha512-2cBVCj6I4IOvEnjgO/hWqXjqBGsY+zwPmHl12Srk9IXSZ56Jwwmy+66XO5Iut/oQVR7t5ihYdLB0GMa4alEUcg==
 
 string_decoder@~1.1.1:
   version "1.1.1"
