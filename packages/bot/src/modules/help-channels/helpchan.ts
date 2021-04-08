@@ -87,23 +87,12 @@ export class HelpChanModule extends ExtendedModule {
           ? dormantChannels.map((channel) => `<#${channel.id}>`)
           : '**All channels is on Available state**',
       )
-      .addField(
-        'Locked Channels',
-        this.busyChannels.size >= 1
-          ? Array.from(this.busyChannels).map(
-              (channel) =>
-                `<#${channel}> is locked please use !helpchan unlock #channel-name`,
-            )
-          : 'No channels is locked',
-      )
+
       .setFooter(
         this.client.user?.username,
         this.client.user?.displayAvatarURL(),
       )
       .setTimestamp()
-
-  // a lock to eliminate race conditions
-  private busyChannels: Set<string> = new Set()
 
   //#region Listeners
   @listener({ event: 'ready' })
@@ -113,6 +102,7 @@ export class HelpChanModule extends ExtendedModule {
     }, helpChannels.dormantChannelLoop)
 
     const guild = await this.client.guilds.fetch(config.guild.id)
+    await this.ensureAskChannels(guild)
     await this.syncHowToGetHelp()
     await this.verifyNumberOfChannels()
     await this.fixCooldowns(guild)
@@ -127,8 +117,7 @@ export class HelpChanModule extends ExtendedModule {
       msg.channel.type !== 'text' ||
       !msg.channel.parentID ||
       msg.channel.parentID !== guild.categories.helpAvailable ||
-      !msg.channel.name.startsWith(this.CHANNEL_PREFIX) ||
-      this.busyChannels.has(msg.channel.id)
+      !msg.channel.name.startsWith(this.CHANNEL_PREFIX)
     ) {
       return
     }
@@ -144,8 +133,7 @@ export class HelpChanModule extends ExtendedModule {
       msg.channel.type !== 'text' ||
       !msg.channel.parentID ||
       msg.channel.parentID !== guild.categories.helpOngoing ||
-      !msg.channel.name.startsWith(this.CHANNEL_PREFIX) ||
-      this.busyChannels.has(msg.channel.id)
+      !msg.channel.name.startsWith(this.CHANNEL_PREFIX)
     ) {
       return
     }
@@ -186,7 +174,7 @@ export class HelpChanModule extends ExtendedModule {
     description: 'Marks __ongoing__ help channel as resolved',
   })
   async resolved(msg: Message) {
-    if (!msg.guild || this.busyChannels.has(msg.channel.id)) {
+    if (!msg.guild) {
       return
     }
 
@@ -334,19 +322,6 @@ export class HelpChanModule extends ExtendedModule {
 
     return await this.claimBase({ msg: msg, member: member })
   }
-
-  @extendedCommand({
-    inhibitors: [isTrustedMember],
-  })
-  public async removelock(msg: Message) {
-    if (this.busyChannels.has(msg.channel.id)) {
-      this.busyChannels.delete(msg.channel.id)
-      return await msg.channel.send('Channel unlocked')
-    }
-    return await msg.channel.send('Channel is not locked')
-  }
-  //#endregion
-
   //#endregion
 
   private async claimBase({
@@ -384,8 +359,7 @@ export class HelpChanModule extends ExtendedModule {
       (channel) =>
         channel.type === 'text' &&
         channel.parentID === guild.categories.helpAvailable &&
-        channel.name.startsWith(this.CHANNEL_PREFIX) &&
-        !this.busyChannels.has(channel.id),
+        channel.name.startsWith(this.CHANNEL_PREFIX),
     ) as TextChannel | undefined
 
     if (!claimedChannel) {
@@ -412,7 +386,7 @@ export class HelpChanModule extends ExtendedModule {
         .join('\n')
         .slice(0, 2000)
     }
-    this.busyChannels.add(claimedChannel.id)
+
     const toPin = await claimedChannel.send({
       embed: new MessageEmbed()
         .setAuthor(member.displayName, member.user.displayAvatarURL())
@@ -428,7 +402,6 @@ export class HelpChanModule extends ExtendedModule {
     )
 
     await msg.channel.send(`:ok:: Successfully claimed ${claimedChannel}`)
-    this.busyChannels.delete(claimedChannel.id)
     await this.ensureAskChannels(msg.guild!)
     await this.syncHowToGetHelp(msg.guild!)
     return
@@ -442,8 +415,6 @@ export class HelpChanModule extends ExtendedModule {
     channel: TextChannel,
     closeReason: CloseReason,
   ) {
-    this.busyChannels.add(channel.id)
-
     const pinned = await channel.messages.fetchPinned()
     await Promise.all(pinned.map((msg) => msg.unpin()))
 
@@ -469,7 +440,6 @@ export class HelpChanModule extends ExtendedModule {
 
     await this.ensureAskChannels(channel.guild)
     await this.syncHowToGetHelp(channel.guild)
-    this.busyChannels.delete(channel.id)
   }
 
   private async createHelpChannel(guild: Guild, channelName: string) {
@@ -521,8 +491,6 @@ export class HelpChanModule extends ExtendedModule {
   }
 
   private async claimChannel(msg: Message) {
-    this.busyChannels.add(msg.channel.id)
-
     this.logger.info(
       `Channel #${msg.channel.id} was cliamed by '${msg.author.id}'`,
     )
@@ -539,8 +507,6 @@ export class HelpChanModule extends ExtendedModule {
     await this.populateHelpChannel(msg.member!, msg.channel as TextChannel, msg)
     await this.ensureAskChannels(msg.guild!)
     await this.syncHowToGetHelp(msg.guild!)
-
-    this.busyChannels.delete(msg.channel.id)
   }
 
   private async updateEmbedToClaimed(channel: TextChannel, claimer: string) {
@@ -608,21 +574,27 @@ export class HelpChanModule extends ExtendedModule {
   }
 
   private async checkDormantPossibilities() {
-    const ongoingChannels = this.client.channels.cache.filter((channel) => {
-      if (channel.type === 'dm') {
-        return false
+    const ongoingChannels = this.client.channels.cache
+      .filter((channel) => {
+        if (channel.type === 'dm') {
+          return false
+        }
+
+        return (
+          (channel as TextChannel).parentID ===
+          config.guild.categories.helpOngoing
+        )
+      })
+      .array()
+
+    for (const channel of ongoingChannels) {
+      const message = (channel as TextChannel).lastMessage
+
+      if (!message) {
+        return
       }
 
-      return (
-        (channel as TextChannel).parentID ===
-        config.guild.categories.helpOngoing
-      )
-    })
-
-    for (const channel of ongoingChannels.array()) {
-      const messages = await (channel as TextChannel).messages.fetch()
-
-      const diff = (Date.now() - messages.array()[0].createdAt.getTime()) / 1000
+      const diff = (Date.now() - message.createdAt.getTime()) / 1000
 
       if (diff > helpChannels.dormantChannelTimeout * 60 * 60) {
         await this.markChannelAsDormant(

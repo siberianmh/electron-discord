@@ -93,14 +93,14 @@ export const helpChannels = {
   /**
    * The number of maximum help channels which can be taken.
    */
-  maxAvailableHelpChannels: 1,
+  maxAvailableHelpChannels: 2,
 
   /**
    * Allowed duration of inactivity before marking a channel dormant.
    */
   dormantChannelTimeout: 12, // hours
 
-  dormantChannelLoop: 10000, // ms
+  dormantChannelLoop: 120000, // ms
 
   /**
    * Maximum number of channels across all 3 categories
