@@ -8,6 +8,7 @@ export const client = new CookiecordClient(
   {
     ws: { intents: Intents.ALL },
     partials: ['REACTION', 'MESSAGE', 'USER', 'CHANNEL'],
+    retryLimit: 3,
     presence: {
       activity: {
         type: 'WATCHING',
