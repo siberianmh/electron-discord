@@ -24,7 +24,7 @@
     "fuzzball": "^1.4.0",
     "gray-matter": "^4.0.2",
     "humanize-duration": "^3.25.1",
-    "ioredis": "^4.25.0",
+    "ioredis": "^4.26.0",
     "luxon": "^1.26.0",
     "mysql": "^2.18.1",
     "parse-duration": "^1.0.0",
