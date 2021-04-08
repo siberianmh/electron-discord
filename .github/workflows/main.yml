@@ -1,4 +1,4 @@
-name: Compile
+name: Main Workflow
 
 on:
   push:
@@ -26,3 +26,93 @@ jobs:
       - uses: actions/checkout@v2
       - name: Compile server
         run: bazel build //packages/server
+
+  #################
+  # Docker Builds #
+  #################
+  docker-bot:
+    runs-on: ubuntu-20.04
+    if: github['ref'] == 'refs/heads/main'
+
+    needs:
+      - compile-bot
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to Packages Container registry
+        uses: docker/login-action@v1.8.0
+        with:
+          registry: ghcr.io
+          username: pacificocean-bot
+          password: ${{ secrets.CR_PAT }}
+      - name: Build Docker Image
+        run: |
+          bazel build //packages/bot:docker-bot
+      - name: Publish Latest Docker Image
+        run: |
+          bazel run //packages/bot:push-bot
+
+  docker-server:
+    runs-on: ubuntu-20.04
+    if: github['ref'] == 'refs/heads/main'
+
+    needs:
+      - compile-server
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to Packages Container registry
+        uses: docker/login-action@v1.8.0
+        with:
+          registry: ghcr.io
+          username: pacificocean-bot
+          password: ${{ secrets.CR_PAT }}
+      - name: Build Docker Image
+        run: |
+          bazel build //packages/server:docker
+      - name: Public Latest Docker Image
+        run: |
+          bazel run //packages/server:push-server
+
+  #############
+  # Deploying #
+  #############
+  deploy-bot:
+    environment: production-bot
+    runs-on: ubuntu-20.04
+    if: github['ref'] == 'refs/heads/main'
+
+    needs:
+      - docker-bot
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Save DigitalOcean kubeconfig
+        run: doctl kubernetes cluster kubeconfig save siberianmh-core
+      - name: Rollout
+        run: |
+          kubectl rollout restart deploy/edis-bot
+
+  deploy-server:
+    environment: production-server
+    runs-on: ubuntu-20.04
+    if: github['ref'] == 'refs/heads/main'
+
+    needs:
+      - docker-server
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Save DigitalOcean kubeconfig
+        run: doctl kubernetes cluster kubeconfig save siberianmh-core
+      - name: Rollout
+        run: |
+          kubectl rollout restart deploy/edis-server
