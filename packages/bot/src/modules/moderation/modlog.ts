@@ -80,9 +80,14 @@ export class ModLogModule extends ExtendedModule {
       return
     }
 
-    if (channel.guild.id !== constants.guild.id) {
+    if (!channel.guild) {
       return
     }
+
+    // TODO(vhashimotoo): This check be enabled
+    // if (channel.guild.id !== constants.guild.id) {
+    //   return
+    // }
 
     let title = ''
     let message = ''

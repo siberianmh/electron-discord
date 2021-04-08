@@ -573,28 +573,21 @@ export class HelpChanModule extends ExtendedModule {
     return await this.syncHowToGetHelp(guild)
   }
 
-  private async checkDormantPossibilities() {
-    const ongoingChannels = this.client.channels.cache
-      .filter((channel) => {
-        if (channel.type === 'dm') {
-          return false
-        }
-
-        return (
+  private getOngoingChannels() {
+    return this.client.channels.cache
+      .filter(
+        (channel) =>
           (channel as TextChannel).parentID ===
-          config.guild.categories.helpOngoing
-        )
-      })
-      .array()
+          config.guild.categories.helpOngoing,
+      )
+      .array() as Array<TextChannel>
+  }
 
-    for (const channel of ongoingChannels) {
-      const message = (channel as TextChannel).lastMessage
+  private async checkDormantPossibilities() {
+    for (const channel of this.getOngoingChannels()) {
+      const messages = await channel.messages.fetch()
 
-      if (!message) {
-        return
-      }
-
-      const diff = (Date.now() - message.createdAt.getTime()) / 1000
+      const diff = Date.now() - (messages.first()?.createdAt.getTime() ?? 0)
 
       if (diff > helpChannels.dormantChannelTimeout * 60 * 60) {
         await this.markChannelAsDormant(
