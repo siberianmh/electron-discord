@@ -97,9 +97,9 @@ export class HelpChanModule extends ExtendedModule {
   //#region Listeners
   @listener({ event: 'ready' })
   async onReady() {
-    setInterval(() => {
-      this.checkDormantPossibilities()
-    }, helpChannels.dormantChannelLoop)
+    // setInterval(() => {
+    //   this.checkDormantPossibilities()
+    // }, helpChannels.dormantChannelLoop)
 
     const guild = await this.client.guilds.fetch(config.guild.id)
     await this.ensureAskChannels(guild)
