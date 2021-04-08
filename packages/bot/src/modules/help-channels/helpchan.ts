@@ -97,9 +97,9 @@ export class HelpChanModule extends ExtendedModule {
   //#region Listeners
   @listener({ event: 'ready' })
   async onReady() {
-    // setInterval(() => {
-    //   this.checkDormantPossibilities()
-    // }, helpChannels.dormantChannelLoop)
+    setInterval(() => {
+      this.checkDormantPossibilities()
+    }, helpChannels.dormantChannelLoop)
 
     const guild = await this.client.guilds.fetch(config.guild.id)
     await this.ensureAskChannels(guild)
@@ -481,7 +481,7 @@ export class HelpChanModule extends ExtendedModule {
     }
 
     this.logger.info(
-      `Moving #${channel.name} (${channel.id}) to the ${category} category`,
+      `Moving #${channel.name} (${channel.id}) to the ${parent.name} category`,
     )
     const data: ChannelData = {
       parentID: parent.id,
@@ -573,21 +573,19 @@ export class HelpChanModule extends ExtendedModule {
     return await this.syncHowToGetHelp(guild)
   }
 
-  private getOngoingChannels() {
-    return this.client.channels.cache
+  private async checkDormantPossibilities() {
+    const ongoingChannels = this.client.channels.cache
       .filter(
         (channel) =>
           (channel as TextChannel).parentID ===
           config.guild.categories.helpOngoing,
       )
       .array() as Array<TextChannel>
-  }
 
-  private async checkDormantPossibilities() {
-    for (const channel of this.getOngoingChannels()) {
-      const messages = await channel.messages.fetch()
+    for (const channel of ongoingChannels) {
+      const messages = (await channel.messages.fetch()).array()
 
-      const diff = Date.now() - (messages.first()?.createdAt.getTime() ?? 0)
+      const diff = (Date.now() - messages[0].createdAt.getTime()) / 1000
 
       if (diff > helpChannels.dormantChannelTimeout * 60 * 60) {
         await this.markChannelAsDormant(
