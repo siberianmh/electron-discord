@@ -680,10 +680,10 @@ cookie@^0.4.1:
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.4.1.tgz#afd713fe26ebd21ba95ceb61f9a8116e50a537d1"
   integrity sha512-ZwrFkGJxUR3EIoXtO+yVE69Eb7KlixbaeAWfBQB9vVsNn/o+Yw69gBWSSDK825hQNdN+wF8zELf3dFNl/kxkUA==
 
-cookiecord@^0.4.18:
-  version "0.4.18"
-  resolved "https://registry.yarnpkg.com/cookiecord/-/cookiecord-0.4.18.tgz#cb2e85f79888b1bf0cf4d1bfd74c5a00695e6d45"
-  integrity sha512-/9irtdk0dHiU031onIy+9xWTY8lxKNQCHeMHvc58rEN8i/iDpzkaXpEZDXXansp6YmkYn3XqInEVV/7APmJBHQ==
+cookiecord@^0.5.18:
+  version "0.5.18"
+  resolved "https://registry.yarnpkg.com/cookiecord/-/cookiecord-0.5.18.tgz#3b75145d4fc5df1c1fd230037128066b3a00d1c0"
+  integrity sha512-vRghee9I3SXf3XZhr/tzFZCweS6aYQlCKIIUK79LoGmRH3l4ETxXZjiSR0/6ftWKzsoHfb4V4kpB5477gNY0eA==
   dependencies:
     chokidar "^3.3.1"
     discord.js discordjs/discord.js#stable
