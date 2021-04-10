@@ -16,3 +16,6 @@ config-that-just-used-for.dev.ts
 
 # Bazel
 bazel-*
+
+# Added by cargo
+/target
