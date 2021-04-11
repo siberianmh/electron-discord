@@ -35,15 +35,16 @@ const createMessageEntry = async (
       auto_remove: reaction.autoRemove,
       message_role: roleEntry,
     })
+  })
+
+  return entry.reactions.map(async (reaction) => {
     return await dsCreatedMessage.react(reaction.rawEmojiId)
   })
 }
 
 export async function initiateMessages(channel: TextChannel) {
-  await Promise.all([
-    // Pronous entry
-    createMessageEntry(pronousRoles, channel),
-    // OS entry
-    createMessageEntry(operationSystemRoles, channel),
-  ])
+  // Pronous entry
+  await createMessageEntry(pronousRoles, channel)
+  // OS entry
+  return await createMessageEntry(operationSystemRoles, channel)
 }
