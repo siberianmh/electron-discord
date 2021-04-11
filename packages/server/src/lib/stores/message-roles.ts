@@ -56,12 +56,12 @@ export class MessageRolesStore {
   public async createMessageRolesAction(req: express.Request) {
     const { role_id, emoji_id, auto_remove, message_role } = req.body
 
-    if (!role_id || !emoji_id || !auto_remove || !message_role) {
-      return {
-        status: 400,
-        message: 'Invalid data',
-      }
-    }
+    // if (!role_id || !emoji_id || !auto_remove || !message_role) {
+    //   return {
+    //     status: 400,
+    //     message: 'Invalid data',
+    //   }
+    // }
 
     const entry = MessageRolesActions.create({
       role_id: role_id,
