@@ -122,10 +122,13 @@ export class RolesModule extends ExtendedModule {
       ) {
         continue
       }
-      const member = await msg.guild.members.fetch({
-        user,
-      })
-      await member.roles.remove(role.role_id)
+
+      try {
+        const member = await msg.guild.members.fetch({
+          user,
+        })
+        await member.roles.remove(role.role_id)
+      } catch {}
     }
   }
 }
