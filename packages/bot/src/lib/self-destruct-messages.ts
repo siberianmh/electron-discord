@@ -18,7 +18,7 @@ export const createSelfDestructMessage = async (
     selfDestructMessage(createdMessage.id),
     msg.author.id,
     'ex',
-    60 * 60 * 6,
+    60 * 60 * 24,
   )
 
   return await createdMessage.react(style.emojis.deleteBucket)
