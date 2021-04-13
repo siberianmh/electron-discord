@@ -16,7 +16,7 @@
     "@bazel/typescript": "^3.4.0",
     "@sentry/node": "^6.2.5",
     "@sentry/tracing": "^6.2.5",
-    "algoliasearch": "^4.8.6",
+    "algoliasearch": "^4.9.0",
     "axios": "^0.21.1",
     "cookiecord": "^0.5.18",
     "discord-interactions": "^2.0.2",
