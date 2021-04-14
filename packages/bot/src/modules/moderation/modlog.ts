@@ -251,12 +251,12 @@ export class ModLogModule extends ExtendedModule {
     if (channel.parentID) {
       response = `
 **Author:** ${formatUser(author)}\n
-**Channel:** #${channel.parentID}/#${channel.name} (\`${channel.id}\`)\n
+**Channel:** <#${channel.parentID}>/<#${channel.id}> (\`${channel.id}\`)\n
 **Message ID:** \`${message.id}\`\n`
     } else {
       response = `
 **Author:** ${formatUser(author)}\n
-**Channel:** #${channel.name} (\`${channel.id}\`)\n
+**Channel:** <#${channel.id}> (\`${channel.id}\`)\n
 **Message ID:** \`${message.id}\`\n
 `
     }

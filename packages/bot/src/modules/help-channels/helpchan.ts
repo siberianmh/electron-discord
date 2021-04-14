@@ -18,6 +18,10 @@ import { helpChannels, guild } from '../../lib/config'
 import * as config from '../../lib/config'
 import { isTrustedMember, noDM } from '../../lib/inhibitors'
 import { ExtendedModule } from '../../lib/extended-module'
+import {
+  createSelfDestructMessage,
+  reactAsSelfDesturct,
+} from '../../lib/self-destruct-messages'
 import { Subcommands } from './subcommands'
 import { helpMessage } from './help-message'
 import { extendedCommand } from '../../lib/extended-command'
@@ -371,6 +375,7 @@ export class HelpChanModule extends ExtendedModule {
     let msgContent = ''
     if (replyClaim) {
       msgContent = msg.cleanContent
+      await reactAsSelfDesturct(msg)
     } else {
       const channelMessage = await msg.channel.messages.fetch({ limit: 50 })
       const questionMessages = channelMessage.filter(
@@ -401,7 +406,10 @@ export class HelpChanModule extends ExtendedModule {
       `${member.user} this channel has been claimed for your question. Please review <#${guild.channels.askHelpChannel}> for how to get help`,
     )
 
-    await msg.channel.send(`:ok:: Successfully claimed ${claimedChannel}`)
+    await createSelfDestructMessage(
+      msg,
+      `😳 Successfully claimed ${claimedChannel}`,
+    )
     await this.ensureAskChannels(msg.guild!)
     await this.syncHowToGetHelp(msg.guild!)
     return

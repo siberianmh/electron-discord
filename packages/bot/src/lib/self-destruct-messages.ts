@@ -23,3 +23,14 @@ export const createSelfDestructMessage = async (
 
   return await createdMessage.react(style.emojis.deleteBucket)
 }
+
+export const reactAsSelfDesturct = async (msg: Message) => {
+  await redis.set(
+    selfDestructMessage(msg.id),
+    msg.author.id,
+    'ex',
+    60 * 60 * 24,
+  )
+
+  return await msg.react(style.emojis.deleteBucket)
+}
