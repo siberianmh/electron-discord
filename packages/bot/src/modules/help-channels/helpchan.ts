@@ -593,9 +593,13 @@ export class HelpChanModule extends ExtendedModule {
     for (const channel of ongoingChannels) {
       const messages = (await channel.messages.fetch()).array()
 
-      const diff = (Date.now() - messages[0].createdAt.getTime()) / 1000
+      const message = messages[0]
+      const diff = (Date.now() - message.createdAt.getTime()) / 1000
 
-      if (diff > helpChannels.dormantChannelTimeout * 60 * 60) {
+      if (
+        diff > helpChannels.dormantChannelTimeout * 60 * 60 ||
+        message.author.bot
+      ) {
         await this.markChannelAsDormant(
           channel as TextChannel,
           CloseReason.Timeout,
