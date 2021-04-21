@@ -16,6 +16,7 @@ export const connectMySQL = (): Promise<Connection> => {
         username: process.env.MYSQL_USERNAME || 'root',
         password: process.env.MYSQL_PASSWORD || 'root',
         database: 'edis_dev',
+        synchronize: true,
         logging: true,
         entities: [entitiesDir],
         migrations: ['src/migration/**/*.ts'],
@@ -34,6 +35,8 @@ export const connectMySQL = (): Promise<Connection> => {
         username: process.env.MYSQL_USERNAME,
         password: process.env.MYSQL_PASSWORD,
         database: 'edis',
+        // It's bad but we don't have here any strong data in db
+        synchronize: true,
         logging: true,
         entities: [
           AccessToken,
