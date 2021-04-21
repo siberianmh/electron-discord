@@ -596,10 +596,7 @@ export class HelpChanModule extends ExtendedModule {
       const message = messages[0]
       const diff = (Date.now() - message.createdAt.getTime()) / 1000
 
-      if (
-        diff > helpChannels.dormantChannelTimeout * 60 * 60 ||
-        message.author.bot
-      ) {
+      if (diff > helpChannels.dormantChannelTimeout * 60 * 60) {
         await this.markChannelAsDormant(
           channel as TextChannel,
           CloseReason.Timeout,
