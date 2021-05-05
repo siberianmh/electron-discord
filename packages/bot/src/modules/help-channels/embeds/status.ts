@@ -2,7 +2,7 @@ import { default as CookiecordClient } from 'cookiecord'
 import { Message, Collection, MessageEmbed, GuildChannel } from 'discord.js'
 import { IListHelpChannelsRespone } from '../../../lib/types'
 
-export const helpChannelMessageEmbed = (
+export const helpChannelStatusEmbed = (
   client: CookiecordClient,
   msg: Message,
   availableChannels: Collection<string, GuildChannel> | undefined,

@@ -1,6 +1,5 @@
 import { default as CookiecordClient, listener, optional } from 'cookiecord'
 import {
-  ChannelData,
   Guild,
   GuildMember,
   Message,
@@ -10,12 +9,11 @@ import {
 import {
   IGetHelpChanByUserIdResponse,
   IGetHelpChanByChannelIdResponse,
-  IListHelpChannelsRespone,
 } from '../../lib/types'
 import { helpChannels, guild } from '../../lib/config'
 import * as config from '../../lib/config'
 import { isTrustedMember, noDM } from '../../lib/inhibitors'
-import { ExtendedModule } from '../../lib/extended-module'
+import { HelpChanBase } from './base'
 import {
   createSelfDestructMessage,
   reactAsSelfDesturct,
@@ -24,7 +22,6 @@ import { Subcommands } from './subcommands'
 import { helpMessage } from './help-message'
 import { extendedCommand } from '../../lib/extended-command'
 import { CloseReason } from '../../lib/types/help-chan'
-import { helpChannelMessageEmbed } from './embeds/status'
 import { availableEmbed } from './embeds/available'
 import { claimedEmbed } from './embeds/claimed'
 import { dormantEmbed } from './embeds/dormant'
@@ -50,12 +47,10 @@ import { dormantEmbed } from './embeds/dormant'
  *
  * Help channels are should be named after the chemical elements.
  */
-export class HelpChanModule extends ExtendedModule {
+export class HelpChanModule extends HelpChanBase {
   public constructor(client: CookiecordClient) {
     super(client)
   }
-
-  private CHANNEL_PREFIX = config.helpChannels.namePrefix
 
   //#region Listeners
   @listener({ event: 'ready' })
@@ -173,58 +168,11 @@ export class HelpChanModule extends ExtendedModule {
   @extendedCommand({
     inhibitors: [isTrustedMember],
   })
-  public async helpchan(
-    msg: Message,
-    subcommand: Subcommands,
-    @optional ...args: Array<string>
-  ) {
+  public async helpchanOld(msg: Message, subcommand: Subcommands) {
     const helpString: string =
       'Available commands: `status`, `create`, `update`, `sync`, `lock`, `unlock`, `help`.'
 
     switch (subcommand) {
-      // List the status of help channels
-      case 'status': {
-        const available = msg.guild?.channels.cache
-          .filter(
-            (channel) => channel.parentID === guild.categories.helpAvailable,
-          )
-          .filter((channel) => channel.name.startsWith(this.CHANNEL_PREFIX))
-
-        const { data: ongoing } = await this.api.get<IListHelpChannelsRespone>(
-          '/helpchan',
-        )
-
-        const dormant = msg.guild?.channels.cache
-          .filter(
-            (channel) => channel.parentID === guild.categories.helpDormant,
-          )
-          .filter((channel) => channel.name.startsWith(this.CHANNEL_PREFIX))
-
-        return msg.channel.send({
-          embed: helpChannelMessageEmbed(
-            this.client,
-            msg,
-            available,
-            ongoing,
-            dormant,
-          ),
-        })
-      }
-
-      // Create help channel
-      case 'create': {
-        const [channelName] = args
-
-        if (args.length > 1) {
-          return msg.channel.send(
-            `⚠ Expected 1 argument, but got ${args.length}\nDEBUG DATA: ${args}`,
-          )
-        }
-
-        const created = await this.createHelpChannel(msg.guild!, channelName)
-        return msg.channel.send(`Successfully created <#${created.id}> channel`)
-      }
-
       case 'update': {
         await this.updateHelpChannels(msg.guild!)
         return msg.channel.send('Successfully updated all help channels')
@@ -410,22 +358,6 @@ export class HelpChanModule extends ExtendedModule {
     await this.syncHowToGetHelp(channel.guild)
   }
 
-  private async createHelpChannel(guild: Guild, channelName: string) {
-    const chan = await guild.channels.create(`help-${channelName}`, {
-      type: 'text',
-      topic:
-        'This is Electron help channel. You can claim your own help channel in the Help: Available category.',
-      reason: 'Maintain help channel goal',
-      parent: config.guild.categories.helpAvailable,
-    })
-
-    // Channel should already be in ask, but sync the permissions.
-    await this.moveChannel(chan, config.guild.categories.helpAvailable)
-    await chan.send({ embed: availableEmbed })
-
-    return chan
-  }
-
   private async updateHelpChannels(guild: Guild) {
     const helpChannels = guild.channels.cache
       .filter((channel) => channel.name.startsWith(this.CHANNEL_PREFIX))
@@ -440,22 +372,6 @@ export class HelpChanModule extends ExtendedModule {
         'Maintain help channel goal',
       )
     }
-  }
-
-  private async moveChannel(channel: TextChannel, category: string) {
-    const parent = channel.guild.channels.resolve(category)
-    if (parent === null) {
-      return
-    }
-
-    this.logger.info(
-      `Moving #${channel.name} (${channel.id}) to the ${parent.name} category`,
-    )
-    const data: ChannelData = {
-      parentID: parent.id,
-      permissionOverwrites: parent.permissionOverwrites,
-    }
-    return await channel.edit(data)
   }
 
   private async claimChannel(msg: Message) {
