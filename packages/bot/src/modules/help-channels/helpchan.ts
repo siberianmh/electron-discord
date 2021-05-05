@@ -173,13 +173,6 @@ export class HelpChanModule extends HelpChanBase {
         return msg.channel.send('Help Channel System successfully synced')
       }
 
-      case 'lock': {
-        return await this.lockHelpChannels(msg)
-      }
-
-      case 'unlock':
-        return await this.lockHelpChannels(msg, true)
-
       // Get the help
       case 'help': {
         return msg.channel.send(helpString)
@@ -335,47 +328,6 @@ export class HelpChanModule extends HelpChanBase {
       )
 
     return channel.send({ embed })
-  }
-
-  private async lockHelpChannels(msg: Message, unlock: boolean = false) {
-    const availableHelpChannels = msg
-      .guild!.channels.cache.filter(
-        (channel) => channel.parentID === config.guild.categories.helpAvailable,
-      )
-      .filter((channel) => channel.name.startsWith(this.CHANNEL_PREFIX))
-      .array()
-
-    if (!availableHelpChannels.length) {
-      return msg.channel.send('Unable to available help channels.')
-    }
-
-    availableHelpChannels.forEach(async (channel) => {
-      if (unlock) {
-        return await channel.edit({
-          permissionOverwrites: [
-            {
-              id: config.guild.roles.everyone,
-              allow: 'SEND_MESSAGES',
-            },
-          ],
-        })
-
-        // return msg.channel.send('Help Channels successfully unlocked.')
-      }
-
-      return await channel.edit({
-        permissionOverwrites: [
-          {
-            id: config.guild.roles.everyone,
-            deny: 'SEND_MESSAGES',
-          },
-        ],
-      })
-
-      // return msg.channel.send('Help Channels successfully loacked.')
-    })
-
-    return msg.react('🤷‍♀️')
   }
 
   private statsReportComplete(
