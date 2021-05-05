@@ -1,9 +1,7 @@
 import { default as CookiecordClient, listener, optional } from 'cookiecord'
 import {
   ChannelData,
-  Collection,
   Guild,
-  GuildChannel,
   GuildMember,
   Message,
   MessageEmbed,
@@ -25,10 +23,11 @@ import {
 import { Subcommands } from './subcommands'
 import { helpMessage } from './help-message'
 import { extendedCommand } from '../../lib/extended-command'
+import { CloseReason } from '../../lib/types/help-chan'
+import { helpChannelMessageEmbed } from './embeds/status'
 import { availableEmbed } from './embeds/available'
 import { claimedEmbed } from './embeds/claimed'
 import { dormantEmbed } from './embeds/dormant'
-import { CloseReason } from '../../lib/types/help-chan'
 
 /**
  * Manage the help channel system of the guild.
@@ -57,46 +56,6 @@ export class HelpChanModule extends ExtendedModule {
   }
 
   private CHANNEL_PREFIX = config.helpChannels.namePrefix
-
-  private HELP_CHANNEL_STATUS_EMBED = (
-    msg: Message,
-    availableChannels: Collection<string, GuildChannel> | undefined,
-    ongoingChannels: IListHelpChannelsRespone,
-    dormantChannels: Collection<string, GuildChannel> | undefined,
-  ) =>
-    new MessageEmbed()
-      .setAuthor(
-        msg.guild?.name,
-        msg.guild?.iconURL({ dynamic: true }) || undefined,
-      )
-      .setTitle('Help Channels Status')
-      .addField(
-        'Available',
-        availableChannels && availableChannels.size >= 1
-          ? availableChannels.map((channel) => `<#${channel.id}>`)
-          : '**All channels is on Ongoing state**',
-      )
-      .addField(
-        'Ongoing',
-        ongoingChannels.length >= 1
-          ? ongoingChannels.map(
-              (channel) =>
-                `<#${channel.channel_id}> - Owner <@${channel.user_id}>`,
-            )
-          : '**No Channels in Ongoing Category**',
-      )
-      .addField(
-        'Dormant',
-        dormantChannels && dormantChannels.size >= 1
-          ? dormantChannels.map((channel) => `<#${channel.id}>`)
-          : '**All channels is on Available state**',
-      )
-
-      .setFooter(
-        this.client.user?.username,
-        this.client.user?.displayAvatarURL(),
-      )
-      .setTimestamp()
 
   //#region Listeners
   @listener({ event: 'ready' })
@@ -242,7 +201,8 @@ export class HelpChanModule extends ExtendedModule {
           .filter((channel) => channel.name.startsWith(this.CHANNEL_PREFIX))
 
         return msg.channel.send({
-          embed: this.HELP_CHANNEL_STATUS_EMBED(
+          embed: helpChannelMessageEmbed(
+            this.client,
             msg,
             available,
             ongoing,

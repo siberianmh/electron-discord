@@ -11,8 +11,8 @@ export const client = new CookiecordClient(
     retryLimit: 3,
     presence: {
       activity: {
-        type: 'WATCHING',
-        name: "Dota: Dragon's Blood",
+        type: 'PLAYING',
+        name: 'ver.1.22474487139...',
       },
     },
   },
