@@ -1,28 +1,16 @@
-import { default as CookiecordClient, listener, optional } from 'cookiecord'
-import {
-  Guild,
-  GuildMember,
-  Message,
-  MessageEmbed,
-  TextChannel,
-} from 'discord.js'
+import { default as CookiecordClient, listener } from 'cookiecord'
+import { Guild, Message, MessageEmbed, TextChannel } from 'discord.js'
 import {
   IGetHelpChanByUserIdResponse,
   IGetHelpChanByChannelIdResponse,
 } from '../../lib/types'
 import { helpChannels, guild } from '../../lib/config'
 import * as config from '../../lib/config'
-import { isTrustedMember, noDM } from '../../lib/inhibitors'
+import { isTrustedMember } from '../../lib/inhibitors'
 import { HelpChanBase } from './base'
-import {
-  createSelfDestructMessage,
-  reactAsSelfDesturct,
-} from '../../lib/self-destruct-messages'
 import { Subcommands } from './subcommands'
-import { helpMessage } from './help-message'
 import { extendedCommand } from '../../lib/extended-command'
 import { CloseReason } from '../../lib/types/help-chan'
-import { availableEmbed } from './embeds/available'
 import { claimedEmbed } from './embeds/claimed'
 import { dormantEmbed } from './embeds/dormant'
 
@@ -202,130 +190,7 @@ export class HelpChanModule extends HelpChanBase {
         return msg.channel.send(helpString)
     }
   }
-
-  @extendedCommand({ inhibitors: [noDM], aliases: ['take'] })
-  public async claim(msg: Message, @optional member: GuildMember) {
-    // Inhibitor
-    if (
-      !msg.member?.hasPermission('MANAGE_MESSAGES') &&
-      !msg.member?.roles.cache.has(guild.roles.maintainer)
-    ) {
-      return msg.channel.send(
-        `Hello <@${msg.author.id}>, however, this command is can be only used by the moderation team, if you are searching for help you can read the guide at <#${guild.channels.askHelpChannel}> channel, and claim a channel from the \`Help: Available\` category.`,
-      )
-    }
-
-    if (msg.reference && msg.reference.messageID) {
-      const refMessage = await msg.channel.messages.fetch(
-        msg.reference.messageID,
-      )
-      return this.claimBase({
-        msg: refMessage,
-        member: refMessage.member!,
-        replyClaim: true,
-      })
-    }
-
-    if (!member) {
-      return msg.channel.send(
-        ':warning: Member in this case is required parameter.',
-      )
-    }
-
-    return await this.claimBase({ msg: msg, member: member })
-  }
   //#endregion
-
-  private async claimBase({
-    msg,
-    member,
-    replyClaim = false,
-  }: {
-    msg: Message
-    member: GuildMember
-    replyClaim?: boolean
-  }) {
-    if (msg.author.bot) {
-      return await msg.channel.send(
-        `:warning:: I cannot open help channel for ${member.displayName} because he is a turtle.`,
-      )
-    }
-
-    try {
-      const {
-        data: helpChannel,
-      } = await this.api.get<IGetHelpChanByUserIdResponse>(
-        `/helpchan/user/${member.id}`,
-      )
-
-      if (helpChannel) {
-        return await msg.channel.send(
-          `${member.displayName} already has <#${helpChannel.channel_id}>`,
-        )
-      }
-    } catch {
-      // It's fine because it's that what's we search
-    }
-
-    const claimedChannel = msg.guild?.channels.cache.find(
-      (channel) =>
-        channel.type === 'text' &&
-        channel.parentID === guild.categories.helpAvailable &&
-        channel.name.startsWith(this.CHANNEL_PREFIX),
-    ) as TextChannel | undefined
-
-    if (!claimedChannel) {
-      return await msg.channel.send(
-        ':warning: failed to claim a help channel, no available channel found.',
-      )
-    }
-
-    let msgContent = ''
-    if (replyClaim) {
-      msgContent = msg.cleanContent
-      await reactAsSelfDesturct(msg)
-    } else {
-      const channelMessage = await msg.channel.messages.fetch({ limit: 50 })
-      const questionMessages = channelMessage.filter(
-        (questionMsg) =>
-          questionMsg.author.id === member.id && questionMsg.id !== msg.id,
-      )
-
-      msgContent = questionMessages
-        .array()
-        .slice(0, 10) // TODO: return the limit
-        .map((msg) => msg.cleanContent)
-        .reverse()
-        .join('\n')
-        .slice(0, 2000)
-    }
-
-    const toPin = await claimedChannel.send({
-      embed: new MessageEmbed()
-        .setAuthor(member.displayName, member.user.displayAvatarURL())
-        .setDescription(msgContent),
-    })
-
-    await toPin.pin()
-    await this.addCooldown(member)
-    await this.moveChannel(claimedChannel, guild.categories.helpOngoing)
-    await this.populateHelpChannel(member, claimedChannel, toPin)
-    await claimedChannel.send(
-      `${member.user} this channel has been claimed for your question. Please review <#${guild.channels.askHelpChannel}> for how to get help`,
-    )
-
-    await createSelfDestructMessage(
-      msg,
-      `😳 Successfully claimed ${claimedChannel}`,
-    )
-    await this.ensureAskChannels(msg.guild!)
-    await this.syncHowToGetHelp(msg.guild!)
-    return
-  }
-
-  private async addCooldown(member: GuildMember) {
-    return await member.roles.add(guild.roles.helpCooldown)
-  }
 
   private async markChannelAsDormant(
     channel: TextChannel,
@@ -406,57 +271,6 @@ export class HelpChanModule extends HelpChanBase {
     return await embedMessage.edit({ embed: claimedEmbed(claimer) })
   }
 
-  private async ensureAskChannels(guild: Guild): Promise<void | Message> {
-    const askChannels = guild.channels.cache
-      .filter(
-        (channel) => channel.parentID === config.guild.categories.helpAvailable,
-      )
-      .filter((channel) => channel.name.startsWith(this.CHANNEL_PREFIX))
-
-    if (askChannels.size >= helpChannels.maxAvailableHelpChannels) {
-      return
-    }
-
-    const dormantChannels = guild.channels.cache.filter(
-      (channel) => channel.parentID === config.guild.categories.helpDormant,
-    )
-
-    if (dormantChannels.size < 1) {
-      // Just ignore the case where we don't have dormant
-      return
-    }
-
-    const dormant = guild.channels.cache.find(
-      (x) => x.parentID === config.guild.categories.helpDormant,
-    ) as TextChannel
-
-    if (dormant) {
-      await this.moveChannel(dormant, config.guild.categories.helpAvailable)
-
-      let lastMessage = dormant.messages.cache
-        .array()
-        .reverse()
-        .find((m) => m.author.id === this.client.user?.id)
-
-      if (!lastMessage) {
-        lastMessage = (await dormant.messages.fetch({ limit: 3 }))
-          .array()
-          .find((m) => m.author.id === this.client.user?.id)
-      }
-
-      if (lastMessage) {
-        // If there is a last message (the dormant message) by the bot, just edit it
-        return await lastMessage.edit({ embed: availableEmbed })
-      } else {
-        // Otherwise, just send a new message
-        return await dormant.send({ embed: availableEmbed })
-      }
-    }
-
-    await this.ensureAskChannels(guild)
-    return await this.syncHowToGetHelp(guild)
-  }
-
   private async checkDormantPossibilities() {
     const ongoingChannels = this.client.channels.cache
       .filter(
@@ -497,41 +311,6 @@ export class HelpChanModule extends HelpChanBase {
           await member.roles.remove(guild.roles.helpCooldown)
         })
     })
-  }
-
-  private async syncHowToGetHelp(msgGuild?: Guild) {
-    let availHelpChannels = null
-
-    if (msgGuild) {
-      availHelpChannels = msgGuild.channels.cache
-        .filter(
-          (channel) =>
-            channel.parentID === config.guild.categories.helpAvailable,
-        )
-        .filter((channel) => channel.name.startsWith(this.CHANNEL_PREFIX))
-    } else {
-      availHelpChannels = await this.client.guilds
-        .fetch(guild.id)
-        .then((guild) =>
-          guild.channels.cache
-            .filter(
-              (channel) =>
-                channel.parentID === config.guild.categories.helpAvailable,
-            )
-            .filter((channel) => channel.name.startsWith(this.CHANNEL_PREFIX)),
-        )
-    }
-
-    const helpChannel = (await this.client.channels.fetch(
-      guild.channels.askHelpChannel,
-    )) as TextChannel
-    const lastMessage = (await helpChannel.messages.fetch()).last()
-
-    if (!lastMessage) {
-      await helpChannel.send(helpMessage(availHelpChannels))
-    } else {
-      await lastMessage.edit(helpMessage(availHelpChannels))
-    }
   }
 
   private async verifyNumberOfChannels() {
@@ -597,18 +376,6 @@ export class HelpChanModule extends HelpChanBase {
     })
 
     return msg.react('🤷‍♀️')
-  }
-
-  private async populateHelpChannel(
-    member: GuildMember,
-    channel: TextChannel,
-    msg: Message,
-  ) {
-    return await this.api.post('/helpchan', {
-      user_id: member.user.id,
-      channel_id: channel.id,
-      message_id: msg.id,
-    })
   }
 
   private statsReportComplete(
