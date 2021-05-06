@@ -211,27 +211,27 @@ export class HelpChannelStaff extends HelpChanBase {
         .reverse()
         .join('\n')
         .slice(0, 2000)
-
-      const toPin = await claimedChannel.send({
-        embed: new MessageEmbed()
-          .setAuthor(member.displayName, member.user.displayAvatarURL())
-          .setDescription(msgContent),
-      })
-
-      await toPin.pin()
-      await this.addCooldown(member)
-      await this.moveChannel(claimedChannel, guild.categories.helpOngoing)
-      await this.populateHelpChannel(member, claimedChannel, toPin)
-      await claimedChannel.send(
-        `${member.user} this channel has been claimed for your question. Please review <#${guild.channels.askHelpChannel}> for how to get help`,
-      )
-
-      await createSelfDestructMessage(
-        msg,
-        `🙇‍♂️ Successfully claimed ${claimedChannel}`,
-      )
-      await this.ensureAskChannels(msg.guild!)
-      return await this.syncHowToGetHelp(msg.guild!)
     }
+
+    const toPin = await claimedChannel.send({
+      embed: new MessageEmbed()
+        .setAuthor(member.displayName, member.user.displayAvatarURL())
+        .setDescription(msgContent),
+    })
+
+    await toPin.pin()
+    await this.addCooldown(member)
+    await this.moveChannel(claimedChannel, guild.categories.helpOngoing)
+    await this.populateHelpChannel(member, claimedChannel, toPin)
+    await claimedChannel.send(
+      `${member.user} this channel has been claimed for your question. Please review <#${guild.channels.askHelpChannel}> for how to get help`,
+    )
+
+    await createSelfDestructMessage(
+      msg,
+      `🙇‍♂️ Successfully claimed ${claimedChannel}`,
+    )
+    await this.ensureAskChannels(msg.guild!)
+    return await this.syncHowToGetHelp(msg.guild!)
   }
 }
