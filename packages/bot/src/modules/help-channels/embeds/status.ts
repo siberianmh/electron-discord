@@ -9,7 +9,7 @@ export const helpChannelStatusEmbed = (
   ongoingChannels: IListHelpChannelsRespone,
   dormantChannels: Collection<string, GuildChannel> | undefined,
 ) => {
-  new MessageEmbed()
+  return new MessageEmbed()
     .setAuthor(
       msg.guild?.name,
       msg.guild?.iconURL({ dynamic: true }) || undefined,
