@@ -22,6 +22,7 @@ import {
   createSelfDestructMessage,
   reactAsSelfDesturct,
 } from '../../lib/self-destruct-messages'
+import { Subcommands } from './subcommands'
 
 export class HelpChannelStaff extends HelpChanBase {
   public constructor(client: CookiecordClient) {
@@ -72,7 +73,7 @@ export class HelpChannelStaff extends HelpChanBase {
       return this.showHelp(msg)
     }
 
-    const cmd = args[0]
+    const cmd = args[0] as Subcommands
 
     switch (cmd) {
       // List the status of help channels
@@ -80,9 +81,13 @@ export class HelpChannelStaff extends HelpChanBase {
         return await this.showStatus(msg)
       case 'create':
         return await this.createChannel(msg, args)
+      case 'update':
+        return await this.updateHelpChannels(msg)
+      case 'sync':
+        return await this.syncChannels(msg)
       case 'help':
       default:
-        return this.showHelp(msg)
+        return await this.showHelp(msg)
     }
   }
   //#endregion
@@ -130,7 +135,23 @@ export class HelpChannelStaff extends HelpChanBase {
 
   // Show help
   private async showHelp(msg: Message) {
-    return msg.channel.send('Soon 😐')
+    const embed = new MessageEmbed()
+      .setAuthor(
+        msg.guild?.name,
+        msg.guild?.iconURL({ dynamic: false }) || undefined,
+      )
+      .setTitle('📝 Help Channels Management')
+      .addField(
+        '**Commands**',
+        '`create <channelName>` ► Create the new help channel with the specific name\n`status` ► Show the current status of help channels\n`update` ► Update the topic of help channels\n`sync` ► Fix possible errors during downtimes.',
+      )
+      .setFooter(
+        this.client.user?.username,
+        this.client.user?.displayAvatarURL(),
+      )
+      .setTimestamp()
+
+    return msg.channel.send({ embed })
   }
 
   private async createHelpChannel(guild: Guild, channelName: string) {
@@ -233,5 +254,36 @@ export class HelpChannelStaff extends HelpChanBase {
     )
     await this.ensureAskChannels(msg.guild!)
     return await this.syncHowToGetHelp(msg.guild!)
+  }
+
+  private async updateHelpChannels(msg: Message) {
+    const helpChannels = msg
+      .guild!.channels.cache.filter((channel) =>
+        channel.name.startsWith(this.CHANNEL_PREFIX),
+      )
+      .array()
+
+    for (const channel of helpChannels) {
+      await channel.edit(
+        {
+          topic:
+            'This is a help channel. You can claim your own help channel in the Help: Available category.',
+        },
+        'Maintain help channel goal',
+      )
+    }
+
+    const embed = new MessageEmbed()
+      .setTitle('✅ Successfully updated')
+      .setDescription('Help Channels topic successfully updated')
+
+    return await msg.channel.send({ embed })
+  }
+
+  private async syncChannels(msg: Message) {
+    await this.fixCooldowns(msg.guild!)
+    await this.ensureAskChannels(msg.guild!)
+    await this.syncHowToGetHelp(msg.guild!)
+    return msg.channel.send('Help Channel System successfully synced')
   }
 }

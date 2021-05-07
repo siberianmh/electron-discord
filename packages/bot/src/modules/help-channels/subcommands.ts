@@ -1,8 +1,1 @@
-export type Subcommands =
-  | 'status'
-  | 'create'
-  | 'sync'
-  | 'update'
-  | 'lock'
-  | 'unlock'
-  | 'help'
+export type Subcommands = 'status' | 'create' | 'sync' | 'update' | 'help'

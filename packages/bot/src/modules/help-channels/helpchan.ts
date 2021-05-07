@@ -1,14 +1,9 @@
 import { default as CookiecordClient, listener } from 'cookiecord'
-import { Guild, Message, MessageEmbed, TextChannel } from 'discord.js'
-import {
-  IGetHelpChanByUserIdResponse,
-  IGetHelpChanByChannelIdResponse,
-} from '../../lib/types'
+import { Message, MessageEmbed, TextChannel } from 'discord.js'
+import { IGetHelpChanByChannelIdResponse } from '../../lib/types'
 import { helpChannels, guild } from '../../lib/config'
 import * as config from '../../lib/config'
-import { isTrustedMember } from '../../lib/inhibitors'
 import { HelpChanBase } from './base'
-import { Subcommands } from './subcommands'
 import { extendedCommand } from '../../lib/extended-command'
 import { CloseReason } from '../../lib/types/help-chan'
 import { claimedEmbed } from './embeds/claimed'
@@ -152,39 +147,6 @@ export class HelpChanModule extends HelpChanBase {
     }
   }
 
-  // #region Admin/Mod team commands
-  @extendedCommand({
-    inhibitors: [isTrustedMember],
-  })
-  public async helpchanOld(msg: Message, subcommand: Subcommands) {
-    const helpString: string =
-      'Available commands: `status`, `create`, `update`, `sync`, `lock`, `unlock`, `help`.'
-
-    switch (subcommand) {
-      case 'update': {
-        await this.updateHelpChannels(msg.guild!)
-        return msg.channel.send('Successfully updated all help channels')
-      }
-
-      case 'sync': {
-        await this.fixCooldowns(msg.guild!)
-        await this.ensureAskChannels(msg.guild!)
-        await this.syncHowToGetHelp(msg.guild!)
-        return msg.channel.send('Help Channel System successfully synced')
-      }
-
-      // Get the help
-      case 'help': {
-        return msg.channel.send(helpString)
-      }
-
-      // Default response
-      default:
-        return msg.channel.send(helpString)
-    }
-  }
-  //#endregion
-
   private async markChannelAsDormant(
     channel: TextChannel,
     closeReason: CloseReason,
@@ -214,22 +176,6 @@ export class HelpChanModule extends HelpChanBase {
 
     await this.ensureAskChannels(channel.guild)
     await this.syncHowToGetHelp(channel.guild)
-  }
-
-  private async updateHelpChannels(guild: Guild) {
-    const helpChannels = guild.channels.cache
-      .filter((channel) => channel.name.startsWith(this.CHANNEL_PREFIX))
-      .array()
-
-    for (const channel of helpChannels) {
-      await channel.edit(
-        {
-          topic:
-            'This is Electron help channel. You can claim your own help channel in the Help: Available category.',
-        },
-        'Maintain help channel goal',
-      )
-    }
   }
 
   private async claimChannel(msg: Message) {
@@ -286,24 +232,6 @@ export class HelpChanModule extends HelpChanBase {
         )
       }
     }
-  }
-
-  private async fixCooldowns(msgGuild: Guild) {
-    const cooldownedByRole = (
-      await msgGuild.roles.fetch(guild.roles.helpCooldown)
-    )?.members.array()
-
-    if (!cooldownedByRole || !cooldownedByRole.length) {
-      return
-    }
-
-    cooldownedByRole.forEach(async (member) => {
-      await this.api
-        .get<IGetHelpChanByUserIdResponse>(`/helpchan/user/${member.id}`)
-        .catch(async () => {
-          await member.roles.remove(guild.roles.helpCooldown)
-        })
-    })
   }
 
   private async verifyNumberOfChannels() {
