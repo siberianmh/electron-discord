@@ -11,6 +11,6 @@ services:
       - 3306:3306
 
   redis:
-    image: redis:5
+    image: redis:6
     ports:
       - '127.0.0.1:6379:6379'
