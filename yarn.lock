@@ -1813,13 +1813,6 @@ diff-sequences@^26.6.2:
   resolved "https://registry.yarnpkg.com/diff-sequences/-/diff-sequences-26.6.2.tgz#48ba99157de1923412eed41db6b6d4aa9ca7c0b1"
   integrity sha512-Mv/TDa3nZ9sbc5soK+OoA74BsS3mL37yixCvUAQkiuA4Wz6YtwP/K47n2rv2ovzHZvoiQeA5FTQOschKkEwB0Q==
 
-discord-interactions@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/discord-interactions/-/discord-interactions-2.0.2.tgz#d82ea63517ec43666bce63288315f269958ff5e3"
-  integrity sha512-zKQB63xWLYbOZMyU+EcLrXnUCMuWkU8/SoH7jFvc99Y1amHqli3oPEkgoLWUmYckL+HCPuA7LXpNyXaFvoqIww==
-  dependencies:
-    tweetnacl "^1.0.3"
-
 discord.js@^12.5.3:
   version "12.5.3"
   resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-12.5.3.tgz#56820d473c24320871df9ea0bbc6b462f21cf85c"

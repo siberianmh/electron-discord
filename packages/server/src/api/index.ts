@@ -1,7 +1,5 @@
 import * as express from 'express'
-import { verifyKeyMiddleware } from 'discord-interactions'
 import { requiresBotAuth } from '../lib/requires-auth'
-import { discordPublicKey } from '../lib/config'
 
 const router = express.Router()
 
@@ -30,9 +28,6 @@ import {
   createMessageRolesAction,
 } from './message-roles'
 
-// Interactions
-import { handleDiscordInteraction } from './interactions'
-
 // Webhooks
 import { handleEpuppyHook } from './webhooks'
 //#endregion
@@ -57,13 +52,6 @@ router.get('/message-roles/:id', requiresBotAuth, getMessageRole)
 router.post('/message-roles', requiresBotAuth, createMessageRole)
 router.get('/message-roles/actions', requiresBotAuth, getMessageRolesActions)
 router.post('/message-roles/actions', requiresBotAuth, createMessageRolesAction)
-
-// Discord Iteractions
-router.post(
-  '/iteractions',
-  verifyKeyMiddleware(discordPublicKey),
-  handleDiscordInteraction,
-)
 
 // Discord Webhooks
 router.post('/epuppy-hook', requiresBotAuth, handleEpuppyHook)

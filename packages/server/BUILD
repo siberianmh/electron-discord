@@ -15,7 +15,6 @@ ts_project(
         "@npm//@types/node",
         "@npm//@types/uuid",
         "@npm//axios",
-        "@npm//discord-interactions",
         "@npm//express",
         "@npm//ioredis",
         "@npm//mysql",
