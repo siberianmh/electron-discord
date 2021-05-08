@@ -19,7 +19,7 @@ const kickedMessage =
   'Hello! You have been kicked from Electron Discord as you have failed to accept our rules. If this was an accident, please feel free to join us again!\n\nhttps://discord.gg/electron'
 
 const client = new Client({
-  ws: { intents: Intents.ALL },
+  intents: Intents.ALL,
   partials: ['REACTION', 'MESSAGE', 'USER', 'CHANNEL'],
   retryLimit: 3,
 })
