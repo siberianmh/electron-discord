@@ -59,7 +59,7 @@ ${constants.style.emojis.statusOffline} ${offlinePresence}
       user = msg.author
     } else if (
       user !== msg.author &&
-      !msg.member!.hasPermission('MANAGE_MESSAGES')
+      !msg.member!.permissions.has('MANAGE_MESSAGES')
     ) {
       return await msg.channel.send(
         'You may not use this command on users other than yourself.',

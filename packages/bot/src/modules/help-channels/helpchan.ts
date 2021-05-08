@@ -105,7 +105,7 @@ export class HelpChanModule extends HelpChanBase {
       return
     }
 
-    return await msg.delete({ reason: 'Pin system message' })
+    return await msg.delete()
   }
   //#endregion
 
@@ -133,7 +133,7 @@ export class HelpChanModule extends HelpChanBase {
 
     if (
       (owner && owner.user_id === msg.author.id) ||
-      msg.member?.hasPermission('MANAGE_MESSAGES') ||
+      msg.member?.permissions.has('MANAGE_MESSAGES') ||
       msg.member?.roles.cache.has(guild.roles.maintainer)
     ) {
       return await this.markChannelAsDormant(

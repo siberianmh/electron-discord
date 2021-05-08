@@ -10,10 +10,12 @@ export const client = new CookiecordClient(
     partials: ['REACTION', 'MESSAGE', 'USER', 'CHANNEL'],
     retryLimit: 3,
     presence: {
-      activity: {
-        type: 'PLAYING',
-        name: 'ver.1.22474487139...',
-      },
+      activities: [
+        {
+          type: 'PLAYING',
+          name: 'ver.1.22474487139...',
+        },
+      ],
     },
   },
 )

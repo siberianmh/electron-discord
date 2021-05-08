@@ -78,7 +78,7 @@ export class EtcModule extends ExtendedModule {
 
     if (
       user.id === key ||
-      member?.hasPermission('MANAGE_MESSAGES') ||
+      member?.permissions.has('MANAGE_MESSAGES') ||
       member?.roles.cache.has(guild.roles.maintainer)
     ) {
       return await reaction.message.delete()

@@ -34,7 +34,7 @@ export class HelpChannelStaff extends HelpChanBase {
   public async claim(msg: Message, @optional member: GuildMember) {
     // Inhibitor
     if (
-      !msg.member?.hasPermission('MANAGE_MESSAGES') &&
+      !msg.member?.permissions.has('MANAGE_MESSAGES') &&
       !msg.member?.roles.cache.has(guild.roles.maintainer)
     ) {
       return msg.channel.send(

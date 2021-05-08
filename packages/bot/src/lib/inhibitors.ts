@@ -7,7 +7,7 @@ export const isTrustedMember: Inhibitor = async (msg) => {
   }
 
   if (
-    !msg.member.hasPermission('MANAGE_MESSAGES') &&
+    !msg.member.permissions.has('MANAGE_MESSAGES') &&
     !msg.member.roles.cache.has(guild.roles.maintainer)
   ) {
     return ":man_gesturing_no: you don't have permissions to use that command"

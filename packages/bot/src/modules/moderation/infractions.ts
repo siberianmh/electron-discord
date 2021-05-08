@@ -159,7 +159,7 @@ export class InfractionsModule extends ExtendedModule {
     }
 
     if (
-      member.hasPermission('MANAGE_MESSAGES') ||
+      member.permissions.has('MANAGE_MESSAGES') ||
       member.roles.cache.has(guild.roles.maintainer)
     ) {
       return ctx.channel.send("Well you can't ban Admins 🌚")
@@ -198,7 +198,7 @@ export class InfractionsModule extends ExtendedModule {
     }
 
     if (
-      member.hasPermission('MANAGE_MESSAGES') ||
+      member.permissions.has('MANAGE_MESSAGES') ||
       member.roles.cache.has(guild.roles.maintainer)
     ) {
       return ctx.channel.send(
