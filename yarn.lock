@@ -1813,7 +1813,7 @@ diff-sequences@^26.6.2:
   resolved "https://registry.yarnpkg.com/diff-sequences/-/diff-sequences-26.6.2.tgz#48ba99157de1923412eed41db6b6d4aa9ca7c0b1"
   integrity sha512-Mv/TDa3nZ9sbc5soK+OoA74BsS3mL37yixCvUAQkiuA4Wz6YtwP/K47n2rv2ovzHZvoiQeA5FTQOschKkEwB0Q==
 
-discord.js@discordjs/discord.js#0e40f9b86826ba50aa3840807fb86e1bce6b1c3d:
+discord.js@discordjs/discord.js#0e40f9b86826ba50aa3840807fb86e1bce6b1c3d, discord.js@discordjs/discord.js#stable:
   version "12.5.0"
   resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/0e40f9b86826ba50aa3840807fb86e1bce6b1c3d"
   dependencies:
@@ -1822,19 +1822,6 @@ discord.js@discordjs/discord.js#0e40f9b86826ba50aa3840807fb86e1bce6b1c3d:
     abort-controller "^3.0.0"
     node-fetch "^2.6.1"
     prism-media "^1.2.2"
-    tweetnacl "^1.0.3"
-    ws "^7.3.1"
-
-discord.js@discordjs/discord.js#stable:
-  version "12.5.1"
-  resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/8a7abc9f06d44bf693e35a615bb6ba2c3eb1d6e7"
-  dependencies:
-    "@discordjs/collection" "^0.1.6"
-    "@discordjs/form-data" "^3.0.1"
-    abort-controller "^3.0.0"
-    node-fetch "^2.6.1"
-    prism-media "^1.2.2"
-    setimmediate "^1.0.5"
     tweetnacl "^1.0.3"
     ws "^7.3.1"
 
@@ -3841,10 +3828,10 @@ prelude-ls@~1.1.2:
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
   integrity sha1-IZMqVJ9eUv/ZqCf1cOBL5iqX2lQ=
 
-prettier@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.2.1.tgz#795a1a78dd52f073da0cd42b21f9c91381923ff5"
-  integrity sha512-PqyhM2yCjg/oKkFPtTGUojv7gnZAoG80ttl45O6x2Ug/rMJw4wcc9k6aaf2hibP7BGVCCM33gZoGjyvt9mm16Q==
+prettier@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.3.0.tgz#b6a5bf1284026ae640f17f7ff5658a7567fc0d18"
+  integrity sha512-kXtO4s0Lz/DW/IJ9QdWhAf7/NmPWQXkFr/r/WkR3vyI+0v8amTDxiaQSLzs8NBlytfLWX/7uQUMIW677yLKl4w==
 
 pretty-format@^26.0.0, pretty-format@^26.6.2:
   version "26.6.2"

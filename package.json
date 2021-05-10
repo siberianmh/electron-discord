@@ -31,7 +31,7 @@
     "luxon": "^1.26.0",
     "mysql": "^2.18.1",
     "parse-duration": "^1.0.0",
-    "prettier": "^2.2.1",
+    "prettier": "^2.3.0",
     "reflect-metadata": "^0.1.13",
     "statsd-client": "^0.4.6",
     "ts-jest": "^26.5.6",
