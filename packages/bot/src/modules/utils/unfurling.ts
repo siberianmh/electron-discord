@@ -4,7 +4,8 @@ import { style } from '../../lib/config'
 import { ExtendedModule } from '../../lib/extended-module'
 import { createSelfDestructMessage } from '../../lib/self-destruct-messages'
 
-const DSRegex = /https:\/\/discord(app)?.com\/channels\/([\d]{18})\/([\d]{18})\/([\d]{18})/gm
+const DSRegex =
+  /https:\/\/discord(app)?.com\/channels\/([\d]{18})\/([\d]{18})\/([\d]{18})/gm
 
 export class UnfurlModule extends ExtendedModule {
   public constructor(client: CookiecordClient) {

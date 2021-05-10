@@ -63,11 +63,10 @@ export class RolesModule extends ExtendedModule {
       return
     }
 
-    const {
-      data: rolesActions,
-    } = await this.api.get<IGetMessageRolesActionsResponse>(
-      '/message-roles/actions',
-    )
+    const { data: rolesActions } =
+      await this.api.get<IGetMessageRolesActionsResponse>(
+        '/message-roles/actions',
+      )
     for (const role of rolesActions) {
       const msg = reaction.message
       if (
@@ -107,11 +106,10 @@ export class RolesModule extends ExtendedModule {
       return
     }
 
-    const {
-      data: rolesActions,
-    } = await this.api.get<IGetMessageRolesActionsResponse>(
-      '/message-roles/actions',
-    )
+    const { data: rolesActions } =
+      await this.api.get<IGetMessageRolesActionsResponse>(
+        '/message-roles/actions',
+      )
     for (const role of rolesActions) {
       const msg = reaction.message
       if (

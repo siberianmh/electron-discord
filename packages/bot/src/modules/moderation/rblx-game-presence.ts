@@ -59,8 +59,7 @@ export class RblxGamePresenceModule extends ExtendedModule {
       return await this.modLog.sendLogMessage({
         colour: style.colors.red,
         title: `${presence.user?.tag} is kicked automatically by system`,
-        text:
-          'This is automatic kick due to the member is playing in Electron.',
+        text: 'This is automatic kick due to the member is playing in Electron.',
         iconURL:
           presence.user?.displayAvatarURL({ dynamic: false }) || undefined,
       })

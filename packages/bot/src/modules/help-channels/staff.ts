@@ -186,11 +186,10 @@ export class HelpChannelStaff extends HelpChanBase {
     }
 
     try {
-      const {
-        data: helpChannel,
-      } = await this.api.get<IGetHelpChanByUserIdResponse>(
-        `/helpchan/user/${member.id}`,
-      )
+      const { data: helpChannel } =
+        await this.api.get<IGetHelpChanByUserIdResponse>(
+          `/helpchan/user/${member.id}`,
+        )
 
       if (helpChannel) {
         return await msg.channel.send(

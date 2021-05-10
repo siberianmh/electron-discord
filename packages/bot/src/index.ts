@@ -28,8 +28,7 @@ import {
 import { client } from './lib/discord'
 
 Sentry.init({
-  dsn:
-    'https://a22da8923d5f4ea7875fa8518335410b@o102026.ingest.sentry.io/5474186',
+  dsn: 'https://a22da8923d5f4ea7875fa8518335410b@o102026.ingest.sentry.io/5474186',
   enabled: process.env.NODE_ENV !== 'development',
   tracesSampleRate: 1.0,
 })
