@@ -18,7 +18,7 @@
     "@sentry/tracing": "^6.3.4",
     "algoliasearch": "^4.9.1",
     "axios": "^0.21.1",
-    "discord.js": "discordjs/discord.js#0e40f9b86826ba50aa3840807fb86e1bce6b1c3d",
+    "discord.js": "discordjs/discord.js#2eac84296b448907213680690ec766bb5fbe5990",
     "dotenv": "^9.0.0",
     "express": "^4.17.1",
     "fs-extra": "^10.0.0",
@@ -48,8 +48,5 @@
     "@types/node": "^14.14.44",
     "@types/statsd-client": "^0.4.1",
     "@types/uuid": "^8.3.0"
-  },
-  "resolutions": {
-    "discord.js": "discordjs/discord.js#0e40f9b86826ba50aa3840807fb86e1bce6b1c3d"
   }
 }
