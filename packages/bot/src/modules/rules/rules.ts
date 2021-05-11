@@ -1,5 +1,5 @@
 import { LunaworkClient, listener } from '@sib3/lunawork'
-import { TextChannel } from 'discord.js'
+import { TextChannel, Message } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { guild } from '../../lib/config'
 import { deepEqual } from '../../lib/deep-equal'
@@ -12,7 +12,7 @@ export class RulesModule extends ExtendedModule {
   }
 
   @listener({ event: 'ready' })
-  public async syncRules() {
+  public async syncRules(): Promise<Message | undefined> {
     const rulesChannel = (await this.client.channels.fetch(
       guild.channels.rules,
     )) as TextChannel
@@ -36,7 +36,11 @@ export class RulesModule extends ExtendedModule {
   }
 
   @listener({ event: 'ready' })
-  public async syncVoiceRules() {
+  public async syncVoiceRules(): Promise<Message | undefined> {
+    if (process.env.NODE_ENV === 'development') {
+      return
+    }
+
     const rulesChannel = (await this.client.channels.fetch(
       guild.channels.voiceRules,
     )) as TextChannel

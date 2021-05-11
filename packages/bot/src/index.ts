@@ -11,6 +11,7 @@ import {
   CleanModule,
   EtcModule,
   HelpChanModule,
+  SlashModule,
   HelpChannelStaff,
   HelpMessageModule,
   InformationModule,
@@ -39,6 +40,7 @@ for (const mod of [
   CleanModule,
   EtcModule,
   HelpChanModule,
+  SlashModule,
   HelpChannelStaff,
   HelpMessageModule,
   InformationModule,
@@ -53,7 +55,7 @@ for (const mod of [
   TagsModule,
   UnfurlModule,
 ]) {
-  client.registerModule(mod)
+  client.registerStage(mod)
 }
 
 client.login(process.env.DISCORD_TOKEN)

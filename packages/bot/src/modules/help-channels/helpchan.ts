@@ -37,7 +37,7 @@ export class HelpChanModule extends HelpChanBase {
 
   //#region Listeners
   @listener({ event: 'ready' })
-  async onReady() {
+  async onReady(): Promise<void> {
     setInterval(() => {
       this.checkDormantPossibilities()
     }, helpChannels.dormantChannelLoop)

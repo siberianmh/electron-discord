@@ -1,5 +1,5 @@
 import { LunaworkClient } from '@sib3/lunawork'
-import { Message, MessageEmbed } from 'discord.js'
+import { CommandInteraction, Message, MessageEmbed } from 'discord.js'
 import algoliasearch, { SearchClient, SearchIndex } from 'algoliasearch'
 import type { Hit } from '@algolia/client-search'
 import { ExtendedModule } from '../../lib/extended-module'
@@ -53,18 +53,25 @@ export class DocsModule extends ExtendedModule {
 
   @extendedCommand({
     aliases: ['d', 'doc', 'tutorials', 'tutorial', 'guide', 'guides'],
+    slashCommand: 'both',
     single: true,
   })
-  public async docs(msg: Message, searchIndex: string) {
+  public async docs(msg: Message | CommandInteraction, searchIndex: string) {
     const { hits } = await this.newIndex.search<IHitResult>(searchIndex, {
       hitsPerPage: 5,
     })
 
     if (!hits.length) {
-      return await createSelfDestructMessage(
-        msg,
-        this.NOT_FOUND_EMBED(searchIndex),
-      )
+      if (msg instanceof Message) {
+        return await createSelfDestructMessage(
+          msg,
+          this.NOT_FOUND_EMBED(searchIndex),
+        )
+      } else {
+        return await msg.reply('Unable to find searched result', {
+          ephemeral: true,
+        })
+      }
     }
 
     const result = hits[0]
@@ -83,7 +90,11 @@ export class DocsModule extends ExtendedModule {
 
     const embed = this.createEmbed(displayTitle, url, text)
 
-    return createSelfDestructMessage(msg, embed)
+    if (msg instanceof Message) {
+      return await createSelfDestructMessage(msg, embed)
+    } else {
+      return msg.reply({ embeds: [embed] })
+    }
   }
 
   private createEmbed(title: string, url: string, content?: string) {
