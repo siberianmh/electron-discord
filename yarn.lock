@@ -847,10 +847,10 @@
   resolved "https://registry.yarnpkg.com/@types/humanize-duration/-/humanize-duration-3.18.1.tgz#10090d596053703e7de0ac43a37b96cd9fc78309"
   integrity sha512-MUgbY3CF7hg/a/jogixmAufLjJBQT7WEf8Q+kYJkOc47ytngg1IuZobCngdTjAgY83JWEogippge5O5fplaQlw==
 
-"@types/ioredis@^4.26.1":
-  version "4.26.1"
-  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.26.1.tgz#761f1812c48a3ecfbd9d9ecd35c49849f8693e2e"
-  integrity sha512-k9f+bda6y0ZNrwUMNYI9mqIPqjPZ4Jqc+jTRTUyhFz8aD8cHQBk+uenTKCZj9RhdfrU4sSqrot5sn5LqkAHODw==
+"@types/ioredis@^4.26.3":
+  version "4.26.3"
+  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.26.3.tgz#5b660125d07214c67a5d9a0d9c678375c717d93f"
+  integrity sha512-2YiIUTo/MCZidXXfHAIoh2DUlGEG7zYFMfz0VXzTpI5934/wBCT5a/pR24lHCKk9WQNIlYauIFxQHcAF93w1FA==
   dependencies:
     "@types/node" "*"
 
