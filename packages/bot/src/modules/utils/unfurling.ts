@@ -1,4 +1,4 @@
-import { LunaworkClient, listener } from '@sib3/lunawork'
+import { LunaworkClient, listener } from 'lunawork'
 import { Message, MessageEmbed, TextChannel } from 'discord.js'
 import { style } from '../../lib/config'
 import { ExtendedModule } from '../../lib/extended-module'

@@ -1,4 +1,4 @@
-import { LunaworkClient, listener } from '@sib3/lunawork'
+import { LunaworkClient, listener } from 'lunawork'
 import { Message, MessageEmbed, TextChannel } from 'discord.js'
 import { IGetHelpChanByChannelIdResponse } from '../../lib/types'
 import { helpChannels, guild } from '../../lib/config'
@@ -177,7 +177,7 @@ export class HelpChanModule extends HelpChanBase {
   }
 
   private async claimChannel(msg: Message) {
-    this.logger.info(
+    this.client.logger.info(
       `Channel #${msg.channel.id} was cliamed by '${msg.author.id}'`,
     )
     await msg.pin()

@@ -1,4 +1,4 @@
-import { LunaworkClient, listener } from '@sib3/lunawork'
+import { LunaworkClient, listener } from 'lunawork'
 import { Message } from 'discord.js'
 import * as fuzz from 'fuzzball'
 import { ExtendedModule } from '../../lib/extended-module'

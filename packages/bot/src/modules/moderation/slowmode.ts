@@ -1,4 +1,4 @@
-import { LunaworkClient } from '@sib3/lunawork'
+import { LunaworkClient } from 'lunawork'
 import { Message, TextChannel } from 'discord.js'
 import * as humanizeDuration from 'humanize-duration'
 import parse from 'parse-duration'

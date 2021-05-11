@@ -1,4 +1,4 @@
-import { LunaworkClient } from '@sib3/lunawork'
+import { LunaworkClient } from 'lunawork'
 import { Message, Collection, MessageEmbed, GuildChannel } from 'discord.js'
 import { IListHelpChannelsRespone } from '../../../lib/types'
 

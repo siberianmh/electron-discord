@@ -1,4 +1,4 @@
-import { LunaworkClient } from '@sib3/lunawork'
+import { LunaworkClient } from 'lunawork'
 import { Message, MessageEmbed, Snowflake } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { isTrustedMember } from '../../lib/inhibitors'

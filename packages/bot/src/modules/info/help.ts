@@ -1,4 +1,4 @@
-import { LunaworkClient, guildsOnly, optional } from '@sib3/lunawork'
+import { LunaworkClient, guildsOnly, optional } from 'lunawork'
 import { Message, MessageEmbed } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { extendedCommand } from '../../lib/extended-command'

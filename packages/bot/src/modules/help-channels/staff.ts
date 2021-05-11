@@ -1,4 +1,4 @@
-import { LunaworkClient, optional } from '@sib3/lunawork'
+import { LunaworkClient, optional } from 'lunawork'
 import {
   Message,
   Guild,

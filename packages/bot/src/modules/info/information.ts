@@ -1,4 +1,4 @@
-import { LunaworkClient, optional } from '@sib3/lunawork'
+import { LunaworkClient, optional } from 'lunawork'
 import { DateTime } from 'luxon'
 import { Message, MessageEmbed, User } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'

@@ -1,4 +1,4 @@
-import { LunaworkClient } from '@sib3/lunawork'
+import { LunaworkClient } from 'lunawork'
 import { Message, MessageEmbed } from 'discord.js'
 import { urls } from '../../lib/config'
 import { ExtendedModule } from '../../lib/extended-module'

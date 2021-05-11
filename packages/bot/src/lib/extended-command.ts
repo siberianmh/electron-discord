@@ -1,4 +1,4 @@
-import { command, Stage, ICommandDecoratorOptions } from '@sib3/lunawork'
+import { command, Stage, ICommandDecoratorOptions } from 'lunawork'
 import { Message, MessageEmbed } from 'discord.js'
 import { ModLogModule } from '../modules/moderation/modlog'
 import { style } from './config'

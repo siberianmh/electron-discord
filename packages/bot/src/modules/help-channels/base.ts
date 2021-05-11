@@ -1,4 +1,4 @@
-import { LunaworkClient } from '@sib3/lunawork'
+import { LunaworkClient } from 'lunawork'
 import {
   Message,
   GuildMember,
@@ -26,7 +26,7 @@ export class HelpChanBase extends ExtendedModule {
       return
     }
 
-    this.logger.info(
+    this.client.logger.info(
       `Moving #${channel.name} (${channel.id}) to the ${parent.name} category`,
     )
     const data: ChannelData = {
