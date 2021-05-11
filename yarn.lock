@@ -3259,6 +3259,12 @@ lru_map@^0.3.3:
   resolved "https://registry.yarnpkg.com/lru_map/-/lru_map-0.3.3.tgz#b5c8351b9464cbd750335a79650a0ec0e56118dd"
   integrity sha1-tcg1G5Rky9dQM1p5ZQoOwOVhGN0=
 
+lunawork@siberianmh/lunawork:
+  version "0.0.0"
+  resolved "https://codeload.github.com/siberianmh/lunawork/tar.gz/ba37b1d28b0af1cb64014e9f1432cf5af87a08ec"
+  dependencies:
+    reflect-metadata "^0.1.13"
+
 luxon@^1.26.0:
   version "1.26.0"
   resolved "https://registry.yarnpkg.com/luxon/-/luxon-1.26.0.tgz#d3692361fda51473948252061d0f8561df02b578"
