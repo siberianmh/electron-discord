@@ -1,4 +1,4 @@
-import type { Inhibitor } from 'cookiecord'
+import type { Inhibitor } from '@sib3/lunawork'
 import { guild } from './config'
 
 export const isTrustedMember: Inhibitor = async (msg) => {

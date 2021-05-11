@@ -1,4 +1,4 @@
-import { default as CookiecordClient, optional } from 'cookiecord'
+import { LunaworkClient, optional } from '@sib3/lunawork'
 import {
   Message,
   Guild,
@@ -25,7 +25,7 @@ import {
 import { Subcommands } from './subcommands'
 
 export class HelpChannelStaff extends HelpChanBase {
-  public constructor(client: CookiecordClient) {
+  public constructor(client: LunaworkClient) {
     super(client)
   }
 

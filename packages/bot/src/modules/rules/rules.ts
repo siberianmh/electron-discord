@@ -1,4 +1,4 @@
-import { default as CookiecordClient, listener } from 'cookiecord'
+import { LunaworkClient, listener } from '@sib3/lunawork'
 import { TextChannel } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { guild } from '../../lib/config'
@@ -7,7 +7,7 @@ import { rulesText } from './rules-text'
 import { voiceRulesText } from './voice-rules'
 
 export class RulesModule extends ExtendedModule {
-  public constructor(client: CookiecordClient) {
+  public constructor(client: LunaworkClient) {
     super(client)
   }
 

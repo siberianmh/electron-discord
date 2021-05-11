@@ -1,11 +1,11 @@
-import { default as CookiecordClient } from 'cookiecord'
+import { LunaworkClient } from '@sib3/lunawork'
 import { Message, MessageEmbed } from 'discord.js'
 import { urls } from '../../lib/config'
 import { ExtendedModule } from '../../lib/extended-module'
 import { extendedCommand } from '../../lib/extended-command'
 
 export class SourceModule extends ExtendedModule {
-  public constructor(client: CookiecordClient) {
+  public constructor(client: LunaworkClient) {
     super(client)
   }
 

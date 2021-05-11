@@ -1,4 +1,4 @@
-import { default as CookiecordClient } from 'cookiecord'
+import { LunaworkClient } from '@sib3/lunawork'
 import {
   Message,
   GuildMember,
@@ -14,7 +14,7 @@ import { helpMessage } from './help-message'
 import { IGetHelpChanByUserIdResponse } from '../../lib/types'
 
 export class HelpChanBase extends ExtendedModule {
-  public constructor(client: CookiecordClient) {
+  public constructor(client: LunaworkClient) {
     super(client)
   }
 

@@ -1,20 +1,16 @@
-import {
-  default as CookiecordClient,
-  CommonInhibitors,
-  optional,
-} from 'cookiecord'
+import { LunaworkClient, guildsOnly, optional } from '@sib3/lunawork'
 import { Message, MessageEmbed } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { extendedCommand } from '../../lib/extended-command'
 
 export class HelpMessageModule extends ExtendedModule {
-  public constructor(client: CookiecordClient) {
+  public constructor(client: LunaworkClient) {
     super(client)
   }
 
   @extendedCommand({
     aliases: ['help', 'commands', 'h'],
-    inhibitors: [CommonInhibitors.guildsOnly],
+    inhibitors: [guildsOnly],
     description: "Sends what you're looking right now",
   })
   async help(msg: Message, @optional cmdTrigger?: string) {

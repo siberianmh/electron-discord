@@ -14,6 +14,7 @@ ts_project(
     name = "bot",
     srcs = glob(["src/**/*.ts"]),
     deps = [
+        "//third_party/github/lunawork/src:lunawork",
         "@npm//@sentry/node",
         "@npm//@types/fs-extra",
         "@npm//@types/humanize-duration",
@@ -23,7 +24,6 @@ ts_project(
         "@npm//@types/statsd-client",
         "@npm//algoliasearch",
         "@npm//axios",
-        "@npm//cookiecord",
         "@npm//discord.js",
         "@npm//dotenv",
         "@npm//fs-extra",

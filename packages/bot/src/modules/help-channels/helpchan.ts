@@ -1,4 +1,4 @@
-import { default as CookiecordClient, listener } from 'cookiecord'
+import { LunaworkClient, listener } from '@sib3/lunawork'
 import { Message, MessageEmbed, TextChannel } from 'discord.js'
 import { IGetHelpChanByChannelIdResponse } from '../../lib/types'
 import { helpChannels, guild } from '../../lib/config'
@@ -31,7 +31,7 @@ import { dormantEmbed } from './embeds/dormant'
  * Help channels are should be named after the chemical elements.
  */
 export class HelpChanModule extends HelpChanBase {
-  public constructor(client: CookiecordClient) {
+  public constructor(client: LunaworkClient) {
     super(client)
   }
 

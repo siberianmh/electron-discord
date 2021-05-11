@@ -1,4 +1,4 @@
-import { default as CookiecordClient } from 'cookiecord'
+import { LunaworkClient } from '@sib3/lunawork'
 import { Message, MessageEmbed, Snowflake } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { isTrustedMember } from '../../lib/inhibitors'
@@ -8,7 +8,7 @@ import { extendedCommand } from '../../lib/extended-command'
 import { InfractionType } from '../../lib/types'
 
 export class InfractionsModule extends ExtendedModule {
-  public constructor(client: CookiecordClient) {
+  public constructor(client: LunaworkClient) {
     super(client)
   }
 

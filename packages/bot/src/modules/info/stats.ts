@@ -1,10 +1,10 @@
-import { default as CookiecordClient, listener, Context } from 'cookiecord'
+import { LunaworkClient, listener, Context } from '@sib3/lunawork'
 import { GuildMember, Message, TextChannel } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import * as config from '../../lib/config'
 
 export class StatsModule extends ExtendedModule {
-  public constructor(client: CookiecordClient) {
+  public constructor(client: LunaworkClient) {
     super(client)
   }
 

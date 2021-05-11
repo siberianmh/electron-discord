@@ -1,4 +1,4 @@
-import { default as CookiecordClient, listener } from 'cookiecord'
+import { LunaworkClient, listener } from '@sib3/lunawork'
 import {
   CategoryChannel,
   ColorResolvable,
@@ -31,7 +31,7 @@ interface ISendLogMessageProps {
  * Logging for server events and staff actions
  */
 export class ModLogModule extends ExtendedModule {
-  public constructor(client: CookiecordClient) {
+  public constructor(client: LunaworkClient) {
     super(client)
   }
 

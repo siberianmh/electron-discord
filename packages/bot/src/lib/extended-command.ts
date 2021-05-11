@@ -1,4 +1,4 @@
-import { command, Module, ICommandDecoratorOptions } from 'cookiecord'
+import { command, Stage, ICommandDecoratorOptions } from '@sib3/lunawork'
 import { Message, MessageEmbed } from 'discord.js'
 import { ModLogModule } from '../modules/moderation/modlog'
 import { style } from './config'
@@ -8,7 +8,7 @@ export function extendedCommand(
   opts: Partial<ICommandDecoratorOptions> | undefined = {},
 ) {
   return function (
-    target: Module,
+    target: Stage,
     propertyKey: string,
     descriptor: PropertyDescriptor,
   ) {

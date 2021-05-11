@@ -1,4 +1,4 @@
-import { default as CookiecordClient, listener } from 'cookiecord'
+import { LunaworkClient, listener } from '@sib3/lunawork'
 import { Presence } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { style } from '../../lib/config'
@@ -9,7 +9,7 @@ import { InfractionType } from '../../lib/types'
 export class RblxGamePresenceModule extends ExtendedModule {
   private modLog: ModLogModule
 
-  public constructor(client: CookiecordClient) {
+  public constructor(client: LunaworkClient) {
     super(client)
 
     this.modLog = new ModLogModule(client)

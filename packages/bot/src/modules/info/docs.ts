@@ -1,4 +1,4 @@
-import { default as CookiecordClient } from 'cookiecord'
+import { LunaworkClient } from '@sib3/lunawork'
 import { Message, MessageEmbed } from 'discord.js'
 import algoliasearch, { SearchClient, SearchIndex } from 'algoliasearch'
 import type { Hit } from '@algolia/client-search'
@@ -34,7 +34,7 @@ export class DocsModule extends ExtendedModule {
 
   private newIndex: SearchIndex
 
-  public constructor(client: CookiecordClient) {
+  public constructor(client: LunaworkClient) {
     super(client)
 
     // I stole this from https://github.com/electron/electronjs.org/blob/master/views/layouts/main.hbs#L27

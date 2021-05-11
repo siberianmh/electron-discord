@@ -1,11 +1,11 @@
-import { default as CookiecordClient, listener } from 'cookiecord'
+import { LunaworkClient, listener } from '@sib3/lunawork'
 import { Message } from 'discord.js'
 import * as fuzz from 'fuzzball'
 import { ExtendedModule } from '../../lib/extended-module'
 import { createSelfDestructMessage } from '../../lib/self-destruct-messages'
 
 export class DownloadModule extends ExtendedModule {
-  public constructor(client: CookiecordClient) {
+  public constructor(client: LunaworkClient) {
     super(client)
   }
 
@@ -37,13 +37,13 @@ The members of this server will not help you download the exploit or get informa
     if (msg.author && msg.author.bot) {
       return
     }
-    const prefix = await this.client.getPrefix(msg)
+    const prefix = await this.client.fetchPrefix(msg)
     if (Array.isArray(prefix) && prefix.length === 0) {
       return
     }
     const matchingPrefix = Array.isArray(prefix)
       ? prefix.filter((x) => msg.content.startsWith(x))[0]
-      : msg.content.startsWith(prefix)
+      : msg.content.startsWith(prefix!)
       ? prefix
       : undefined
 

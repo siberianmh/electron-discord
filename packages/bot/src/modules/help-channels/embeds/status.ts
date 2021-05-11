@@ -1,9 +1,9 @@
-import { default as CookiecordClient } from 'cookiecord'
+import { LunaworkClient } from '@sib3/lunawork'
 import { Message, Collection, MessageEmbed, GuildChannel } from 'discord.js'
 import { IListHelpChannelsRespone } from '../../../lib/types'
 
 export const helpChannelStatusEmbed = (
-  client: CookiecordClient,
+  client: LunaworkClient,
   msg: Message,
   availableChannels: Collection<string, GuildChannel> | undefined,
   ongoingChannels: IListHelpChannelsRespone,

@@ -1,4 +1,4 @@
-import { default as CookiecordClient } from 'cookiecord'
+import { LunaworkClient } from '@sib3/lunawork'
 import { Message, TextChannel } from 'discord.js'
 import * as humanizeDuration from 'humanize-duration'
 import parse from 'parse-duration'
@@ -8,7 +8,7 @@ import { isTrustedMember } from '../../lib/inhibitors'
 import { splittyArgs } from '../../lib/split-args'
 
 export class SlowmodeModule extends ExtendedModule {
-  public constructor(client: CookiecordClient) {
+  public constructor(client: LunaworkClient) {
     super(client)
   }
 

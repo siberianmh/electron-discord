@@ -1,4 +1,4 @@
-import { default as CookiecordClient, optional } from 'cookiecord'
+import { LunaworkClient, optional } from '@sib3/lunawork'
 import * as fs from 'fs-extra'
 import * as path from 'path'
 import grayMatter = require('gray-matter')
@@ -13,7 +13,7 @@ export class TagsModule extends ExtendedModule {
   // this strange magic path.
   private tagsFolder = path.join(__dirname, '../../resources/tags')
 
-  public constructor(client: CookiecordClient) {
+  public constructor(client: LunaworkClient) {
     super(client)
   }
 

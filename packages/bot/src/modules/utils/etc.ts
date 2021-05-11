@@ -1,4 +1,4 @@
-import { default as CookiecordClient, listener } from 'cookiecord'
+import { LunaworkClient, listener } from '@sib3/lunawork'
 import { Message, MessageEmbed, MessageReaction, User } from 'discord.js'
 import * as humanizeDuration from 'humanize-duration'
 import { ExtendedModule } from '../../lib/extended-module'
@@ -7,7 +7,7 @@ import { guild } from '../../lib/config'
 import { redis, selfDestructMessage } from '../../lib/redis'
 
 export class EtcModule extends ExtendedModule {
-  public constructor(client: CookiecordClient) {
+  public constructor(client: LunaworkClient) {
     super(client)
   }
 
