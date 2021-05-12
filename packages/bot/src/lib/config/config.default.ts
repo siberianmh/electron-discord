@@ -50,6 +50,7 @@ export const guild = {
 
   channels: {
     roles: '760189688492720139',
+    releases: '750040178961416242',
     rules: '745041677185450005',
     voiceRules: '776136611510747186',
     adminBotInteractions: '771069886696914994',

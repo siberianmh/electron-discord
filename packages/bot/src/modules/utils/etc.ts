@@ -13,7 +13,7 @@ export class EtcModule extends ExtendedModule {
 
   //#region Commands
   @extendedCommand()
-  async ping(msg: Message) {
+  async ping(msg: Message): Promise<Message> {
     const bot_ping = +new Date() - +msg.createdAt
     const dsAPILatency = this.client.ws.ping
     const uptime = this.client.uptime
@@ -27,32 +27,37 @@ export class EtcModule extends ExtendedModule {
       .addField('Discord API Latency', `${dsAPILatency}ms`)
       .setTimestamp()
 
-    await msg.channel.send({ embed })
-  }
-
-  @extendedCommand()
-  public async unregular(msg: Message) {
-    if (msg.member?.roles.cache.has(guild.roles.regular)) {
-      await msg.member.roles.remove(guild.roles.regular)
-    }
-
-    return
+    return await msg.channel.send({ embed })
   }
   //#endregion
 
   //#region Listeners
   @listener({ event: 'message' })
-  public async createPoll(msg: Message) {
+  public async onNewRelease(msg: Message): Promise<Message | undefined> {
+    if (msg.channel.id !== guild.channels.releases) {
+      return
+    }
+
+    return await msg.crosspost()
+  }
+
+  @listener({ event: 'message' })
+  public async createPoll(msg: Message): Promise<void> {
     if (msg.author.bot || !msg.content.toLowerCase().startsWith('poll:')) {
       return
     }
     await msg.react('✅')
     await msg.react('❌')
     await msg.react('🤷')
+
+    return
   }
 
   @listener({ event: 'messageReactionAdd' })
-  public async bucketEmojiClicked(reaction: MessageReaction, user: User) {
+  public async bucketEmojiClicked(
+    reaction: MessageReaction,
+    user: User,
+  ): Promise<Message | undefined> {
     if (user.id === this.client.user?.id) {
       return
     }
