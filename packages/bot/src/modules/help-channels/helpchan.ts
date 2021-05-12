@@ -1,4 +1,4 @@
-import { LunaworkClient, listener } from 'lunawork'
+import { LunaworkClient, listener, isMessage } from 'lunawork'
 import {
   CommandInteraction,
   Message,
@@ -127,7 +127,7 @@ export class HelpChanModule extends HelpChanBase {
     if (
       (msg.channel as TextChannel).parentID !== guild.categories.helpOngoing
     ) {
-      if (msg instanceof Message) {
+      if (isMessage(msg)) {
         return await msg.channel.send(
           ':warning: you can only run this in ongoing help channel.',
         )
@@ -156,7 +156,7 @@ export class HelpChanModule extends HelpChanBase {
         CloseReason.Command,
       )
     } else {
-      if (msg instanceof Message) {
+      if (isMessage(msg)) {
         return await msg.channel.send(
           ':warning: you have to be the asker to close the channel.',
         )

@@ -1,4 +1,4 @@
-import { LunaworkClient } from 'lunawork'
+import { LunaworkClient, isMessage } from 'lunawork'
 import { CommandInteraction, Message, MessageEmbed } from 'discord.js'
 import algoliasearch, { SearchClient, SearchIndex } from 'algoliasearch'
 import type { Hit } from '@algolia/client-search'
@@ -62,7 +62,7 @@ export class DocsModule extends ExtendedModule {
     })
 
     if (!hits.length) {
-      if (msg instanceof Message) {
+      if (isMessage(msg)) {
         return await createSelfDestructMessage(
           msg,
           this.NOT_FOUND_EMBED(searchIndex),
@@ -90,7 +90,7 @@ export class DocsModule extends ExtendedModule {
 
     const embed = this.createEmbed(displayTitle, url, text)
 
-    if (msg instanceof Message) {
+    if (isMessage(msg)) {
       return await createSelfDestructMessage(msg, embed)
     } else {
       return msg.reply({ embeds: [embed] })
