@@ -1,5 +1,10 @@
 import { LunaworkClient, listener } from 'lunawork'
-import { Message, MessageEmbed, TextChannel } from 'discord.js'
+import {
+  CommandInteraction,
+  Message,
+  MessageEmbed,
+  TextChannel,
+} from 'discord.js'
 import { IGetHelpChanByChannelIdResponse } from '../../lib/types'
 import { helpChannels, guild } from '../../lib/config'
 import * as config from '../../lib/config'
@@ -112,8 +117,9 @@ export class HelpChanModule extends HelpChanBase {
   @extendedCommand({
     aliases: ['resolve', 'done', 'close', 'dormant'],
     description: 'Marks __ongoing__ help channel as resolved',
+    slashCommand: 'both',
   })
-  async resolved(msg: Message) {
+  async resolved(msg: Message | CommandInteraction) {
     if (!msg.guild) {
       return
     }
@@ -121,28 +127,45 @@ export class HelpChanModule extends HelpChanBase {
     if (
       (msg.channel as TextChannel).parentID !== guild.categories.helpOngoing
     ) {
-      return await msg.channel.send(
-        ':warning: you can only run this in ongoing help channels.',
-      )
+      if (msg instanceof Message) {
+        return await msg.channel.send(
+          ':warning: you can only run this in ongoing help channel.',
+        )
+      } else {
+        return await msg.reply(
+          ':warning: you can only run this in ongoing help channel.',
+          { ephemeral: true },
+        )
+      }
     }
 
     const { data: owner } = await this.api.get<IGetHelpChanByChannelIdResponse>(
-      `/helpchan/${msg.channel.id}`,
+      `/helpchan/${msg.channel!.id}`,
     )
 
     if (
-      (owner && owner.user_id === msg.author.id) ||
+      (owner && owner.user_id === msg.member.id) ||
       msg.member?.permissions.has('MANAGE_MESSAGES') ||
       msg.member?.roles.cache.has(guild.roles.maintainer)
     ) {
+      if (msg instanceof CommandInteraction) {
+        await msg.reply('Channel is starting closing 🎈', { ephemeral: true })
+      }
       return await this.markChannelAsDormant(
         msg.channel as TextChannel,
         CloseReason.Command,
       )
     } else {
-      return await msg.channel.send(
-        ':warning: you have to be the asker to close the channel.',
-      )
+      if (msg instanceof Message) {
+        return await msg.channel.send(
+          ':warning: you have to be the asker to close the channel.',
+        )
+      } else {
+        return await msg.reply(
+          ':warning: you have to be the asker to close the channel.',
+          { ephemeral: true },
+        )
+      }
     }
   }
 
