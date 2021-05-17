@@ -9,9 +9,13 @@
 ## Packages Structure
 
 - [`/bot`](packages/bot/README.md) - Contains the source codes for Electron bot.
+- [`/buttowski`](packages/buttowski/README.md) - The CLI tool for kick the big
+  amount of folks with specific role.
 - [`/server`](packages/server/README.md) - Constains the server source code for
   Electron bot.
+- [`/the-board`](packages/the-board/README.md) - The source codes for Mod Mail
+  bot.
 
 ## License
 
-[MIT](LICENSE.md)
+[MIT](LICENSE)
