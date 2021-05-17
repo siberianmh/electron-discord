@@ -3,7 +3,6 @@ load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary")
 
 package(default_visibility = ["//visibility:public"])
 
-
 ts_project(
     name = "the-board",
     srcs = glob(["src/**/*.ts"]),
@@ -18,7 +17,7 @@ ts_project(
         "@npm//mysql",
         "@npm//reflect-metadata",
         "@npm//typeorm",
-    ] + INTERNAL_DEPS,
+    ],
 )
 
 nodejs_binary(

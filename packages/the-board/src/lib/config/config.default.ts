@@ -8,4 +8,6 @@ export const guild = {
   categories: {
     modMail: '843922569924706324',
   },
+
+  modMailChannelPrefix: 'mm-',
 }

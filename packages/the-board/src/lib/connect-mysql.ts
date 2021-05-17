@@ -16,6 +16,7 @@ export const connectMySQL = (): Promise<Connection> => {
         logging: true,
         entities: [entitiesDir],
         charset: 'utf8mb4_unicode_ci',
+        synchronize: true,
       })
     : createConnection({
         type: 'mysql',

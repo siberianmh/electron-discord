@@ -6,13 +6,13 @@ import {
   CreateDateColumn,
 } from 'typeorm'
 
-@Entity('mail')
+@Entity('mail_channel')
 export class Mail extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
 
   @Column('varchar')
-  prefix: string
+  channel_name: string
 
   @Column('varchar')
   channel_id: string
