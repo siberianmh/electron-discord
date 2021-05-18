@@ -1,22 +1,29 @@
-import { Message, MessageEmbed } from 'discord.js'
+import { Message, MessageEmbed, CommandInteraction } from 'discord.js'
+import { isMessage } from 'lunawork'
 import { redis, selfDestructMessage } from './redis'
 import { style } from './config'
 
 export const createSelfDestructMessage = async (
-  msg: Message,
+  msg: Message | CommandInteraction,
   messageContent: MessageEmbed | string,
 ) => {
   let createdMessage: Message
 
-  if (typeof messageContent === 'string') {
-    createdMessage = await msg.channel.send(messageContent)
+  if (isMessage(msg)) {
+    if (typeof messageContent === 'string') {
+      createdMessage = await msg.channel.send(messageContent)
+    } else {
+      createdMessage = await msg.channel.send({ embed: messageContent })
+    }
   } else {
-    createdMessage = await msg.channel.send({ embed: messageContent })
+    await msg.reply(messageContent)
+    // @ts-ignore The types for d.js v8 is not great 🤷‍♂️
+    createdMessage = await msg.fetchReply()
   }
 
   await redis.set(
     selfDestructMessage(createdMessage.id),
-    msg.author.id,
+    msg.member!.user.id,
     'ex',
     60 * 60 * 24,
   )

@@ -21,6 +21,29 @@ export class SlashModule extends ExtendedModule {
     ],
   }
 
+  private TAGS_COMMAND: ApplicationCommandData = {
+    name: 'tags',
+    description: 'Get the useful information about Electron world',
+    options: [
+      {
+        name: 'resource',
+        description: 'A world which you want to see',
+        type: 'STRING',
+        required: true,
+        choices: [
+          {
+            name: 'Electron',
+            value: 'electron',
+          },
+          {
+            name: 'Fiddle',
+            value: 'fiddle',
+          },
+        ],
+      },
+    ],
+  }
+
   private CLOSE_COMMAND: ApplicationCommandData = {
     name: 'close',
     description: 'Close the active help channel',
@@ -40,5 +63,6 @@ export class SlashModule extends ExtendedModule {
   public async registerSlashCommands() {
     await this.registerSlash(this.DOCS_COMMAND)
     await this.registerSlash(this.CLOSE_COMMAND)
+    await this.registerSlash(this.TAGS_COMMAND)
   }
 }

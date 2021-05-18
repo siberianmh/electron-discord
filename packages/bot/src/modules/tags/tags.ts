@@ -2,7 +2,7 @@ import { LunaworkClient, optional } from 'lunawork'
 import * as fs from 'fs-extra'
 import * as path from 'path'
 import grayMatter = require('gray-matter')
-import { Message, MessageEmbed } from 'discord.js'
+import { Message, CommandInteraction, MessageEmbed } from 'discord.js'
 import { extendedCommand } from '../../lib/extended-command'
 import { ExtendedModule } from '../../lib/extended-module'
 import { createSelfDestructMessage } from '../../lib/self-destruct-messages'
@@ -19,8 +19,9 @@ export class TagsModule extends ExtendedModule {
 
   @extendedCommand({
     aliases: ['t', 'topic', 'r', 'resources'],
+    slashCommand: 'both',
   })
-  public async tags(msg: Message, @optional tag?: string) {
+  public async tags(msg: Message | CommandInteraction, @optional tag?: string) {
     if (!tag) {
       return await this.notFoundEmbed(msg, tag)
     }
@@ -68,7 +69,7 @@ export class TagsModule extends ExtendedModule {
     return tags
   }
 
-  private async notFoundEmbed(msg: Message, tag?: string) {
+  private async notFoundEmbed(msg: Message | CommandInteraction, tag?: string) {
     const possibleTags = await this.listTheTags()
 
     const embed = new MessageEmbed()
@@ -78,6 +79,7 @@ export class TagsModule extends ExtendedModule {
           .map((tag) => tag.split('.').slice(0, -1).join('.'))
           .join(', '),
       )
+
     return createSelfDestructMessage(msg, embed)
   }
 }
