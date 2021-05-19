@@ -1,5 +1,12 @@
 export const style = {
-  colors: {},
+  colors: {
+    softRed: 0xcd6d6d,
+    softGreen: 0x68c290,
+    red: '#FF0000',
+    yellow: '#FFB94E',
+    greenBright: '#32CD32',
+    electronBlue: '#358397',
+  },
 }
 
 export const guild = {

@@ -45,7 +45,7 @@ export class MailUser extends MailBase {
       return
     }
 
-    const channelName = `${this.CHANNEL_PREFIX}-${msg.author.username}`
+    const channelName = `${this.CHANNEL_PREFIX}-${msg.author.username}-${msg.author.discriminator}`
     const channel = await guild.channels.create(channelName, {
       parent: guildConfig.categories.modMail,
       reason: 'Someone search for help',
@@ -61,10 +61,12 @@ export class MailUser extends MailBase {
 
     await entity.save()
 
+    const member = await guild.members.fetch(msg.author.id)
+
     await channel.send(
       '👋 here Someone is requesting help from the Moderation team. Please notice that these channels will not be closed automatically, and have a specific amount of active channels. For closing the channel you can use the `-mm-close` command. All messages that start with `-` or `tb!` will be skipped and can be used for internal discussion. For now, all messages are not saved, in the future, all messages will be saved for future investigation. Thanks for reading and good luck 🙏',
     )
-    await channel.send({ embed: userInfoEmbed(msg.author) })
+    await channel.send({ embed: userInfoEmbed(member) })
     return await channel.send({ embed: userMessageEmbed(msg) })
   }
 }

@@ -1,4 +1,4 @@
-name: The Board
+name: EDis Server
 
 on:
   push:
@@ -10,28 +10,27 @@ jobs:
   #############
   # Compiling #
   #############
-  compile-the-board:
-    runs-on: ubuntu-latest
+  compile-server:
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
-      - name: Compile The Board
-        run: |
-          bazel build //packages/the-board
+      - name: Compile server
+        run: bazel build //packages/server
 
-  ################
-  # Docker Build #
-  ################
-  docker-the-board:
-    runs-on: ubuntu-latest
+  #################
+  # Docker Builds #
+  #################
+  docker-server:
+    runs-on: ubuntu-20.04
     if: github['ref'] == 'refs/heads/main'
 
     needs:
-      - compile-the-board
+      - compile-server
 
     steps:
       - uses: actions/checkout@v2
-      - name: Login to Container registry
+      - name: Login to Packages Container registry
         uses: docker/login-action@v1.9.0
         with:
           registry: ghcr.io
@@ -39,21 +38,21 @@ jobs:
           password: ${{ secrets.CR_PAT }}
       - name: Build Docker Image
         run: |
-          bazel build //packages/the-board:docker
-      - name: Publish Latest Docker Image
+          bazel build //packages/server:docker
+      - name: Public Latest Docker Image
         run: |
-          bazel run //packages/the-board:push
+          bazel run //packages/server:push-server
 
   #############
   # Deploying #
   #############
-  deploy-the-board:
-    environment: prod-the-board
-    runs-on: ubuntu-latest
+  deploy-server:
+    environment: production-server
+    runs-on: ubuntu-20.04
     if: github['ref'] == 'refs/heads/main'
 
     needs:
-      - docker-the-board
+      - docker-server
 
     steps:
       - uses: actions/checkout@v2
@@ -65,4 +64,4 @@ jobs:
         run: doctl kubernetes cluster kubeconfig save siberianmh-core
       - name: Rollout
         run: |
-          echo "TODO: Do real deploy"
+          kubectl rollout restart deploy/edis-server

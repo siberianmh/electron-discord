@@ -1,6 +1,7 @@
 import { LunaworkClient, listener, command } from 'lunawork'
 import { Message } from 'discord.js'
 import { MailBase } from './base'
+import { Mail as MailEntity } from '../../entities/mail'
 import { guild } from '../../lib/config'
 
 export class MailStaff extends MailBase {
@@ -29,12 +30,45 @@ export class MailStaff extends MailBase {
       return
     }
 
-    return
+    const mailChannel = await MailEntity.findOne({
+      where: { channel_id: msg.channel.id },
+    })
+
+    if (!mailChannel) {
+      return msg.channel.send('Unable to find the channel in the database')
+    }
+
+    const recipient = await msg.guild?.members.fetch(mailChannel.user_id)
+
+    try {
+      recipient!.send(`**${msg.author.tag}:** ${msg.cleanContent}`)
+      return msg.react('✅')
+    } catch (err) {
+      // TODO: close the channel and send a message
+      console.log(err)
+      return msg.react('❌')
+    }
   }
 
   @command({ aliases: ['mm-close'] })
-  public async mmclose(msg: Message) {
-    console.log(msg)
+  public async mmclose(msg: Message): Promise<Message | void> {
+    const mailChannel = await MailEntity.findOne({
+      where: { channel_id: msg.channel.id },
+    })
+
+    if (!mailChannel) {
+      return msg.channel.send('Unable to find the channel in the database')
+    }
+
+    const recipient = await msg.guild?.members.fetch(mailChannel.user_id)
+
+    await recipient!.send(
+      'This thread is closed. If your problem is not resolved please try to open a new thread simply by sending a new message.',
+    )
+
+    await mailChannel.remove()
+    await msg.channel.delete()
+    return
   }
 
   private getPrefix(content: string, prefixes: Array<string> | string | null) {
