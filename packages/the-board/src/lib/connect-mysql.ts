@@ -32,7 +32,7 @@ export const connectMySQL = (): Promise<Connection> => {
         cache: {
           type: 'ioredis',
           options: {
-            type: process.env.REDIS_URL,
+            host: process.env.REDIS_URL,
             port: 6379,
           },
         },
