@@ -1,3 +1,5 @@
+import { InfractionType } from './infractions'
+
 export interface IHelpChannel {
   readonly id: number
   readonly user_id: string
@@ -28,3 +30,10 @@ export interface IMessageRolesActions {
 }
 
 export type IGetMessageRolesActionsResponse = Array<IMessageRolesActions>
+
+export interface IInfraction {
+  readonly user_id: string
+  readonly actor_id: string
+  readonly reason: string
+  readonly type: InfractionType
+}

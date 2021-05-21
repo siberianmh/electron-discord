@@ -4,14 +4,16 @@ import { ExtendedModule } from '../../lib/extended-module'
 import { style } from '../../lib/config'
 import { rblxAutoKicker, redis } from '../../lib/redis'
 import { ModLogModule } from './modlog'
-import { InfractionType } from '../../lib/types'
+import { InfractionsModule } from './infractions'
 
 export class RblxGamePresenceModule extends ExtendedModule {
   private modLog: ModLogModule
+  private infractions: InfractionsModule
 
   public constructor(client: LunaworkClient) {
     super(client)
 
+    this.infractions = new InfractionsModule(client)
     this.modLog = new ModLogModule(client)
   }
 
@@ -47,15 +49,8 @@ export class RblxGamePresenceModule extends ExtendedModule {
 
     if (triggeredTimes >= 1) {
       const reason = 'You are using the bad Electron'
-      await presence.member?.kick('You are using the bad Electron 😥')
 
-      await this.api.post('/infractions', {
-        user_id: presence.member?.id,
-        actor_id: '762678768032546819',
-        reason: reason,
-        type: InfractionType.Kick,
-      })
-
+      await this.infractions.performKick(presence.member!.user, reason)
       return await this.modLog.sendLogMessage({
         colour: style.colors.red,
         title: `${presence.user?.tag} is kicked automatically by system`,

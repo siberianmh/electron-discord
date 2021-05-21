@@ -1,5 +1,5 @@
 import { LunaworkClient } from 'lunawork'
-import { Message, MessageEmbed, Snowflake } from 'discord.js'
+import { Message, MessageEmbed, User, Snowflake, GuildMember } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { isTrustedMember } from '../../lib/inhibitors'
 import { guild } from '../../lib/config'
@@ -11,6 +11,8 @@ export class InfractionsModule extends ExtendedModule {
   public constructor(client: LunaworkClient) {
     super(client)
   }
+
+  private USER_PATTERN = /(?:<@!?)?(\d+)>?/
 
   /**
    * Kick a user for the given reason.
@@ -34,9 +36,18 @@ export class InfractionsModule extends ExtendedModule {
       return await msg.channel.send(':warning: invalid syntax')
     }
 
+    const res = this.USER_PATTERN.exec(user_id)
+    let user: User | undefined
+
+    if (res && res[1]) {
+      user = msg.client.users.cache.get(res[1])
+    } else {
+      user = msg.client.users.cache.get(user_id)
+    }
+
     const reason = splitArgs.join(' ')
 
-    return await this.performKick(msg, user_id, reason)
+    return await this.performKick(user!, reason, msg)
   }
 
   @extendedCommand({
@@ -182,28 +193,39 @@ export class InfractionsModule extends ExtendedModule {
     return ctx.channel.send({ embed })
   }
 
-  protected async performKick(
-    ctx: Message,
-    user_id: Snowflake,
-    reason: string,
-  ) {
-    if (!reason) {
+  public async performKick(user: User, reason: string, ctx?: Message) {
+    if (!reason && ctx) {
       return ctx.channel.send('Unable to kick without reason')
     }
 
-    const member = await ctx.guild?.members.fetch(user_id)
+    let member: GuildMember | undefined
+    if (ctx) {
+      member = await ctx.guild?.members.fetch(user.id)
+    } else {
+      member = await (
+        await this.client.guilds.fetch(guild.id)
+      ).members.fetch(user.id)
+    }
+
+    if (!member && ctx) {
+      return ctx.channel.send('Unable to find specified user.')
+    }
 
     if (!member) {
-      return ctx.channel.send('Unable to find specified user.')
+      return
     }
 
     if (
       member.permissions.has('MANAGE_MESSAGES') ||
       member.roles.cache.has(guild.roles.maintainer)
     ) {
-      return ctx.channel.send(
-        "Well you can't kick Admins, but it is be a good option",
-      )
+      if (ctx) {
+        return ctx.channel.send(
+          "Well you can't kick Admins, but it is be a good option",
+        )
+      } else {
+        return
+      }
     }
 
     if (process.env.NODE_ENV !== 'development') {
@@ -211,15 +233,15 @@ export class InfractionsModule extends ExtendedModule {
     }
 
     const message = `Applied **kick** to <@${member.id}>, reason: ${reason}`
-    await ctx.channel.send(message)
+    if (ctx) {
+      await ctx.channel.send(message)
+    }
 
-    await this.api.post('/infractions', {
+    return await this.addInfraction({
       user_id: member?.user.id,
       actor_id: ctx?.author.id ?? '762678768032546819',
       reason: reason,
       type: InfractionType.Kick,
     })
-
-    return
   }
 }
