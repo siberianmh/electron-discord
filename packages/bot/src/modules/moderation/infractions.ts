@@ -15,6 +15,12 @@ interface IPerformInfractionProps {
   readonly ctx?: Message
 }
 
+interface INotifyInfractionProps {
+  readonly reason: string
+  readonly type: InfractionType
+  readonly user: User
+}
+
 // TODO:
 //  - notify user
 export class InfractionsModule extends ExtendedModule {
@@ -84,7 +90,7 @@ export class InfractionsModule extends ExtendedModule {
       )
     }
 
-    const user_id = splitArgs.shift()
+    const [user_id, ...reason] = splitArgs
 
     if (!user_id) {
       return await msg.channel.send(':warning: invalid syntax')
@@ -99,13 +105,12 @@ export class InfractionsModule extends ExtendedModule {
       user = msg.client.users.cache.get(user_id)
     }
 
-    const reason = splitArgs.join(' ')
     const purge = trigger === 'pban' || trigger === 'purgeban'
 
     return await this.performInfraction({
       ctx: msg,
       user: user!,
-      reason,
+      reason: reason.join(' '),
       type: InfractionType.Ban,
       purge,
     })
@@ -139,23 +144,32 @@ export class InfractionsModule extends ExtendedModule {
   public async warn(msg: Message, args: string) {
     const splitArgs = splittyArgs(args)
     if (splitArgs.length === 0) {
-      return msg.channel.send('We all need some beer.')
-    }
-
-    const userSnowflake = splitArgs.shift()
-
-    if (!userSnowflake) {
-      return await msg.channel.send(':warning: invalid syntax')
-    }
-
-    const reason = splitArgs.join(' ')
-    if (!reason) {
-      return msg.channel.send(
-        'Unable to give warning to the person without reason',
+      return await msg.channel.send(
+        ':warning: syntax !warn <@userID> [?reason]',
       )
     }
 
-    return msg.channel.send('not today')
+    const [user_id, ...reason] = splitArgs
+
+    if (!user_id) {
+      return await msg.channel.send(':warning: invalid syntax')
+    }
+
+    const res = this.USER_PATTERN.exec(user_id)
+    let user: User | undefined
+
+    if (res && res[1]) {
+      user = msg.client.users.cache.get(res[1])
+    } else {
+      user = msg.client.users.cache.get(user_id)
+    }
+
+    return await this.performInfraction({
+      user: user!,
+      ctx: msg,
+      reason: reason.join(' '),
+      type: InfractionType.Warn,
+    })
   }
 
   @extendedCommand({
@@ -203,6 +217,13 @@ export class InfractionsModule extends ExtendedModule {
       }
     }
 
+    let message = '🙇‍♂️ infraction applied'
+    await this.notifyInfraction({
+      reason: props.reason,
+      type: props.type,
+      user: member.user,
+    })
+
     if (process.env.NODE_ENV !== 'development') {
       switch (props.type) {
         case InfractionType.Kick:
@@ -212,12 +233,25 @@ export class InfractionsModule extends ExtendedModule {
             reason: props.reason,
             days: props.purge ? 7 : 0,
           })
+        case InfractionType.Warn:
+          return
         default:
           return
       }
     }
 
-    const message = `Applied **kick** to <@${member.id}>, reason: ${props.reason}`
+    console.log(props.type)
+    switch (props.type) {
+      case InfractionType.Kick:
+        message = `Applied **kick** to <@${member.id}>, reason: ${props.reason}`
+      case InfractionType.Ban:
+        message = `Applied **${props.purge ?? 'purge'}ban** to <@${
+          member.id
+        }>, reason ${props.reason}`
+      case InfractionType.Warn:
+        message = `Applied **warning** to <@${member.id}>, ${props.reason}`
+    }
+
     if (props.ctx) {
       await props.ctx.channel.send(message)
     }
@@ -229,5 +263,26 @@ export class InfractionsModule extends ExtendedModule {
       type: props.type,
       active: true,
     })
+  }
+
+  private async notifyInfraction(props: INotifyInfractionProps) {
+    const description = `**Type: ${props.type}**\n
+**Reason:** ${props.reason}`
+
+    const embed = new MessageEmbed().setDescription(description)
+
+    embed.setAuthor('Information about infraction')
+    embed.setTitle('Plese review the future actions')
+
+    embed.setFooter(
+      'If you would like to discuss or appeal this infraction, please send a message to the ModMail bot',
+    )
+
+    try {
+      await props.user.send(embed)
+      return true
+    } catch (err) {
+      return false
+    }
   }
 }

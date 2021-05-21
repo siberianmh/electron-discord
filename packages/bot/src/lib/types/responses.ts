@@ -37,4 +37,5 @@ export interface IInfraction {
   readonly reason: string
   readonly type: InfractionType
   readonly active?: boolean
+  readonly expires_at?: Date
 }
