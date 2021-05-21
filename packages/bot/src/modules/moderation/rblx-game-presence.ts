@@ -5,6 +5,7 @@ import { style } from '../../lib/config'
 import { rblxAutoKicker, redis } from '../../lib/redis'
 import { ModLogModule } from './modlog'
 import { InfractionsModule } from './infractions'
+import { InfractionType } from '../../lib/types'
 
 export class RblxGamePresenceModule extends ExtendedModule {
   private modLog: ModLogModule
@@ -50,7 +51,11 @@ export class RblxGamePresenceModule extends ExtendedModule {
     if (triggeredTimes >= 1) {
       const reason = 'You are using the bad Electron'
 
-      await this.infractions.performKick(presence.member!.user, reason)
+      await this.infractions.performInfraction({
+        user: presence.member!.user,
+        type: InfractionType.Kick,
+        reason: reason,
+      })
       return await this.modLog.sendLogMessage({
         colour: style.colors.red,
         title: `${presence.user?.tag} is kicked automatically by system`,

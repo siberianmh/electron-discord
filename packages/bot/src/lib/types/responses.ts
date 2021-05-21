@@ -36,4 +36,5 @@ export interface IInfraction {
   readonly actor_id: string
   readonly reason: string
   readonly type: InfractionType
+  readonly active?: boolean
 }

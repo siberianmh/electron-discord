@@ -1,4 +1,4 @@
-import { LunaworkClient } from 'lunawork'
+import { LunaworkClient, Context, isCommandMessage } from 'lunawork'
 import { Message, MessageEmbed, User, Snowflake, GuildMember } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { isTrustedMember } from '../../lib/inhibitors'
@@ -7,6 +7,16 @@ import { splittyArgs } from '../../lib/split-args'
 import { extendedCommand } from '../../lib/extended-command'
 import { InfractionType } from '../../lib/types'
 
+interface IPerformInfractionProps {
+  readonly user: User
+  readonly type: InfractionType
+  readonly reason: string
+  readonly purge?: boolean
+  readonly ctx?: Message
+}
+
+// TODO:
+//  - notify user
 export class InfractionsModule extends ExtendedModule {
   public constructor(client: LunaworkClient) {
     super(client)
@@ -47,53 +57,58 @@ export class InfractionsModule extends ExtendedModule {
 
     const reason = splitArgs.join(' ')
 
-    return await this.performKick(user!, reason, msg)
+    return await this.performInfraction({
+      user: user!,
+      reason: reason,
+      type: InfractionType.Kick,
+      ctx: msg,
+    })
   }
 
   @extendedCommand({
     single: true,
     inhibitors: [isTrustedMember],
     description: 'syntax !ban snowflake [?reason]',
+    usesContextAPI: true,
+    aliases: ['purgeban', 'pban'],
   })
-  public async ban(msg: Message, args: string) {
-    const splitArgs = splittyArgs(args)
-    if (splitArgs.length === 0) {
-      return await msg.channel.send(':warning: syntax !ban <@userID> [?reason]')
+  public async ban({ msg, trigger }: Context, args: string) {
+    if (isCommandMessage(msg)) {
+      return
     }
 
-    const userId = splitArgs.shift()
-
-    if (!userId) {
-      return await msg.channel.send(':warning: invalid syntax')
-    }
-
-    const reason = splitArgs.join(' ')
-
-    return await this.performBan(msg, userId, reason, false)
-  }
-
-  @extendedCommand({
-    single: true,
-    inhibitors: [isTrustedMember],
-    description: 'syntax !pban snowflake [?reason]',
-    aliases: ['purgeban'],
-  })
-  public async pban(msg: Message, args: string) {
     const splitArgs = splittyArgs(args)
     if (splitArgs.length === 0) {
       return await msg.channel.send(
-        ':warning: syntax !pban <snowflake> [?reason]',
+        ':warning: syntax !kick <@userID> [?reason]',
       )
     }
 
-    const userId = splitArgs.shift()
-    if (!userId) {
+    const user_id = splitArgs.shift()
+
+    if (!user_id) {
       return await msg.channel.send(':warning: invalid syntax')
     }
 
-    const reason = splitArgs.join(' ')
+    const res = this.USER_PATTERN.exec(user_id)
+    let user: User | undefined
 
-    return await this.performBan(msg, userId, reason, true)
+    if (res && res[1]) {
+      user = msg.client.users.cache.get(res[1])
+    } else {
+      user = msg.client.users.cache.get(user_id)
+    }
+
+    const reason = splitArgs.join(' ')
+    const purge = trigger === 'pban' || trigger === 'purgeban'
+
+    return await this.performInfraction({
+      ctx: msg,
+      user: user!,
+      reason,
+      type: InfractionType.Ban,
+      purge,
+    })
   }
 
   @extendedCommand({
@@ -153,62 +168,22 @@ export class InfractionsModule extends ExtendedModule {
   }
   //#endregion
 
-  private async performBan(
-    ctx: Message,
-    userId: Snowflake,
-    reason: string,
-    purge: boolean,
-  ) {
-    if (!reason) {
-      return ctx.channel.send('Unable to ban user without reason')
-    }
-
-    const member = await ctx.guild?.members.fetch(userId)
-
-    if (!member) {
-      return ctx.channel.send('Unable to find specified user.')
-    }
-
-    if (
-      member.permissions.has('MANAGE_MESSAGES') ||
-      member.roles.cache.has(guild.roles.maintainer)
-    ) {
-      return ctx.channel.send("Well you can't ban Admins 🌚")
-    }
-
-    if (process.env.NODE_ENV !== 'development') {
-      await member.ban({
-        reason: reason,
-        days: purge ? 7 : 0,
-      })
-    }
-
-    const embed = new MessageEmbed()
-      .setAuthor(
-        `${member.user.tag} has been banned`,
-        member.user.displayAvatarURL({ dynamic: false }) || undefined,
-      )
-      .setDescription(`**Reason**: ${reason}`)
-
-    return ctx.channel.send({ embed })
-  }
-
-  public async performKick(user: User, reason: string, ctx?: Message) {
-    if (!reason && ctx) {
-      return ctx.channel.send('Unable to kick without reason')
+  public async performInfraction(props: IPerformInfractionProps) {
+    if (!props.reason && props.ctx) {
+      return props.ctx.channel.send('Unable to apply infraction without reason')
     }
 
     let member: GuildMember | undefined
-    if (ctx) {
-      member = await ctx.guild?.members.fetch(user.id)
+    if (props.ctx) {
+      member = await props.ctx.guild?.members.fetch(props.user.id)
     } else {
       member = await (
         await this.client.guilds.fetch(guild.id)
-      ).members.fetch(user.id)
+      ).members.fetch(props.user.id)
     }
 
-    if (!member && ctx) {
-      return ctx.channel.send('Unable to find specified user.')
+    if (!member && props.ctx) {
+      return props.ctx.channel.send('Unable to find specified user.')
     }
 
     if (!member) {
@@ -219,9 +194,9 @@ export class InfractionsModule extends ExtendedModule {
       member.permissions.has('MANAGE_MESSAGES') ||
       member.roles.cache.has(guild.roles.maintainer)
     ) {
-      if (ctx) {
-        return ctx.channel.send(
-          "Well you can't kick Admins, but it is be a good option",
+      if (props.ctx) {
+        return props.ctx.channel.send(
+          'You can apply infraction to the mod user.',
         )
       } else {
         return
@@ -229,19 +204,30 @@ export class InfractionsModule extends ExtendedModule {
     }
 
     if (process.env.NODE_ENV !== 'development') {
-      await member.kick(reason)
+      switch (props.type) {
+        case InfractionType.Kick:
+          await member.kick(props.reason)
+        case InfractionType.Ban:
+          await member.ban({
+            reason: props.reason,
+            days: props.purge ? 7 : 0,
+          })
+        default:
+          return
+      }
     }
 
-    const message = `Applied **kick** to <@${member.id}>, reason: ${reason}`
-    if (ctx) {
-      await ctx.channel.send(message)
+    const message = `Applied **kick** to <@${member.id}>, reason: ${props.reason}`
+    if (props.ctx) {
+      await props.ctx.channel.send(message)
     }
 
     return await this.addInfraction({
-      user_id: member?.user.id,
-      actor_id: ctx?.author.id ?? '762678768032546819',
-      reason: reason,
-      type: InfractionType.Kick,
+      user_id: member.user.id,
+      actor_id: props.ctx?.author.id ?? '762678768032546819',
+      reason: props.reason,
+      type: props.type,
+      active: true,
     })
   }
 }
