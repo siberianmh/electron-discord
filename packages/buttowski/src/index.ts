@@ -21,7 +21,6 @@ const kickedMessage =
 const client = new Client({
   intents: Intents.ALL,
   partials: ['REACTION', 'MESSAGE', 'USER', 'CHANNEL'],
-  retryLimit: 3,
 })
 
 client.login(process.env.DISCORD_TOKEN)
