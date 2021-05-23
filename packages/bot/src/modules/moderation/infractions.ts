@@ -228,15 +228,15 @@ export class InfractionsModule extends ExtendedModule {
       switch (props.type) {
         case InfractionType.Kick:
           await member.kick(props.reason)
+          break
         case InfractionType.Ban:
           await member.ban({
             reason: props.reason,
             days: props.purge ? 7 : 0,
           })
+          break
         case InfractionType.Warn:
-          return
-        default:
-          return
+          break
       }
     }
 
@@ -244,12 +244,15 @@ export class InfractionsModule extends ExtendedModule {
     switch (props.type) {
       case InfractionType.Kick:
         message = `Applied **kick** to <@${member.id}>, reason: ${props.reason}`
+        break
       case InfractionType.Ban:
         message = `Applied **${props.purge ?? 'purge'}ban** to <@${
           member.id
         }>, reason ${props.reason}`
+        break
       case InfractionType.Warn:
         message = `Applied **warning** to <@${member.id}>, ${props.reason}`
+        break
     }
 
     if (props.ctx) {
