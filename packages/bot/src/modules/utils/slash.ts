@@ -1,5 +1,8 @@
 import { LunaworkClient, listener } from 'lunawork'
-import { ApplicationCommandData } from 'discord.js'
+import {
+  ApplicationCommandData,
+  ApplicationCommandPermissionData,
+} from 'discord.js'
 import { guild } from '../../lib/config'
 import { ExtendedModule } from '../../lib/extended-module'
 
@@ -49,6 +52,19 @@ export class SlashModule extends ExtendedModule {
     description: 'Close the active help channel',
   }
 
+  private CLAIM_COMMAND: ApplicationCommandData = {
+    name: 'claim',
+    description: 'Take some user message to the help channel',
+    options: [
+      {
+        name: 'user',
+        description: 'The user itself',
+        type: 'USER',
+        required: true,
+      },
+    ],
+  }
+
   private async registerSlash(command: ApplicationCommandData) {
     if (process.env.NODE_ENV === 'development') {
       return await this.client.guilds.cache
@@ -59,10 +75,42 @@ export class SlashModule extends ExtendedModule {
     }
   }
 
+  private async registerAdminSlash(command: ApplicationCommandData) {
+    const cmd = await this.registerSlash(command)
+    const permissions: Array<ApplicationCommandPermissionData> = [
+      // @everyone
+      {
+        id: guild.roles.everyone,
+        type: 'ROLE',
+        permission: process.env.NODE_ENV === 'development' ? true : false,
+      },
+      // @Maintainer
+      {
+        id: guild.roles.maintainer,
+        type: 'ROLE',
+        permission: true,
+      },
+      // @Admin
+      {
+        id: guild.roles.admin,
+        type: 'ROLE',
+        permission: true,
+      },
+      // The Special Role For Hashimoto
+      {
+        id: guild.roles.hashithemoto,
+        type: 'ROLE',
+        permission: true,
+      },
+    ]
+    return await cmd?.setPermissions(permissions)
+  }
+
   @listener({ event: 'ready' })
   public async registerSlashCommands() {
     await this.registerSlash(this.DOCS_COMMAND)
     await this.registerSlash(this.CLOSE_COMMAND)
     await this.registerSlash(this.TAGS_COMMAND)
+    await this.registerAdminSlash(this.CLAIM_COMMAND)
   }
 }

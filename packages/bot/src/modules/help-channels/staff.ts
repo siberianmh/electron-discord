@@ -1,7 +1,8 @@
-import { LunaworkClient, optional } from 'lunawork'
+import { LunaworkClient, isMessage, optional } from 'lunawork'
 import {
   Message,
   Guild,
+  CommandInteraction,
   GuildMember,
   TextChannel,
   MessageEmbed,
@@ -30,33 +31,51 @@ export class HelpChannelStaff extends HelpChanBase {
   }
 
   //#region Commands
-  @extendedCommand({ inhibitors: [noDM], aliases: ['take'] })
-  public async claim(msg: Message, @optional member: GuildMember) {
-    // Inhibitor
-    if (
-      !msg.member?.permissions.has('MANAGE_MESSAGES') &&
-      !msg.member?.roles.cache.has(guild.roles.maintainer)
-    ) {
-      return msg.channel.send(
-        `Hello <@${msg.author.id}>, however, this command is can be only used by the moderation team, if you are searching for help you can read the guide at <#${guild.channels.askHelpChannel}> channel, and claim a channel from the \`Help: Available\` category.`,
-      )
+  @extendedCommand({
+    inhibitors: [noDM],
+    slashCommand: 'both',
+    aliases: ['take'],
+  })
+  public async claim(
+    msg: Message | CommandInteraction,
+    @optional member: GuildMember,
+  ) {
+    // Slash Commands automatically do inhibitoring, we don't need
+    // to do anything with them.
+    if (isMessage(msg)) {
+      // Inhibitor
+      if (
+        !msg.member?.permissions.has('MANAGE_MESSAGES') &&
+        !msg.member?.roles.cache.has(guild.roles.maintainer)
+      ) {
+        return msg.channel.send(
+          `Hello <@${msg.author.id}>, however, this command is can be only used by the moderation team, if you are searching for help you can read the guide at <#${guild.channels.askHelpChannel}> channel, and claim a channel from the \`Help: Available\` category.`,
+        )
+      }
     }
 
-    if (msg.reference && msg.reference.messageID) {
-      const refMessage = await msg.channel.messages.fetch(
-        msg.reference.messageID,
-      )
-      return this.claimBase({
-        msg: refMessage,
-        member: refMessage.member!,
-        replyClaim: true,
-      })
+    // Currently it's not possible to do right now.
+    // ref: https://github.com/discord/discord-api-docs/issues/2714
+    if (isMessage(msg)) {
+      if (msg.reference && msg.reference.messageID) {
+        const refMessage = await msg.channel.messages.fetch(
+          msg.reference.messageID,
+        )
+        return this.claimBase({
+          msg: refMessage,
+          member: refMessage.member!,
+          replyClaim: true,
+        })
+      }
     }
 
-    if (!member) {
-      return msg.channel.send(
-        ':warning: Member in this case is required parameter.',
-      )
+    // Slash commands is do this automatically
+    if (isMessage(msg)) {
+      if (!member) {
+        return msg.channel.send(
+          ':warning: Member in this case is required parameter.',
+        )
+      }
     }
 
     return await this.claimBase({ msg: msg, member: member })
@@ -175,14 +194,22 @@ export class HelpChannelStaff extends HelpChanBase {
     member,
     replyClaim = false,
   }: {
-    msg: Message
+    msg: Message | CommandInteraction
     member: GuildMember
     replyClaim?: boolean
   }) {
-    if (msg.author.bot) {
-      return await msg.channel.send(
-        `:warning:: I cannot open a help channel for ${member.displayName} because he is a turtle.`,
-      )
+    console.log(member, typeof member)
+    if (msg.member?.user.bot) {
+      if (isMessage(msg)) {
+        return await msg.channel.send(
+          `:warning:: I cannot open a help channel for ${member.displayName} because he is a turtle.`,
+        )
+      } else {
+        return await msg.reply(
+          `:warning:: I cannot open a help channel for ${member.displayName} because he is a turtle.`,
+          { ephemeral: true },
+        )
+      }
     }
 
     try {
@@ -192,9 +219,16 @@ export class HelpChannelStaff extends HelpChanBase {
         )
 
       if (helpChannel) {
-        return await msg.channel.send(
-          `${member.displayName} already has <#${helpChannel.channel_id}>`,
-        )
+        if (isMessage(msg)) {
+          return await msg.channel.send(
+            `${member.displayName} already has <#${helpChannel.channel_id}>`,
+          )
+        } else {
+          return await msg.reply(
+            `${member.displayName} already has <#${helpChannel.channel_id}>`,
+            { ephemeral: true },
+          )
+        }
       }
     } catch {
       // It's fine because it's that what's we search
@@ -208,17 +242,26 @@ export class HelpChannelStaff extends HelpChanBase {
     ) as TextChannel | undefined
 
     if (!claimedChannel) {
-      return await msg.channel.send(
-        ':warning: failed to claim a help channel, no available channels found.',
-      )
+      if (isMessage(msg)) {
+        return await msg.channel.send(
+          ':warning: failed to claim a help channel, no available channels found.',
+        )
+      } else {
+        return await msg.reply(
+          ':warning: failed to claim a help channel, no available channels found.',
+          { ephemeral: true },
+        )
+      }
     }
 
     let msgContent = ''
-    if (replyClaim) {
+    if (replyClaim && isMessage(msg)) {
       msgContent = msg.cleanContent
       await reactAsSelfDesturct(msg)
     } else {
-      const channelMessage = await msg.channel.messages.fetch({ limit: 50 })
+      const channelMessage = await (msg.channel as TextChannel).messages.fetch({
+        limit: 50,
+      })
       const questionMessages = channelMessage.filter(
         (questionMsg) =>
           questionMsg.author.id === member.id && questionMsg.id !== msg.id,
@@ -235,7 +278,7 @@ export class HelpChannelStaff extends HelpChanBase {
 
     const toPin = await claimedChannel.send({
       embed: new MessageEmbed()
-        .setAuthor(member.displayName, member.user.displayAvatarURL())
+        .setAuthor(member.displayName)
         .setDescription(msgContent),
     })
 

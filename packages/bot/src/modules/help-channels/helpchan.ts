@@ -1,4 +1,4 @@
-import { LunaworkClient, listener, isMessage } from 'lunawork'
+import { LunaworkClient, listener } from 'lunawork'
 import {
   CommandInteraction,
   Message,
@@ -127,16 +127,11 @@ export class HelpChanModule extends HelpChanBase {
     if (
       (msg.channel as TextChannel).parentID !== guild.categories.helpOngoing
     ) {
-      if (isMessage(msg)) {
-        return await msg.channel.send(
-          ':warning: you can only run this in ongoing help channel.',
-        )
-      } else {
-        return await msg.reply(
-          ':warning: you can only run this in ongoing help channel.',
-          { ephemeral: true },
-        )
-      }
+      return this.sendToChannel(
+        msg,
+        ':warning: you can only run this in ongoing help channel',
+        { slashOptions: { ephemeral: true } },
+      )
     }
 
     const { data: owner } = await this.api.get<IGetHelpChanByChannelIdResponse>(
@@ -144,8 +139,11 @@ export class HelpChanModule extends HelpChanBase {
     )
 
     if (
+      // @ts-expect-error
       (owner && owner.user_id === msg.member.id) ||
+      // @ts-expect-error
       msg.member?.permissions.has('MANAGE_MESSAGES') ||
+      // @ts-expect-error
       msg.member?.roles.cache.has(guild.roles.maintainer)
     ) {
       if (msg instanceof CommandInteraction) {
@@ -156,16 +154,11 @@ export class HelpChanModule extends HelpChanBase {
         CloseReason.Command,
       )
     } else {
-      if (isMessage(msg)) {
-        return await msg.channel.send(
-          ':warning: you have to be the asker to close the channel.',
-        )
-      } else {
-        return await msg.reply(
-          ':warning: you have to be the asker to close the channel.',
-          { ephemeral: true },
-        )
-      }
+      this.sendToChannel(
+        msg,
+        ':warning: you have to be the asker to close the channel.',
+        { slashOptions: { ephemeral: true } },
+      )
     }
   }
 
