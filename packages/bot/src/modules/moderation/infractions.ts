@@ -240,7 +240,6 @@ export class InfractionsModule extends ExtendedModule {
       }
     }
 
-    console.log(props.type)
     switch (props.type) {
       case InfractionType.Kick:
         message = `Applied **kick** to <@${member.id}>, reason: ${props.reason}`

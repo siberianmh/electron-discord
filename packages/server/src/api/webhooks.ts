@@ -12,8 +12,5 @@ export const handleEpuppyHook = async (
     message: 'Accepted',
   })
 
-  const resp = await store.handleEpuppyHook(req)
-  console.log(resp)
-
-  return
+  return await store.handleEpuppyHook(req)
 }
