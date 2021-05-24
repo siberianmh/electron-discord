@@ -54,7 +54,7 @@ export class HelpChannelStaff extends HelpChanBase {
       }
     }
 
-    // Currently it's not possible to do right now.
+    // Currently it's not possible due to discord limitation
     // ref: https://github.com/discord/discord-api-docs/issues/2714
     if (isMessage(msg)) {
       if (msg.reference && msg.reference.messageID) {
@@ -198,18 +198,12 @@ export class HelpChannelStaff extends HelpChanBase {
     member: GuildMember
     replyClaim?: boolean
   }) {
-    console.log(member, typeof member)
     if (msg.member?.user.bot) {
-      if (isMessage(msg)) {
-        return await msg.channel.send(
-          `:warning:: I cannot open a help channel for ${member.displayName} because he is a turtle.`,
-        )
-      } else {
-        return await msg.reply(
-          `:warning:: I cannot open a help channel for ${member.displayName} because he is a turtle.`,
-          { ephemeral: true },
-        )
-      }
+      return this.sendToChannel(
+        msg,
+        `:warning:: I cannot open a help channel for ${member.displayName} because he is a turtle.`,
+        { slashOptions: { ephemeral: true } },
+      )
     }
 
     try {
@@ -219,16 +213,11 @@ export class HelpChannelStaff extends HelpChanBase {
         )
 
       if (helpChannel) {
-        if (isMessage(msg)) {
-          return await msg.channel.send(
-            `${member.displayName} already has <#${helpChannel.channel_id}>`,
-          )
-        } else {
-          return await msg.reply(
-            `${member.displayName} already has <#${helpChannel.channel_id}>`,
-            { ephemeral: true },
-          )
-        }
+        return this.sendToChannel(
+          msg,
+          `${member.displayName} already has <#${helpChannel.channel_id}>`,
+          { slashOptions: { ephemeral: true } },
+        )
       }
     } catch {
       // It's fine because it's that what's we search
@@ -242,16 +231,11 @@ export class HelpChannelStaff extends HelpChanBase {
     ) as TextChannel | undefined
 
     if (!claimedChannel) {
-      if (isMessage(msg)) {
-        return await msg.channel.send(
-          ':warning: failed to claim a help channel, no available channels found.',
-        )
-      } else {
-        return await msg.reply(
-          ':warning: failed to claim a help channel, no available channels found.',
-          { ephemeral: true },
-        )
-      }
+      return this.sendToChannel(
+        msg,
+        ':warning: failed to claim a help channel, no available channels is found.',
+        { slashOptions: { ephemeral: true } },
+      )
     }
 
     let msgContent = ''
@@ -278,7 +262,10 @@ export class HelpChannelStaff extends HelpChanBase {
 
     const toPin = await claimedChannel.send({
       embed: new MessageEmbed()
-        .setAuthor(member.displayName)
+        .setAuthor(
+          member.displayName,
+          member.user.displayAvatarURL({ dynamic: false }),
+        )
         .setDescription(msgContent),
     })
 
