@@ -1,8 +1,5 @@
 import { LunaworkClient, listener } from 'lunawork'
-import {
-  ApplicationCommandData,
-  ApplicationCommandPermissionData,
-} from 'discord.js'
+import { ApplicationCommandData } from 'discord.js'
 import { guild } from '../../lib/config'
 import { ExtendedModule } from '../../lib/extended-module'
 
@@ -76,42 +73,11 @@ export class SlashModule extends ExtendedModule {
     }
   }
 
-  private async registerAdminSlash(command: ApplicationCommandData) {
-    const cmd = await this.registerSlash(command)
-    const permissions: Array<ApplicationCommandPermissionData> = [
-      // @everyone
-      {
-        id: guild.roles.everyone,
-        type: 'ROLE',
-        permission: false,
-      },
-      // @Maintainer
-      {
-        id: guild.roles.maintainer,
-        type: 'ROLE',
-        permission: true,
-      },
-      // @Admin
-      {
-        id: guild.roles.admin,
-        type: 'ROLE',
-        permission: true,
-      },
-      // The Special Role For Hashimoto
-      {
-        id: guild.roles.hashithemoto,
-        type: 'ROLE',
-        permission: true,
-      },
-    ]
-    return await cmd?.setPermissions(permissions)
-  }
-
   @listener({ event: 'ready' })
   public async registerSlashCommands() {
     await this.registerSlash(this.DOCS_COMMAND)
     await this.registerSlash(this.CLOSE_COMMAND)
     await this.registerSlash(this.TAGS_COMMAND)
-    await this.registerAdminSlash(this.CLAIM_COMMAND)
+    await this.registerSlash(this.CLAIM_COMMAND)
   }
 }

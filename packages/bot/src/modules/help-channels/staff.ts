@@ -40,8 +40,6 @@ export class HelpChannelStaff extends HelpChanBase {
     msg: Message | CommandInteraction,
     @optional member: GuildMember,
   ) {
-    // Slash Commands automatically do inhibitoring, we don't need
-    // to do anything with them.
     // Inhibitor
     if (
       // @ts-ignore
