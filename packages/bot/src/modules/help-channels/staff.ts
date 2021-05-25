@@ -42,16 +42,21 @@ export class HelpChannelStaff extends HelpChanBase {
   ) {
     // Slash Commands automatically do inhibitoring, we don't need
     // to do anything with them.
-    if (isMessage(msg)) {
-      // Inhibitor
-      if (
-        !msg.member?.permissions.has('MANAGE_MESSAGES') &&
-        !msg.member?.roles.cache.has(guild.roles.maintainer)
-      ) {
-        return msg.channel.send(
-          `Hello <@${msg.author.id}>, however, this command is can be only used by the moderation team, if you are searching for help you can read the guide at <#${guild.channels.askHelpChannel}> channel, and claim a channel from the \`Help: Available\` category.`,
-        )
-      }
+    // Inhibitor
+    if (
+      // @ts-ignore
+      !msg.member?.permissions.has('MANAGE_MESSAGES') &&
+      // @ts-ignore
+      !msg.member?.roles.cache.has(guild.roles.maintainer)
+    ) {
+      return this.sendToChannel(
+        msg,
+        `Hello <@${
+          msg.member!.user.id
+        }>, however, this command is can be only used by the moderation team, if you are searching for help you can read the guide at <#${
+          guild.channels.askHelpChannel
+        }> channel, and claim a channel from the \`Help: Available\` category.`,
+      )
     }
 
     // Currently it's not possible due to discord limitation

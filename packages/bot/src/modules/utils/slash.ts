@@ -63,6 +63,7 @@ export class SlashModule extends ExtendedModule {
         required: true,
       },
     ],
+    defaultPermission: false,
   }
 
   private async registerSlash(command: ApplicationCommandData) {
@@ -82,7 +83,7 @@ export class SlashModule extends ExtendedModule {
       {
         id: guild.roles.everyone,
         type: 'ROLE',
-        permission: process.env.NODE_ENV === 'development' ? true : false,
+        permission: false,
       },
       // @Maintainer
       {
