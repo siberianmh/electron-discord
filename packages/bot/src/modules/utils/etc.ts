@@ -1,5 +1,11 @@
 import { LunaworkClient, listener } from 'lunawork'
-import { Message, MessageEmbed, MessageReaction, User } from 'discord.js'
+import {
+  Message,
+  MessageEmbed,
+  MessageReaction,
+  User,
+  Permissions,
+} from 'discord.js'
 import * as humanizeDuration from 'humanize-duration'
 import { ExtendedModule } from '../../lib/extended-module'
 import { extendedCommand } from '../../lib/extended-command'
@@ -83,7 +89,7 @@ export class EtcModule extends ExtendedModule {
 
     if (
       user.id === key ||
-      member?.permissions.has('MANAGE_MESSAGES') ||
+      member?.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES) ||
       member?.roles.cache.has(guild.roles.maintainer)
     ) {
       return await reaction.message.delete()

@@ -1,5 +1,12 @@
 import { LunaworkClient, Context, isCommandMessage } from 'lunawork'
-import { Message, MessageEmbed, User, Snowflake, GuildMember } from 'discord.js'
+import {
+  Message,
+  MessageEmbed,
+  User,
+  Snowflake,
+  Permissions,
+  GuildMember,
+} from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { isTrustedMember } from '../../lib/inhibitors'
 import { guild } from '../../lib/config'
@@ -205,7 +212,7 @@ export class InfractionsModule extends ExtendedModule {
     }
 
     if (
-      member.permissions.has('MANAGE_MESSAGES') ||
+      member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES) ||
       member.roles.cache.has(guild.roles.maintainer)
     ) {
       if (props.ctx) {

@@ -1,6 +1,6 @@
 import { LunaworkClient, optional } from 'lunawork'
 import { DateTime } from 'luxon'
-import { Message, MessageEmbed, User } from 'discord.js'
+import { Message, MessageEmbed, User, Permissions } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { extendedCommand } from '../../lib/extended-command'
 import * as constants from '../../lib/config'
@@ -59,7 +59,7 @@ ${constants.style.emojis.statusOffline} ${offlinePresence}
       user = msg.author
     } else if (
       user !== msg.author &&
-      !msg.member!.permissions.has('MANAGE_MESSAGES')
+      !msg.member!.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)
     ) {
       return await msg.channel.send(
         'You may not use this command on users other than yourself.',
