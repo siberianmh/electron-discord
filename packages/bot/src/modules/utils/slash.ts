@@ -60,7 +60,6 @@ export class SlashModule extends ExtendedModule {
         required: true,
       },
     ],
-    defaultPermission: false,
   }
 
   private async registerSlash(command: ApplicationCommandData) {

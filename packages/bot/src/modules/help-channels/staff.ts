@@ -8,7 +8,7 @@ import {
   MessageEmbed,
 } from 'discord.js'
 import { extendedCommand } from '../../lib/extended-command'
-import { isTrustedMember, noDM } from '../../lib/inhibitors'
+import { isTrustedMember, noAuthorizedClaim, noDM } from '../../lib/inhibitors'
 import { splittyArgs } from '../../lib/split-args'
 import { guild } from '../../lib/config'
 import * as config from '../../lib/config'
@@ -32,7 +32,7 @@ export class HelpChannelStaff extends HelpChanBase {
 
   //#region Commands
   @extendedCommand({
-    inhibitors: [noDM],
+    inhibitors: [noAuthorizedClaim, noDM],
     slashCommand: 'both',
     aliases: ['take'],
   })
@@ -40,23 +40,6 @@ export class HelpChannelStaff extends HelpChanBase {
     msg: Message | CommandInteraction,
     @optional member: GuildMember,
   ) {
-    // Inhibitor
-    if (
-      // @ts-ignore
-      !msg.member?.permissions.has('MANAGE_MESSAGES') &&
-      // @ts-ignore
-      !msg.member?.roles.cache.has(guild.roles.maintainer)
-    ) {
-      return this.sendToChannel(
-        msg,
-        `Hello <@${
-          msg.member!.user.id
-        }>, however, this command is can be only used by the moderation team, if you are searching for help you can read the guide at <#${
-          guild.channels.askHelpChannel
-        }> channel, and claim a channel from the \`Help: Available\` category.`,
-      )
-    }
-
     // Currently it's not possible due to discord limitation
     // ref: https://github.com/discord/discord-api-docs/issues/2714
     if (isMessage(msg)) {
@@ -72,13 +55,11 @@ export class HelpChannelStaff extends HelpChanBase {
       }
     }
 
-    // Slash commands is do this automatically
-    if (isMessage(msg)) {
-      if (!member) {
-        return msg.channel.send(
-          ':warning: Member in this case is required parameter.',
-        )
-      }
+    if (!member) {
+      return this.sendToChannel(
+        msg,
+        ':warning: Member in this case is required parameter.',
+      )
     }
 
     return await this.claimBase({ msg: msg, member: member })
@@ -201,10 +182,10 @@ export class HelpChannelStaff extends HelpChanBase {
     member: GuildMember
     replyClaim?: boolean
   }) {
-    if (msg.member?.user.bot) {
+    if (member?.user.bot) {
       return this.sendToChannel(
         msg,
-        `:warning:: I cannot open a help channel for ${member.displayName} because he is a turtle.`,
+        `:warning: I cannot open a help channel for ${member.displayName} because he is a turtle.`,
         { slashOptions: { ephemeral: true } },
       )
     }
