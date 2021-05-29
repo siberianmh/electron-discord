@@ -29,7 +29,7 @@ export const noDM: Inhibitor = async (msg) => {
 export const noAuthorizedClaim: Inhibitor = async (msg) => {
   if (
     // @ts-ignore
-    !msg.member?.permissions.has('MANAGE_MESSAGES') ||
+    !msg.member?.permissions.has('MANAGE_MESSAGES') &&
     // @ts-ignore
     !msg.member.roles.cache.has(guild.roles.maintainer)
   ) {
