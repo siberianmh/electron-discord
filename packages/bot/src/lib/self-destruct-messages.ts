@@ -17,7 +17,7 @@ export const createSelfDestructMessage = async (
     }
   } else {
     await msg.reply(messageContent)
-    // @ts-ignore The types for d.js v8 is not great 🤷‍♂️
+    // @ts-expect-error The types for d.js v8 is not great 🤷‍♂️
     createdMessage = await msg.fetchReply()
   }
 

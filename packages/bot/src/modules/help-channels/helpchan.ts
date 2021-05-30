@@ -139,11 +139,11 @@ export class HelpChanModule extends HelpChanBase {
     )
 
     if (
-      // @ts-ignore
+      // @ts-expect-error
       (owner && owner.user_id === msg.member.id) ||
-      // @ts-ignore
+      // @ts-expect-error
       msg.member?.permissions.has('MANAGE_MESSAGES') ||
-      // @ts-ignore
+      // @ts-expect-error
       msg.member?.roles.cache.has(guild.roles.maintainer)
     ) {
       if (msg instanceof CommandInteraction) {
