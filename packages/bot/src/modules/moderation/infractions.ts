@@ -252,12 +252,12 @@ export class InfractionsModule extends ExtendedModule {
         message = `Applied **kick** to <@${member.id}>, reason: ${props.reason}`
         break
       case InfractionType.Ban:
-        message = `Applied **${props.purge ?? 'purge'}ban** to <@${
+        message = `Applied **${props.purge ? 'purgeban' : 'ban'}** to <@${
           member.id
-        }>, reason ${props.reason}`
+        }>, reason: ${props.reason}`
         break
       case InfractionType.Warn:
-        message = `Applied **warning** to <@${member.id}>, ${props.reason}`
+        message = `Applied **warning** to <@${member.id}>, reason: ${props.reason}`
         break
     }
 
