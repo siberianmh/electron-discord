@@ -1,4 +1,4 @@
-import { LunaworkClient } from 'lunawork'
+import { LunaworkClient, slashCommand } from 'lunawork'
 import { CommandInteraction, Message, MessageEmbed } from 'discord.js'
 import algoliasearch, { SearchClient, SearchIndex } from 'algoliasearch'
 import type { Hit } from '@algolia/client-search'
@@ -53,9 +53,9 @@ export class DocsModule extends ExtendedModule {
 
   @extendedCommand({
     aliases: ['d', 'doc', 'tutorials', 'tutorial', 'guide', 'guides'],
-    slashCommand: 'both',
     single: true,
   })
+  @slashCommand({ description: 'Search in the docs' })
   public async docs(msg: Message | CommandInteraction, searchIndex: string) {
     const { hits } = await this.newIndex.search<IHitResult>(searchIndex, {
       hitsPerPage: 5,

@@ -1,4 +1,4 @@
-import { LunaworkClient, optional } from 'lunawork'
+import { LunaworkClient, optional, slashCommand } from 'lunawork'
 import * as fs from 'fs-extra'
 import * as path from 'path'
 import grayMatter = require('gray-matter')
@@ -19,8 +19,8 @@ export class TagsModule extends ExtendedModule {
 
   @extendedCommand({
     aliases: ['t', 'topic', 'r', 'resources'],
-    slashCommand: 'both',
   })
+  @slashCommand({ description: 'Get some useful information' })
   public async tags(msg: Message | CommandInteraction, @optional tag?: string) {
     if (!tag) {
       return await this.notFoundEmbed(msg, tag)

@@ -48,7 +48,7 @@ export class HelpMessageModule extends ExtendedModule {
 
       return await msg.channel.send({ embed })
     } else {
-      const cmd = this.client.commandManager.getByTrigger(cmdTrigger)
+      const cmd = this.client.commandManager.getPrefixedByTrigger(cmdTrigger)
 
       if (!cmd) {
         return msg.channel.send(`:warning: Command \`${cmdTrigger}\` not found`)

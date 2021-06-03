@@ -1,4 +1,9 @@
-import { LunaworkClient, isMessage, optional } from 'lunawork'
+import {
+  LunaworkClient,
+  isMessage,
+  optional,
+  slashCommand,
+} from 'lunawork'
 import {
   Message,
   Guild,
@@ -33,8 +38,10 @@ export class HelpChannelStaff extends HelpChanBase {
   //#region Commands
   @extendedCommand({
     inhibitors: [noAuthorizedClaim, noDM],
-    slashCommand: 'both',
     aliases: ['take'],
+  })
+  @slashCommand({
+    description: 'Claim a someone message into the help channel',
   })
   public async claim(
     msg: Message | CommandInteraction,

@@ -1,4 +1,9 @@
-import { LunaworkClient, listener, isCommandMessage } from 'lunawork'
+import {
+  LunaworkClient,
+  listener,
+  isCommandMessage,
+  slashCommand,
+} from 'lunawork'
 import {
   CommandInteraction,
   Message,
@@ -115,11 +120,11 @@ export class HelpChanModule extends HelpChanBase {
 
   //#region Commands
   @extendedCommand({
-    aliases: ['resolve', 'done', 'close', 'dormant'],
+    aliases: ['resolved', 'done', 'resolve', 'dormant'],
     description: 'Marks __ongoing__ help channel as resolved',
-    slashCommand: 'both',
   })
-  async resolved(msg: Message | CommandInteraction) {
+  @slashCommand({ description: 'Marks __ongoing__ help channel as resolved' })
+  async close(msg: Message | CommandInteraction) {
     if (!msg.guild) {
       return
     }
