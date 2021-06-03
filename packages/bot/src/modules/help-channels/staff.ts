@@ -1,9 +1,5 @@
-import {
-  LunaworkClient,
-  isMessage,
-  optional,
-  slashCommand,
-} from 'lunawork'
+import { LunaworkClient } from 'lunawork'
+import { isMessage, optional, slashCommand } from 'lunawork'
 import {
   Message,
   Guild,
