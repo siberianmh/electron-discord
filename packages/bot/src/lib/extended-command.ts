@@ -1,11 +1,11 @@
-import { command, Stage, ICommandDecoratorOptions } from 'lunawork'
+import { command, Stage, IPrefixCommanDecoratorOptions } from 'lunawork'
 import { Message, MessageEmbed } from 'discord.js'
 import { ModLogModule } from '../modules/moderation/modlog'
 import { style } from './config'
 import * as Sentry from '@sentry/node'
 
 export function extendedCommand(
-  opts: Partial<ICommandDecoratorOptions> | undefined = {},
+  opts: Partial<IPrefixCommanDecoratorOptions> | undefined = {},
 ) {
   return function (
     target: Stage,
