@@ -25,7 +25,7 @@
     "fuzzball": "^1.4.0",
     "gray-matter": "^4.0.3",
     "humanize-duration": "^3.26.0",
-    "ioredis": "^4.27.4",
+    "ioredis": "^4.27.5",
     "jest": "^27.0.4",
     "lunawork": "siberianmh/lunawork",
     "luxon": "^1.27.0",
