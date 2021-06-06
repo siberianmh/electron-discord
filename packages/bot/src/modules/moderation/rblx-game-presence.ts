@@ -49,7 +49,10 @@ export class RblxGamePresenceModule extends ExtendedModule {
     }
 
     if (triggeredTimes >= 1) {
-      const reason = 'You are using the bad Electron'
+      const reason = `We have detected that you are running the Roblox Electron exploit.
+
+Using and sharing exploits is against the Discord terms of service https://discord.com/terms
+and may result in a Discord-wide ban.`
 
       await this.infractions.performInfraction({
         user: presence.member!.user,
@@ -58,8 +61,8 @@ export class RblxGamePresenceModule extends ExtendedModule {
       })
       return await this.modLog.sendLogMessage({
         colour: style.colors.red,
-        title: `${presence.user?.tag} is kicked automatically by system`,
-        text: 'This is automatic kick due to the member is playing in Electron.',
+        title: `${presence.user?.tag} is kicked automatically by the system`,
+        text: 'This is an automatic kick due to the member using the Roblox Electron exploit.',
         iconURL:
           presence.user?.displayAvatarURL({ dynamic: false }) || undefined,
       })
@@ -83,7 +86,7 @@ export class RblxGamePresenceModule extends ExtendedModule {
 
     return await this.modLog.sendLogMessage({
       colour: style.colors.yellow,
-      title: `${presence.user?.tag} (${presence.user?.id} is playing in bad games)`,
+      title: `${presence.user?.tag} (${presence.user?.id} is using the Roblox Electron exploit)`,
       iconURL: presence.user?.displayAvatarURL({ dynamic: false }) || undefined,
       text: message,
     })
