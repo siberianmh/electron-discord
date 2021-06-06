@@ -20,7 +20,27 @@ export class TagsModule extends ExtendedModule {
   @extendedCommand({
     aliases: ['t', 'topic', 'r', 'resources'],
   })
-  @slashCommand({ description: 'Get some useful information' })
+  @slashCommand({
+    description: 'Get some useful information',
+    options: [
+      {
+        name: 'resource',
+        description: 'A world which you want to see',
+        type: 'STRING',
+        required: true,
+        choices: [
+          {
+            name: 'Electron',
+            value: 'electron',
+          },
+          {
+            name: 'Fiddle',
+            value: 'fiddle',
+          },
+        ],
+      },
+    ],
+  })
   public async tags(msg: Message | CommandInteraction, @optional tag?: string) {
     if (!tag) {
       return await this.notFoundEmbed(msg, tag)

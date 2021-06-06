@@ -6,6 +6,9 @@ export const client = new LunaworkClient({
   intents: Intents.ALL,
   partials: ['REACTION', 'MESSAGE', 'USER', 'CHANNEL'],
   retryLimit: 3,
+  experimental: {
+    autoRegisterSlash: true,
+  },
   presence: {
     activities: [
       {

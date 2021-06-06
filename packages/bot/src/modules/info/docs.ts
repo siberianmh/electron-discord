@@ -55,7 +55,17 @@ export class DocsModule extends ExtendedModule {
     aliases: ['d', 'doc', 'tutorials', 'tutorial', 'guide', 'guides'],
     single: true,
   })
-  @slashCommand({ description: 'Search in the docs' })
+  @slashCommand({
+    description: 'Search in the docs',
+    options: [
+      {
+        name: 'entry',
+        description: 'Search entry',
+        type: 'STRING',
+        required: true,
+      },
+    ],
+  })
   public async docs(msg: Message | CommandInteraction, searchIndex: string) {
     const { hits } = await this.newIndex.search<IHitResult>(searchIndex, {
       hitsPerPage: 5,

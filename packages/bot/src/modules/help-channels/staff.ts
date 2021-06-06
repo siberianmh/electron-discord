@@ -38,6 +38,14 @@ export class HelpChannelStaff extends HelpChanBase {
   })
   @slashCommand({
     description: 'Claim a someone message into the help channel',
+    options: [
+      {
+        name: 'user',
+        description: 'The user itself',
+        type: 'USER',
+        required: true,
+      },
+    ],
   })
   public async claim(
     msg: Message | CommandInteraction,
