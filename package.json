@@ -16,7 +16,7 @@
     "@bazel/typescript": "^3.5.1",
     "@sentry/node": "^6.5.1",
     "@sentry/tracing": "^6.5.1",
-    "algoliasearch": "^4.9.1",
+    "algoliasearch": "^4.9.2",
     "axios": "^0.21.1",
     "discord.js": "discordjs/discord.js#b90b0c3cfa2278caa38d1ff41eef2ccf4428b99e",
     "dotenv": "^10.0.0",
