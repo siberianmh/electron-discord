@@ -45,7 +45,7 @@
     "@types/humanize-duration": "^3.25.0",
     "@types/ioredis": "^4.26.4",
     "@types/jest": "^26.0.23",
-    "@types/luxon": "^1.26.5",
+    "@types/luxon": "^1.27.0",
     "@types/node": "^15.12.1",
     "@types/statsd-client": "^0.4.1",
     "@types/uuid": "^8.3.0",
