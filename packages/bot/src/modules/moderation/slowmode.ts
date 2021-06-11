@@ -20,7 +20,7 @@ export class SlowmodeModule extends ExtendedModule {
   public async slowmode(msg: Message, args: string) {
     const splitArgs = splittyArgs(args)
     if (splitArgs.length === 0) {
-      return await msg.channel.send(':warning: invalid syntax')
+      return await msg.channel.send({ content: ':warning: invalid syntax' })
     }
 
     switch (splitArgs[0]) {
@@ -40,9 +40,9 @@ export class SlowmodeModule extends ExtendedModule {
       (msg.channel as TextChannel).rateLimitPerUser * 1000,
     )
 
-    return await msg.channel.send(
-      `The slowmode delay for <#${msg.channel.id}> is ${humanized}`,
-    )
+    return await msg.channel.send({
+      content: `The slowmode delay for <#${msg.channel.id}> is ${humanized}`,
+    })
   }
 
   private async setSlowmode(msg: Message, seconds: string) {
@@ -50,17 +50,17 @@ export class SlowmodeModule extends ExtendedModule {
     const dur = parse(seconds)
 
     if (!maxDur || dur! > maxDur) {
-      return await msg.channel.send(
-        'The slowmode delay must be between 0 and 6 hours.',
-      )
+      return await msg.channel.send({
+        content: 'The slowmode delay must be between 0 and 6 hours.',
+      })
     }
 
     await (msg.channel as TextChannel).edit({
       rateLimitPerUser: dur! / 1000,
     })
 
-    return msg.channel.send(
-      `The slowmode for <#${msg.channel.id}> is now ${seconds}.`,
-    )
+    return msg.channel.send({
+      content: `The slowmode for <#${msg.channel.id}> is now ${seconds}.`,
+    })
   }
 }

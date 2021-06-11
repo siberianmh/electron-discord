@@ -35,9 +35,13 @@ export class MailStaff extends MailBase {
     })
 
     if (!mailChannel) {
-      return msg.channel.send('Unable to find the channel in the database')
+      return msg.channel.send({
+        content: 'Unable to find the channel in the database',
+      })
     }
 
+    // TODO
+    // @ts-expect-error
     const recipient = await msg.guild?.members.fetch(mailChannel.user_id)
 
     try {
@@ -57,14 +61,19 @@ export class MailStaff extends MailBase {
     })
 
     if (!mailChannel) {
-      return msg.channel.send('Unable to find the channel in the database')
+      return msg.channel.send({
+        content: 'Unable to find the channel in the database',
+      })
     }
 
+    // TODO
+    // @ts-expect-error
     const recipient = await msg.guild?.members.fetch(mailChannel.user_id)
 
-    await recipient!.send(
-      'This thread is closed. If your problem is not resolved please try to open a new thread simply by sending a new message.',
-    )
+    await recipient!.send({
+      content:
+        'This thread is closed. If your problem is not resolved please try to open a new thread simply by sending a new message.',
+    })
 
     await mailChannel.remove()
     await msg.channel.delete()

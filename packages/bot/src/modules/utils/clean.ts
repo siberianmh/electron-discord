@@ -11,6 +11,6 @@ export class CleanModule extends ExtendedModule {
 
   @extendedCommand({ aliases: ['clear'], inhibitors: [isTrustedMember] })
   public async clean(msg: Message) {
-    return msg.channel.send('😮')
+    return msg.channel.send({ content: '😮' })
   }
 }

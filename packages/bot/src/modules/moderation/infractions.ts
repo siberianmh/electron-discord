@@ -49,15 +49,15 @@ export class InfractionsModule extends ExtendedModule {
   public async kick(msg: Message, args: string) {
     const splitArgs = splittyArgs(args)
     if (splitArgs.length === 0) {
-      return await msg.channel.send(
-        ':warning: syntax !kick <@userID> [?reason]',
-      )
+      return await msg.channel.send({
+        content: ':warning: syntax !kick <@userID> [?reason]',
+      })
     }
 
     const user_id = splitArgs.shift()
 
     if (!user_id) {
-      return await msg.channel.send(':warning: invalid syntax')
+      return await msg.channel.send({ content: ':warning: invalid syntax' })
     }
 
     const res = this.USER_PATTERN.exec(user_id)
@@ -93,15 +93,15 @@ export class InfractionsModule extends ExtendedModule {
 
     const splitArgs = splittyArgs(args)
     if (splitArgs.length === 0) {
-      return await msg.channel.send(
-        ':warning: syntax !kick <@userID> [?reason]',
-      )
+      return await msg.channel.send({
+        content: ':warning: syntax !kick <@userID> [?reason]',
+      })
     }
 
     const [user_id, ...reason] = splitArgs
 
     if (!user_id) {
-      return await msg.channel.send(':warning: invalid syntax')
+      return await msg.channel.send({ content: ':warning: invalid syntax' })
     }
 
     const res = this.USER_PATTERN.exec(user_id)
@@ -133,7 +133,7 @@ export class InfractionsModule extends ExtendedModule {
     try {
       await msg.guild?.members.unban(snowflake)
 
-      return msg.channel.send('🤗 pardonned')
+      return msg.channel.send({ content: '🤗 pardonned' })
     } catch (e) {
       const errEmbed = new MessageEmbed().setDescription('Unable to unban')
       return msg.channel.send({ embed: errEmbed })
@@ -152,15 +152,15 @@ export class InfractionsModule extends ExtendedModule {
   public async warn(msg: Message, args: string) {
     const splitArgs = splittyArgs(args)
     if (splitArgs.length === 0) {
-      return await msg.channel.send(
-        ':warning: syntax !warn <@userID> [?reason]',
-      )
+      return await msg.channel.send({
+        content: ':warning: syntax !warn <@userID> [?reason]',
+      })
     }
 
     const [user_id, ...reason] = splitArgs
 
     if (!user_id) {
-      return await msg.channel.send(':warning: invalid syntax')
+      return await msg.channel.send({ content: ':warning: invalid syntax' })
     }
 
     const res = this.USER_PATTERN.exec(user_id)
@@ -192,7 +192,9 @@ export class InfractionsModule extends ExtendedModule {
 
   public async performInfraction(props: IPerformInfractionProps) {
     if (!props.reason && props.ctx) {
-      return props.ctx.channel.send('Unable to apply infraction without reason')
+      return props.ctx.channel.send({
+        content: 'Unable to apply infraction without reason',
+      })
     }
 
     let member: GuildMember | undefined
@@ -205,7 +207,9 @@ export class InfractionsModule extends ExtendedModule {
     }
 
     if (!member && props.ctx) {
-      return props.ctx.channel.send('Unable to find specified user.')
+      return props.ctx.channel.send({
+        content: 'Unable to find specified user.',
+      })
     }
 
     if (!member) {
@@ -217,9 +221,9 @@ export class InfractionsModule extends ExtendedModule {
       member.roles.cache.has(guild.roles.maintainer)
     ) {
       if (props.ctx) {
-        return props.ctx.channel.send(
-          'You can apply infraction to the mod user.',
-        )
+        return props.ctx.channel.send({
+          content: 'You can apply infraction to the mod user.',
+        })
       } else {
         return
       }

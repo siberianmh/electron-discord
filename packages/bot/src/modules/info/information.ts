@@ -61,9 +61,9 @@ ${constants.style.emojis.statusOffline} ${offlinePresence}
       user !== msg.author &&
       !msg.member!.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)
     ) {
-      return await msg.channel.send(
-        'You may not use this command on users other than yourself.',
-      )
+      return await msg.channel.send({
+        content: 'You may not use this command on users other than yourself.',
+      })
     }
 
     const created = DateTime.fromJSDate(user.createdAt).toRelative()

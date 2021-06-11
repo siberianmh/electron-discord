@@ -30,7 +30,7 @@ ts_project(
         "@npm//gray-matter",
         "@npm//humanize-duration",
         "@npm//ioredis",
-        # "@npm//lunawork",
+        "@npm//lunawork",
         "@npm//luxon",
         "@npm//parse-duration",
         "@npm//reflect-metadata",

@@ -51,16 +51,18 @@ export class HelpMessageModule extends ExtendedModule {
       const cmd = this.client.commandManager.getPrefixedByTrigger(cmdTrigger)
 
       if (!cmd) {
-        return msg.channel.send(`:warning: Command \`${cmdTrigger}\` not found`)
+        return msg.channel.send({
+          content: `:warning: Command \`${cmdTrigger}\` not found`,
+        })
       }
 
-      return await msg.channel.send(
-        `Usage: \`${cmd.triggers.join('|')}${
+      return await msg.channel.send({
+        content: `Usage: \`${cmd.triggers.join('|')}${
           cmd.args.length ? ' ' : ''
         }${cmd.args.map((arg) =>
           arg.optional ? `[${arg.type.name}]` : `<${arg.type.name}>`,
         )}\`${cmd.description ? `\nDescription: *${cmd.description}*` : ''}`,
-      )
+      })
     }
   }
 }

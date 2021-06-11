@@ -140,11 +140,15 @@ export class HelpChannelStaff extends HelpChanBase {
     const channelName = args[1]
 
     if (!channelName) {
-      return msg.channel.send(`⚠ Expected 1 argument, but got ${args.length}`)
+      return msg.channel.send({
+        content: `⚠ Expected 1 argument, but got ${args.length}`,
+      })
     }
 
     const created = await this.createHelpChannel(msg.guild!, channelName)
-    return msg.channel.send(`Successfully created <#${created.id}> channel`)
+    return msg.channel.send({
+      content: `Successfully created <#${created.id}> channel`,
+    })
   }
 
   // Show help
@@ -268,9 +272,9 @@ export class HelpChannelStaff extends HelpChanBase {
     await this.addCooldown(member)
     await this.moveChannel(claimedChannel, guild.categories.helpOngoing)
     await this.populateHelpChannel(member, claimedChannel, toPin)
-    await claimedChannel.send(
-      `${member.user} this channel has been claimed for your question. Please review <#${guild.channels.askHelpChannel}> for how to get help`,
-    )
+    await claimedChannel.send({
+      content: `${member.user} this channel has been claimed for your question. Please review <#${guild.channels.askHelpChannel}> for how to get help`,
+    })
 
     await createSelfDestructMessage(
       msg,
@@ -308,6 +312,8 @@ export class HelpChannelStaff extends HelpChanBase {
     await this.fixCooldowns(msg.guild!)
     await this.ensureAskChannels(msg.guild!)
     await this.syncHowToGetHelp(msg.guild!)
-    return msg.channel.send('Help Channel System successfully synced')
+    return msg.channel.send({
+      content: 'Help Channel System successfully synced',
+    })
   }
 }
