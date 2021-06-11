@@ -13,6 +13,7 @@ import {
   TextChannel,
   VoiceChannel,
 } from 'discord.js'
+import { DateTime } from 'luxon'
 import { ExtendedModule } from '../../lib/extended-module'
 import { formatUser } from '../../lib/format-user'
 import * as constants from '../../lib/config'
@@ -298,7 +299,46 @@ export class ModLogModule extends ExtendedModule {
       colour: constants.style.colors.softRed,
       title: 'User Banned',
       text: formatUser(member),
+      channelId: constants.guild.channels.memberLog,
       // thumbnail: member.user.avatar || undefined,
+    })
+  }
+
+  @listener({ event: 'guildMemberAdd' })
+  public async onMemberAdd(member: GuildMember) {
+    if (member.guild.id !== constants.guild.id) {
+      return
+    }
+
+    const created = DateTime.fromJSDate(member.user.createdAt).toRelative()
+
+    const message = `${formatUser(member)}
+
+Account age: ${created}`
+
+    return await this.sendLogMessage({
+      iconURL: constants.style.icons.userJoin,
+      colour: constants.style.colors.softGreen,
+      title: 'User Joined',
+      text: message,
+      thumbnail: member.user.displayAvatarURL({ dynamic: false }),
+      channelId: constants.guild.channels.memberLog,
+    })
+  }
+
+  @listener({ event: 'guildMemberRemove' })
+  public async onMemberRemove(member: GuildMember) {
+    if (member.guild.id !== constants.guild.id) {
+      return
+    }
+
+    return await this.sendLogMessage({
+      iconURL: constants.style.icons.userRemove,
+      colour: constants.style.colors.softRed,
+      title: 'User Left',
+      text: formatUser(member),
+      thumbnail: member.user.displayAvatarURL({ dynamic: false }),
+      channelId: constants.guild.channels.memberLog,
     })
   }
 }

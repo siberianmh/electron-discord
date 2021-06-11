@@ -36,6 +36,8 @@ export const style = {
 
     messageDelete: 'https://cdn.discordapp.com/emojis/472472641320648704.png',
 
+    userJoin: 'https://cdn.discordapp.com/emojis/469952898181234698.png',
+    userRemove: 'https://cdn.discordapp.com/emojis/469952898089091082.png',
     userBan: 'https://cdn.discordapp.com/emojis/469952898026045441.png',
   },
 }
@@ -56,6 +58,7 @@ export const guild = {
     rules: b('745041677185450005'),
     voiceRules: b('776136611510747186'),
     adminBotInteractions: b('771069886696914994'),
+    memberLog: b('852981464291606539'),
     askHelpChannel: b('748284419525312553'),
     modLog: b('764542608256270406'),
   },
