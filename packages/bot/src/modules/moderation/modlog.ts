@@ -9,6 +9,7 @@ import {
   Message,
   MessageEmbed,
   Role,
+  Snowflake,
   TextChannel,
   VoiceChannel,
 } from 'discord.js'
@@ -22,7 +23,7 @@ interface ISendLogMessageProps {
   readonly title?: string
   readonly text?: string
   readonly thumbnail?: string | null
-  readonly channelId?: string
+  readonly channelId?: Snowflake
   readonly content?: string
   readonly footer?: string
 }
@@ -48,9 +49,11 @@ export class ModLogModule extends ExtendedModule {
     content,
     footer,
   }: ISendLogMessageProps) {
-    const embed = new MessageEmbed({
-      description: text,
-    })
+    const embed = new MessageEmbed()
+
+    if (text) {
+      embed.setDescription(text)
+    }
 
     if (title && iconURL) {
       embed.setAuthor(title, iconURL)
@@ -68,7 +71,7 @@ export class ModLogModule extends ExtendedModule {
 
     const channel = (await this.client.channels.fetch(channelId)) as TextChannel
 
-    await channel.send(content, { embed: embed })
+    await channel.send({ content: content ?? '', embed: embed })
   }
 
   /**

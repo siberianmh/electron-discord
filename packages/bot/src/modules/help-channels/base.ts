@@ -2,6 +2,7 @@ import { LunaworkClient } from 'lunawork'
 import {
   Message,
   GuildMember,
+  GuildChannelResolvable,
   TextChannel,
   ChannelData,
   Guild,
@@ -20,7 +21,10 @@ export class HelpChanBase extends ExtendedModule {
 
   protected CHANNEL_PREFIX = helpChannels.namePrefix
 
-  protected async moveChannel(channel: TextChannel, category: string) {
+  protected async moveChannel(
+    channel: TextChannel,
+    category: GuildChannelResolvable,
+  ) {
     const parent = channel.guild.channels.resolve(category)
     if (parent === null) {
       return

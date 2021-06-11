@@ -9,6 +9,7 @@ import {
 } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { isTrustedMember } from '../../lib/inhibitors'
+import { toBigIntLiteral as b } from '../../lib/to-bigint-literal'
 import { guild } from '../../lib/config'
 import { splittyArgs } from '../../lib/split-args'
 import { extendedCommand } from '../../lib/extended-command'
@@ -63,9 +64,9 @@ export class InfractionsModule extends ExtendedModule {
     let user: User | undefined
 
     if (res && res[1]) {
-      user = msg.client.users.cache.get(res[1])
+      user = msg.client.users.cache.get(b(res[1]))
     } else {
-      user = msg.client.users.cache.get(user_id)
+      user = msg.client.users.cache.get(b(user_id))
     }
 
     const reason = splitArgs.join(' ')
@@ -107,9 +108,9 @@ export class InfractionsModule extends ExtendedModule {
     let user: User | undefined
 
     if (res && res[1]) {
-      user = msg.client.users.cache.get(res[1])
+      user = msg.client.users.cache.get(b(res[1]))
     } else {
-      user = msg.client.users.cache.get(user_id)
+      user = msg.client.users.cache.get(b(user_id))
     }
 
     const purge = trigger === 'pban' || trigger === 'purgeban'
@@ -166,9 +167,9 @@ export class InfractionsModule extends ExtendedModule {
     let user: User | undefined
 
     if (res && res[1]) {
-      user = msg.client.users.cache.get(res[1])
+      user = msg.client.users.cache.get(b(res[1]))
     } else {
-      user = msg.client.users.cache.get(user_id)
+      user = msg.client.users.cache.get(b(user_id))
     }
 
     return await this.performInfraction({

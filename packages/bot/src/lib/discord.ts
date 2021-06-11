@@ -13,7 +13,7 @@ export const client = new LunaworkClient({
     activities: [
       {
         type: 'PLAYING',
-        name: 'ver.1.22474487139...',
+        name: 'дальше только космос',
       },
     ],
   },

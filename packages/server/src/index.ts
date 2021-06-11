@@ -18,19 +18,14 @@ Sentry.init({
   tracesSampleRate: 1.0,
 })
 
-// @ts-expect-error
 app.use(Sentry.Handlers.requestHandler())
-// @ts-expect-error
 app.use(Sentry.Handlers.tracingHandler())
 
-// @ts-expect-error
 app.use(express.json())
-// @ts-expect-error
 app.use(express.urlencoded({ extended: true }))
 
 app.use('/', apiRoutes)
 
-// @ts-expect-error
 app.use(Sentry.Handlers.errorHandler())
 
 connectMySQL().then(() => {

@@ -3,6 +3,7 @@ import { Message, MessageEmbed, TextChannel } from 'discord.js'
 import { style } from '../../lib/config'
 import { ExtendedModule } from '../../lib/extended-module'
 import { createSelfDestructMessage } from '../../lib/self-destruct-messages'
+import { toBigIntLiteral } from '../../lib/to-bigint-literal'
 
 const DSRegex =
   /https:\/\/discord(app)?.com\/channels\/([\d]{18})\/([\d]{18})\/([\d]{18})/gm
@@ -31,9 +32,9 @@ export class UnfurlModule extends ExtendedModule {
     let parsed: Array<string> | null = null
 
     while ((parsed = DSRegex.exec(msg.content))) {
-      const server = parsed[2]
-      const channel = parsed[3]
-      const message = parsed[4]
+      const server = toBigIntLiteral(parsed[2])
+      const channel = toBigIntLiteral(parsed[3])
+      const message = toBigIntLiteral(parsed[4])
 
       if (msg.guild!.id === server) {
         const fetchGuildChannels = (await this.client.guilds.fetch(server))

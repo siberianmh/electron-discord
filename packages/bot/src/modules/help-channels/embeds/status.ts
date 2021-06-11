@@ -17,12 +17,14 @@ export const helpChannelStatusEmbed = (
     .setTitle('Help Channels Status')
     .addField(
       'Available',
+      // @ts-expect-error
       availableChannels && availableChannels.size >= 1
         ? availableChannels.map((channel) => `<#${channel.id}>`)
         : '**All channels is on Ongoing/Dormant state**',
     )
     .addField(
       'Ongoing',
+      // @ts-expect-error
       ongoingChannels.length >= 1
         ? ongoingChannels.map(
             (channel) =>
@@ -32,6 +34,7 @@ export const helpChannelStatusEmbed = (
     )
     .addField(
       'Dormant',
+      // @ts-expect-error
       dormantChannels && dormantChannels.size >= 1
         ? dormantChannels.map((channel) => `<#${channel.id}>`)
         : '**All channels in on Available/Ongoing state**',
