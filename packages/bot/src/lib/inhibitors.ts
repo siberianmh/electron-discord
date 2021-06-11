@@ -1,4 +1,5 @@
 import type { Inhibitor } from 'lunawork'
+import { Permissions } from 'discord.js'
 import { guild } from './config'
 
 export const isTrustedMember: Inhibitor = async (msg) => {
@@ -8,7 +9,7 @@ export const isTrustedMember: Inhibitor = async (msg) => {
 
   if (
     // @ts-ignore
-    !msg.member.permissions.has('MANAGE_MESSAGES') &&
+    !msg.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES) &&
     // @ts-ignore
     !msg.member.roles.cache.has(guild.roles.maintainer)
   ) {
@@ -29,7 +30,7 @@ export const noDM: Inhibitor = async (msg) => {
 export const noAuthorizedClaim: Inhibitor = async (msg) => {
   if (
     // @ts-ignore
-    !msg.member?.permissions.has('MANAGE_MESSAGES') &&
+    !msg.member?.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES) &&
     // @ts-ignore
     !msg.member.roles.cache.has(guild.roles.maintainer)
   ) {

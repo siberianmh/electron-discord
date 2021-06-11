@@ -9,6 +9,7 @@ import {
   Message,
   MessageEmbed,
   TextChannel,
+  Permissions,
 } from 'discord.js'
 import { IGetHelpChanByChannelIdResponse } from '../../lib/types'
 import { helpChannels, guild } from '../../lib/config'
@@ -147,7 +148,7 @@ export class HelpChanModule extends HelpChanBase {
       // @ts-ignore
       (owner && owner.user_id === msg.member.id) ||
       // @ts-ignore
-      msg.member?.permissions.has('MANAGE_MESSAGES') ||
+      msg.member?.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES) ||
       // @ts-ignore
       msg.member?.roles.cache.has(guild.roles.maintainer)
     ) {
