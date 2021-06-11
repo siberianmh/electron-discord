@@ -5,7 +5,7 @@ import { Mail as MailEntity } from '../../entities/mail'
 import { guild as guildConfig } from '../../lib/config'
 import { userInfoEmbed } from './embeds/user-info'
 import { userMessageEmbed } from './embeds/message'
-import { toBigIntLiteral } from '@base/common'
+import { toBigIntLiteral } from '../../lib/to-bigint-literal'
 
 export class MailUser extends MailBase {
   public constructor(client: LunaworkClient) {
