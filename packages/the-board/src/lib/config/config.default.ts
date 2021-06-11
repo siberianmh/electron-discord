@@ -1,3 +1,5 @@
+import { toBigIntLiteral as b } from '../to-bigint-literal'
+
 export const style = {
   colors: {
     softRed: 0xcd6d6d,
@@ -10,10 +12,10 @@ export const style = {
 }
 
 export const guild = {
-  id: '745037351163527189',
+  id: b('745037351163527189'),
 
   categories: {
-    modMail: '843922569924706324',
+    modMail: b('843922569924706324'),
   },
 
   modMailChannelPrefix: 'mm-',

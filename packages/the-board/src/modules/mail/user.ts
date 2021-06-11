@@ -5,6 +5,7 @@ import { Mail as MailEntity } from '../../entities/mail'
 import { guild as guildConfig } from '../../lib/config'
 import { userInfoEmbed } from './embeds/user-info'
 import { userMessageEmbed } from './embeds/message'
+import { toBigIntLiteral } from '@base/common'
 
 export class MailUser extends MailBase {
   public constructor(client: LunaworkClient) {
@@ -29,7 +30,7 @@ export class MailUser extends MailBase {
   private async continueTheChannel(msg: Message, mail: MailEntity) {
     const channel = (
       await this.client.guilds.fetch(guildConfig.id)
-    ).channels.cache.get(mail.channel_id) as TextChannel
+    ).channels.cache.get(toBigIntLiteral(mail.channel_id)) as TextChannel
 
     if (!channel) {
       return
