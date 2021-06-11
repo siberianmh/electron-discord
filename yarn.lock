@@ -1054,10 +1054,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.55.tgz#a147f282edec679b894d4694edb5abeb595fecbd"
   integrity sha512-koZJ89uLZufDvToeWO5BrC4CR4OUfHnUz2qoPs/daQH6qq3IN62QFxCTZ+bKaCE0xaoCAJYE4AXre8AbghCrhg==
 
-"@types/node@^15.12.1":
-  version "15.12.1"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.12.1.tgz#9b60797dee1895383a725f828a869c86c6caa5c2"
-  integrity sha512-zyxJM8I1c9q5sRMtVF+zdd13Jt6RU4r4qfhTd7lQubyThvLfx6yYekWSQjGCGV2Tkecgxnlpl/DNlb6Hg+dmEw==
+"@types/node@^15.12.2":
+  version "15.12.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.12.2.tgz#1f2b42c4be7156ff4a6f914b2fb03d05fa84e38d"
+  integrity sha512-zjQ69G564OCIWIOHSXyQEEDpdpGl+G348RAKY0XXy9Z5kU9Vzv1GMNnkar/ZJ8dzXB3COzD9Mo9NtRZ4xfgUww==
 
 "@types/prettier@^2.1.5":
   version "2.2.3"
@@ -2926,9 +2926,10 @@ lru_map@^0.3.3:
 
 lunawork@siberianmh/lunawork:
   version "0.0.0"
-  resolved "https://codeload.github.com/siberianmh/lunawork/tar.gz/70db49725b4343be2e145cec7204fc6ad3b60814"
+  resolved "https://codeload.github.com/siberianmh/lunawork/tar.gz/99808b8b9f061cb93e757dfe4f7f967606fc6574"
   dependencies:
     reflect-metadata "^0.1.13"
+    rimraf "^3.0.2"
 
 luxon@^1.27.0:
   version "1.27.0"
