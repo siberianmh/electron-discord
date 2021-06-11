@@ -151,7 +151,7 @@ export class HelpChannelStaff extends HelpChanBase {
   private async showHelp(msg: Message) {
     const embed = new MessageEmbed()
       .setAuthor(
-        msg.guild?.name,
+        msg.guild!.name,
         msg.guild?.iconURL({ dynamic: false }) || undefined,
       )
       .setTitle('📝 Help Channels Management')
@@ -160,7 +160,7 @@ export class HelpChannelStaff extends HelpChanBase {
         '`create <channelName>` ► Create the new help channel with the specific name\n`status` ► Show the current status of help channels\n`update` ► Update the topic of help channels\n`sync` ► Fix possible errors during downtimes.',
       )
       .setFooter(
-        this.client.user?.username,
+        this.client.user!.username,
         this.client.user?.displayAvatarURL(),
       )
       .setTimestamp()

@@ -41,7 +41,7 @@ export class HelpMessageModule extends ExtendedModule {
           '`close` ► Close a __ongoing__ help channel opened by you!',
         )
         .setFooter(
-          this.client.user?.username,
+          this.client.user!.username,
           this.client.user?.displayAvatarURL(),
         )
         .setTimestamp()

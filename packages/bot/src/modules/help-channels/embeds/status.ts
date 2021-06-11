@@ -11,7 +11,7 @@ export const helpChannelStatusEmbed = (
 ) => {
   return new MessageEmbed()
     .setAuthor(
-      msg.guild?.name,
+      msg.guild!.name,
       msg.guild?.iconURL({ dynamic: true }) || undefined,
     )
     .setTitle('Help Channels Status')
@@ -36,6 +36,6 @@ export const helpChannelStatusEmbed = (
         ? dormantChannels.map((channel) => `<#${channel.id}>`)
         : '**All channels in on Available/Ongoing state**',
     )
-    .setFooter(client.user?.username, client.user?.displayAvatarURL())
+    .setFooter(client.user!.username, client.user?.displayAvatarURL())
     .setTimestamp()
 }
