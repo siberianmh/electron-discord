@@ -1,3 +1,5 @@
+import { toBigIntLiteral as b } from '../to-bigint-literal'
+
 export const style = {
   colors: {
     softRed: 0xcd6d6d,
@@ -39,50 +41,50 @@ export const style = {
 }
 
 export const guild = {
-  id: '745037351163527189',
+  id: b('745037351163527189'),
   invite: 'https://discord.gg/electron',
 
   categories: {
-    helpAvailable: '745038318479081483',
-    helpOngoing: '763429207791239168',
-    helpDormant: '763429965726351392',
+    helpAvailable: b('745038318479081483'),
+    helpOngoing: b('763429207791239168'),
+    helpDormant: b('763429965726351392'),
   },
 
   channels: {
-    roles: '760189688492720139',
-    releases: '750040178961416242',
-    rules: '745041677185450005',
-    voiceRules: '776136611510747186',
-    adminBotInteractions: '771069886696914994',
-    askHelpChannel: '748284419525312553',
-    modLog: '764542608256270406',
+    roles: b('760189688492720139'),
+    releases: b('750040178961416242'),
+    rules: b('745041677185450005'),
+    voiceRules: b('776136611510747186'),
+    adminBotInteractions: b('771069886696914994'),
+    askHelpChannel: b('748284419525312553'),
+    modLog: b('764542608256270406'),
   },
 
   roles: {
-    everyone: '745037351163527189',
-    admin: '745038904532402237',
-    maintainer: '745039155498582067',
-    hashithemoto: '835050861830733884',
-    helpCooldown: '772835574197256199',
-    regular: '828009346251227148',
+    everyone: b('745037351163527189'),
+    admin: b('745038904532402237'),
+    maintainer: b('745039155498582067'),
+    hashithemoto: b('835050861830733884'),
+    helpCooldown: b('772835574197256199'),
+    regular: b('828009346251227148'),
 
     //#region etc
 
     // pronouns
-    anyPronouns: '760191162291191820',
-    faeFaer: '760191164770287636',
-    heHim: '760191175293796353',
-    itIts: '760191175336132608',
-    noPronouns: '760191176955002922',
-    sheHer: '760191692510068806',
-    theyThem: '760191695953723392',
-    xeXim: '760191852892258305',
-    zeZir: '760191899997962260',
+    anyPronouns: b('760191162291191820'),
+    faeFaer: b('760191164770287636'),
+    heHim: b('760191175293796353'),
+    itIts: b('760191175336132608'),
+    noPronouns: b('760191176955002922'),
+    sheHer: b('760191692510068806'),
+    theyThem: b('760191695953723392'),
+    xeXim: b('760191852892258305'),
+    zeZir: b('760191899997962260'),
 
     // os
-    windows: '778343819590107218',
-    macOS: '778343887382773801',
-    linux: '778343916108906507',
+    windows: b('7783438195901072180'),
+    macOS: b('778343887382773801'),
+    linux: b('778343916108906507'),
 
     //#endregion
   },

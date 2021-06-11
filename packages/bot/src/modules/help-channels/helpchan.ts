@@ -19,6 +19,7 @@ import { extendedCommand } from '../../lib/extended-command'
 import { CloseReason } from '../../lib/types/help-chan'
 import { claimedEmbed } from './embeds/claimed'
 import { dormantEmbed } from './embeds/dormant'
+import { toBigIntLiteral } from '../../lib/to-bigint-literal'
 
 /**
  * Manage the help channel system of the guild.
@@ -182,7 +183,7 @@ export class HelpChanModule extends HelpChanBase {
 
     try {
       const member = await channel.guild.members.fetch({
-        user: helpChannel.user_id,
+        user: toBigIntLiteral(helpChannel.user_id),
       })
 
       await member.roles.remove(guild.roles.helpCooldown)
