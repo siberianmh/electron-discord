@@ -2914,9 +2914,10 @@ lru_map@^0.3.3:
 
 lunawork@siberianmh/lunawork:
   version "0.0.0"
-  resolved "https://codeload.github.com/siberianmh/lunawork/tar.gz/99808b8b9f061cb93e757dfe4f7f967606fc6574"
+  resolved "https://codeload.github.com/siberianmh/lunawork/tar.gz/4f7ec24ca1723ced6f0536335d85be438f478ea5"
   dependencies:
     reflect-metadata "^0.1.13"
+    rimraf "^3.0.2"
 
 luxon@^1.27.0:
   version "1.27.0"
@@ -3415,7 +3416,7 @@ resolve@^1.20.0:
     is-core-module "^2.2.0"
     path-parse "^1.0.6"
 
-rimraf@^3.0.0:
+rimraf@^3.0.0, rimraf@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-3.0.2.tgz#f1a5402ba6220ad52cc1282bac1ae3aa49fd061a"
   integrity sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==
