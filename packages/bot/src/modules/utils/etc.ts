@@ -1,10 +1,11 @@
-import { LunaworkClient, listener } from 'lunawork'
+import { LunaworkClient, listener, button } from 'lunawork'
 import {
   Message,
   MessageEmbed,
   MessageReaction,
   User,
   Permissions,
+  ButtonInteraction,
 } from 'discord.js'
 import * as humanizeDuration from 'humanize-duration'
 import { ExtendedModule } from '../../lib/extended-module'
@@ -55,6 +56,28 @@ export class EtcModule extends ExtendedModule {
     await msg.react('✅')
     await msg.react('❌')
     await msg.react('🤷')
+
+    return
+  }
+
+  @button({ customId: 'trashIcon' })
+  public async bucketButtonClicked(msg: ButtonInteraction) {
+    const key = await redis.get(selfDestructMessage(msg.message.id))
+
+    if (!key) {
+      return
+    }
+
+    if (
+      msg.user.id === key ||
+      // @ts-expect-error
+      msg.member?.roles.has(Permissions.FLAGS.MANAGE_MESSAGES) ||
+      // @ts-expect-error
+      msg.member?.roles.cache.has(guild.roles.maintainer)
+    ) {
+      // @ts-expect-error
+      return await msg.message.delete()
+    }
 
     return
   }

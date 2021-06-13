@@ -1,6 +1,7 @@
 import { LunaworkClient, Context, isCommandMessage } from 'lunawork'
 import {
   Message,
+  TextChannel,
   MessageEmbed,
   User,
   Snowflake,
@@ -93,7 +94,7 @@ export class InfractionsModule extends ExtendedModule {
 
     const splitArgs = splittyArgs(args)
     if (splitArgs.length === 0) {
-      return await msg.channel.send({
+      return await (msg.channel as TextChannel)!.send({
         content: ':warning: syntax !kick <@userID> [?reason]',
       })
     }
@@ -101,7 +102,9 @@ export class InfractionsModule extends ExtendedModule {
     const [user_id, ...reason] = splitArgs
 
     if (!user_id) {
-      return await msg.channel.send({ content: ':warning: invalid syntax' })
+      return await (msg.channel as TextChannel)!.send({
+        content: ':warning: invalid syntax',
+      })
     }
 
     const res = this.USER_PATTERN.exec(user_id)
@@ -116,6 +119,7 @@ export class InfractionsModule extends ExtendedModule {
     const purge = trigger === 'pban' || trigger === 'purgeban'
 
     return await this.performInfraction({
+      // @ts-expect-error
       ctx: msg,
       user: user!,
       reason: reason.join(' '),

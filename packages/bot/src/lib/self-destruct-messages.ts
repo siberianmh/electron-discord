@@ -1,4 +1,10 @@
-import { Message, MessageEmbed, CommandInteraction } from 'discord.js'
+import {
+  Message,
+  MessageEmbed,
+  CommandInteraction,
+  MessageActionRow,
+  MessageButton,
+} from 'discord.js'
 import { isMessage, isCommandMessage } from 'lunawork'
 import { redis, selfDestructMessage } from './redis'
 import { style } from './config'
@@ -8,23 +14,39 @@ export const createSelfDestructMessage = async (
   messageContent: MessageEmbed | string,
 ) => {
   let createdMessage: Message | null = null
+  const flipper = Math.random()
+
+  const row = new MessageActionRow().addComponents(
+    new MessageButton()
+      .setCustomID('trashIcon')
+      .setLabel('🗑')
+      .setStyle('DANGER'),
+  )
 
   if (isMessage(msg)) {
     if (typeof messageContent === 'string') {
-      createdMessage = await msg.channel.send(messageContent)
+      createdMessage = await msg.channel.send({
+        content: messageContent,
+        components: flipper > 0.5 ? [row] : undefined,
+      })
     } else {
-      createdMessage = await msg.channel.send({ embeds: [messageContent] })
+      createdMessage = await msg.channel.send({
+        embeds: [messageContent],
+        components: flipper > 0.5 ? [row] : undefined,
+      })
     }
   } else if (isCommandMessage(msg)) {
     if (typeof messageContent === 'string') {
       await msg.reply({
         content: messageContent,
+        components: flipper > 0.5 ? [row] : undefined,
       })
       // @ts-expect-error
       createdMessage = await msg.fetchReply()
     } else {
       await msg.reply({
         embeds: [messageContent],
+        components: flipper > 0.5 ? [row] : undefined,
       })
       // @ts-expect-error
       createdMessage = await msg.fetchReply()
@@ -38,7 +60,11 @@ export const createSelfDestructMessage = async (
     60 * 60 * 24,
   )
 
-  return await createdMessage?.react(style.emojis.deleteBucket)
+  if (flipper < 0.5) {
+    return await createdMessage?.react(style.emojis.deleteBucket)
+  }
+
+  return
 }
 
 export const reactAsSelfDesturct = async (msg: Message) => {
