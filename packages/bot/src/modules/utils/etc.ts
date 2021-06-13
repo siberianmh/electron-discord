@@ -33,7 +33,7 @@ export class EtcModule extends ExtendedModule {
       .addField('Discord API Latency', `${dsAPILatency}ms`)
       .setTimestamp()
 
-    return await msg.channel.send({ embed })
+    return await msg.channel.send({ embeds: [embed] })
   }
   //#endregion
 

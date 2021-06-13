@@ -19,7 +19,6 @@ export class InformationModule extends ExtendedModule {
   public async serverInfo(msg: Message) {
     const created = DateTime.fromJSDate(msg.guild!.createdAt).toRelative()
     const features = msg.guild?.features.join(', ') ?? 'No features'
-    const region = msg.guild?.region
 
     const roles = msg.guild?.roles.valueOf().size
     const member_count = msg.guild?.memberCount
@@ -33,7 +32,6 @@ export class InformationModule extends ExtendedModule {
         `
 **Server information**
 Created: ${created}
-Voice region: ${region}
 Features: ${features}
 
 **Member counts**
@@ -47,7 +45,7 @@ ${constants.style.emojis.statusOffline} ${offlinePresence}
       )
       .setThumbnail(msg.guild?.iconURL({ dynamic: false }) || '')
 
-    return msg.channel.send({ embed })
+    return msg.channel.send({ embeds: [embed] })
   }
 
   /**
@@ -78,6 +76,6 @@ ${constants.style.emojis.statusOffline} ${offlinePresence}
       .addField(userInformation.name, userInformation.value)
       .setThumbnail(user.displayAvatarURL({ dynamic: false }) || '')
 
-    return msg.channel.send({ embed })
+    return msg.channel.send({ embeds: [embed] })
   }
 }

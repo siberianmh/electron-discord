@@ -136,7 +136,7 @@ export class InfractionsModule extends ExtendedModule {
       return msg.channel.send({ content: '🤗 pardonned' })
     } catch (e) {
       const errEmbed = new MessageEmbed().setDescription('Unable to unban')
-      return msg.channel.send({ embed: errEmbed })
+      return msg.channel.send({ embeds: [errEmbed] })
     }
   }
 
@@ -293,7 +293,7 @@ export class InfractionsModule extends ExtendedModule {
     )
 
     try {
-      await props.user.send(embed)
+      await props.user.send({ embeds: [embed] })
       return true
     } catch (err) {
       return false

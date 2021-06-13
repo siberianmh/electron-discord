@@ -23,7 +23,7 @@ export class SourceModule extends ExtendedModule {
       )
       .setThumbnail('https://avatars0.githubusercontent.com/u/30377152')
 
-    return msg.channel.send({ embed })
+    return msg.channel.send({ embeds: [embed] })
   }
   //#endregion
 }

@@ -40,7 +40,7 @@ export class ExtendedModule extends Stage {
     if (isMessage(msg)) {
       return msg.channel.send(content)
     } else {
-      return msg.reply(content, options?.slashOptions)
+      return msg.reply({ content, ...options?.slashOptions })
     }
   }
 }

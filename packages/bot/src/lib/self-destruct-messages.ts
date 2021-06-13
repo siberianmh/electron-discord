@@ -1,5 +1,5 @@
 import { Message, MessageEmbed, CommandInteraction } from 'discord.js'
-import { isMessage } from 'lunawork'
+import { isMessage, isCommandMessage } from 'lunawork'
 import { redis, selfDestructMessage } from './redis'
 import { style } from './config'
 
@@ -7,28 +7,38 @@ export const createSelfDestructMessage = async (
   msg: Message | CommandInteraction,
   messageContent: MessageEmbed | string,
 ) => {
-  let createdMessage: Message
+  let createdMessage: Message | null = null
 
   if (isMessage(msg)) {
     if (typeof messageContent === 'string') {
       createdMessage = await msg.channel.send(messageContent)
     } else {
-      createdMessage = await msg.channel.send({ embed: messageContent })
+      createdMessage = await msg.channel.send({ embeds: [messageContent] })
     }
-  } else {
-    await msg.reply(messageContent)
-    // @ts-ignore The types for d.js v8 is not great 🤷‍♂️
-    createdMessage = await msg.fetchReply()
+  } else if (isCommandMessage(msg)) {
+    if (typeof messageContent === 'string') {
+      await msg.reply({
+        content: messageContent,
+      })
+      // @ts-expect-error
+      createdMessage = await msg.fetchReply()
+    } else {
+      await msg.reply({
+        embeds: [messageContent],
+      })
+      // @ts-expect-error
+      createdMessage = await msg.fetchReply()
+    }
   }
 
   await redis.set(
-    selfDestructMessage(createdMessage.id),
+    selfDestructMessage(createdMessage!.id),
     msg.member!.user.id,
     'ex',
     60 * 60 * 24,
   )
 
-  return await createdMessage.react(style.emojis.deleteBucket)
+  return await createdMessage?.react(style.emojis.deleteBucket)
 }
 
 export const reactAsSelfDesturct = async (msg: Message) => {

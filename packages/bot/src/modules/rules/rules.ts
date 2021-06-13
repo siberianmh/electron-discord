@@ -20,16 +20,16 @@ export class RulesModule extends ExtendedModule {
 
     if (lastMessage && !lastMessage.author.bot) {
       await lastMessage.delete()
-      return await rulesChannel.send({ embed: rulesText() })
+      return await rulesChannel.send({ embeds: [rulesText()] })
     }
 
     if (!lastMessage) {
-      return await rulesChannel.send({ embed: rulesText() })
+      return await rulesChannel.send({ embeds: [rulesText()] })
     }
 
     if (!deepEqual(lastMessage.embeds[0].fields, rulesText().fields)) {
       await lastMessage.delete()
-      return await rulesChannel.send({ embed: rulesText() })
+      return await rulesChannel.send({ embeds: [rulesText()] })
     }
 
     return
@@ -48,16 +48,16 @@ export class RulesModule extends ExtendedModule {
 
     if (lastMessage && !lastMessage.author.bot) {
       await lastMessage.delete()
-      return await rulesChannel.send({ embed: voiceRulesText() })
+      return await rulesChannel.send({ embeds: [voiceRulesText()] })
     }
 
     if (!lastMessage) {
-      return await rulesChannel.send({ embed: voiceRulesText() })
+      return await rulesChannel.send({ embeds: [voiceRulesText()] })
     }
 
     if (!deepEqual(lastMessage.embeds[0].fields, voiceRulesText().fields)) {
       await lastMessage.delete()
-      return await rulesChannel.send({ embed: voiceRulesText() })
+      return await rulesChannel.send({ embeds: [voiceRulesText()] })
     }
 
     return

@@ -125,13 +125,9 @@ export class HelpChannelStaff extends HelpChanBase {
       .filter((channel) => channel.name.startsWith(this.CHANNEL_PREFIX))
 
     return msg.channel.send({
-      embed: helpChannelStatusEmbed(
-        this.client,
-        msg,
-        available,
-        ongoing,
-        dormant,
-      ),
+      embeds: [
+        helpChannelStatusEmbed(this.client, msg, available, ongoing, dormant),
+      ],
     })
   }
 
@@ -169,7 +165,7 @@ export class HelpChannelStaff extends HelpChanBase {
       )
       .setTimestamp()
 
-    return msg.channel.send({ embed })
+    return msg.channel.send({ embeds: [embed] })
   }
 
   private async createHelpChannel(guild: Guild, channelName: string) {
@@ -183,7 +179,7 @@ export class HelpChannelStaff extends HelpChanBase {
 
     // Channel should already be in ask, but sync permissions
     await this.moveChannel(channel, config.guild.categories.helpAvailable)
-    await channel.send({ embed: availableEmbed })
+    await channel.send({ embeds: [availableEmbed] })
 
     return channel
   }
@@ -260,12 +256,14 @@ export class HelpChannelStaff extends HelpChanBase {
     }
 
     const toPin = await claimedChannel.send({
-      embed: new MessageEmbed()
-        .setAuthor(
-          member.displayName,
-          member.user.displayAvatarURL({ dynamic: false }),
-        )
-        .setDescription(msgContent),
+      embeds: [
+        new MessageEmbed()
+          .setAuthor(
+            member.displayName,
+            member.user.displayAvatarURL({ dynamic: false }),
+          )
+          .setDescription(msgContent),
+      ],
     })
 
     await toPin.pin()
@@ -305,7 +303,7 @@ export class HelpChannelStaff extends HelpChanBase {
       .setTitle('✅ Successfully updated')
       .setDescription('Help Channels topic successfully updated')
 
-    return await msg.channel.send({ embed })
+    return await msg.channel.send({ embeds: [embed] })
   }
 
   private async syncChannels(msg: Message) {

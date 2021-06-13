@@ -18,7 +18,7 @@ const createMessageEntry = async (
   const embed = new MessageEmbed()
     .setDescription(message)
     .setColor(style.colors.electronBlue)
-  const dsCreatedMessage = await channel.send({ embed })
+  const dsCreatedMessage = await channel.send({ embeds: [embed] })
 
   const { data: roleEntry } = await api.post<ICreateMessageRoleResponse>(
     '/message-roles',

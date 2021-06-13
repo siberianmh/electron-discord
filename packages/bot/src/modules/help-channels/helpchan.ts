@@ -146,15 +146,18 @@ export class HelpChanModule extends HelpChanBase {
     )
 
     if (
-      // @ts-ignore
+      // @ts-expect-error
       (owner && owner.user_id === msg.member.id) ||
-      // @ts-ignore
+      // @ts-expect-error
       msg.member?.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES) ||
-      // @ts-ignore
+      // @ts-expect-error
       msg.member?.roles.cache.has(guild.roles.maintainer)
     ) {
       if (isCommandMessage(msg)) {
-        await msg.reply('Channel is starting closing 🎈', { ephemeral: true })
+        await msg.reply({
+          content: 'Channel is starting closing 🎈',
+          ephemeral: true,
+        })
       }
       return await this.markChannelAsDormant(
         msg.channel as TextChannel,
@@ -193,7 +196,7 @@ export class HelpChanModule extends HelpChanBase {
     await this.api.delete(`/helpchan/${channel.id}`)
     await this.moveChannel(channel, guild.categories.helpDormant)
 
-    await channel.send({ embed: dormantEmbed })
+    await channel.send({ embeds: [dormantEmbed] })
 
     await this.ensureAskChannels(channel.guild)
     await this.syncHowToGetHelp(channel.guild)
@@ -228,7 +231,7 @@ export class HelpChanModule extends HelpChanBase {
       return
     }
 
-    return await embedMessage.edit({ embed: claimedEmbed(claimer) })
+    return await embedMessage.edit({ embeds: [claimedEmbed(claimer)] })
   }
 
   private async checkDormantPossibilities() {
@@ -276,7 +279,7 @@ export class HelpChanModule extends HelpChanBase {
         `You can't create a more than ${config.helpChannels.maxTotalChannels}.`,
       )
 
-    return channel.send({ embed })
+    return channel.send({ embeds: [embed] })
   }
 
   private statsReportComplete(

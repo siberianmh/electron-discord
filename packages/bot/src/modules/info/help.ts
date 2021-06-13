@@ -46,7 +46,7 @@ export class HelpMessageModule extends ExtendedModule {
         )
         .setTimestamp()
 
-      return await msg.channel.send({ embed })
+      return await msg.channel.send({ embeds: [embed] })
     } else {
       const cmd = this.client.commandManager.getPrefixedByTrigger(cmdTrigger)
 

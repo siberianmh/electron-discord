@@ -34,7 +34,7 @@ export function extendedCommand(
         console.log(`Unable to send modlog message: ${e}`)
       }
 
-      return msg.channel.send({ embed })
+      return msg.channel.send({ embeds: [embed] })
     }
 
     return command({

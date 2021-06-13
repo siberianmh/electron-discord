@@ -96,10 +96,10 @@ export class HelpChanBase extends ExtendedModule {
 
       if (lastMessage) {
         // If there is a last message (the dormant message) by the bot, just edit it
-        return await lastMessage.edit({ embed: availableEmbed })
+        return await lastMessage.edit({ embeds: [availableEmbed] })
       } else {
         // Otherwise, just send a new message
-        return await dormant.send({ embed: availableEmbed })
+        return await dormant.send({ embeds: [availableEmbed] })
       }
     }
 
