@@ -3,6 +3,7 @@ import { Message } from 'discord.js'
 import { MailBase } from './base'
 import { Mail as MailEntity } from '../../entities/mail'
 import { guild } from '../../lib/config'
+import { toBigIntLiteral } from '../../lib/to-bigint-literal'
 
 export class MailStaff extends MailBase {
   public constructor(client: LunaworkClient) {
@@ -41,8 +42,9 @@ export class MailStaff extends MailBase {
     }
 
     // TODO
-    // @ts-expect-error
-    const recipient = await msg.guild?.members.fetch(mailChannel.user_id)
+    const recipient = await msg.guild?.members.fetch(
+      toBigIntLiteral(mailChannel.user_id),
+    )
 
     try {
       recipient!.send(`**${msg.author.tag}:** ${msg.cleanContent}`)

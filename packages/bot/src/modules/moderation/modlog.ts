@@ -72,8 +72,10 @@ export class ModLogModule extends ExtendedModule {
 
     const channel = (await this.client.channels.fetch(channelId)) as TextChannel
 
-    // @ts-ignore
-    return await channel.send({ content: content ?? undefined, embed: embed })
+    return await channel.send({
+      content: content ?? undefined,
+      embeds: [embed],
+    })
   }
 
   /**
