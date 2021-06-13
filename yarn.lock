@@ -2917,7 +2917,6 @@ lunawork@siberianmh/lunawork:
   resolved "https://codeload.github.com/siberianmh/lunawork/tar.gz/4f7ec24ca1723ced6f0536335d85be438f478ea5"
   dependencies:
     reflect-metadata "^0.1.13"
-    rimraf "^3.0.2"
 
 luxon@^1.27.0:
   version "1.27.0"
