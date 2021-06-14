@@ -1,4 +1,9 @@
-import { LunaworkClient, Context, isCommandMessage } from 'lunawork'
+import {
+  LunaworkClient,
+  Context,
+  isCommandMessage,
+  isButtonMessage,
+} from 'lunawork'
 import {
   Message,
   TextChannel,
@@ -88,7 +93,7 @@ export class InfractionsModule extends ExtendedModule {
     aliases: ['purgeban', 'pban'],
   })
   public async ban({ msg, trigger }: Context, args: string) {
-    if (isCommandMessage(msg)) {
+    if (isCommandMessage(msg) || isButtonMessage(msg)) {
       return
     }
 
@@ -119,7 +124,6 @@ export class InfractionsModule extends ExtendedModule {
     const purge = trigger === 'pban' || trigger === 'purgeban'
 
     return await this.performInfraction({
-      // @ts-expect-error
       ctx: msg,
       user: user!,
       reason: reason.join(' '),

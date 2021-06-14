@@ -41,7 +41,6 @@ export class MailStaff extends MailBase {
       })
     }
 
-    // TODO
     const recipient = await msg.guild?.members.fetch(
       toBigIntLiteral(mailChannel.user_id),
     )
@@ -68,9 +67,9 @@ export class MailStaff extends MailBase {
       })
     }
 
-    // TODO
-    // @ts-expect-error
-    const recipient = await msg.guild?.members.fetch(mailChannel.user_id)
+    const recipient = await msg.guild?.members.fetch(
+      toBigIntLiteral(mailChannel.user_id),
+    )
 
     await recipient!.send({
       content:
