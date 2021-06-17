@@ -1721,10 +1721,10 @@ discord-api-types@^0.18.1:
   resolved "https://registry.yarnpkg.com/discord-api-types/-/discord-api-types-0.18.1.tgz#5d08ed1263236be9c21a22065d0e6b51f790f492"
   integrity sha512-hNC38R9ZF4uaujaZQtQfm5CdQO58uhdkoHQAVvMfIL0LgOSZeW575W8H6upngQOuoxWd8tiRII3LLJm9zuQKYg==
 
-discord.js@13.0.0-dev.02693bc02f45980d8165820a103220f0027b96b7:
-  version "13.0.0-dev.02693bc02f45980d8165820a103220f0027b96b7"
-  resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-13.0.0-dev.02693bc02f45980d8165820a103220f0027b96b7.tgz#5baa6c758b970a1e6175d06373d4ab33eb6a4164"
-  integrity sha512-nzbmF5MLSjpdr8DS7SpC9q291NQ8XkHlledM4lz+uFJ4YgnMmTpi6e0FgF7v2kpTJPqTsXDRY3rWBv6Dat+08A==
+discord.js@13.0.0-dev.a3cbcca13da1af416c219bd64a0a6e84bb87a057:
+  version "13.0.0-dev.a3cbcca13da1af416c219bd64a0a6e84bb87a057"
+  resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-13.0.0-dev.a3cbcca13da1af416c219bd64a0a6e84bb87a057.tgz#7358b44985b2423f1fdb1a9c259d26de74d662f7"
+  integrity sha512-9EFBA08VUt9hIZzgQ1IcNv3/EwLvo4N9RikEzv/qNYjRvonnKi70tp0dpChduM8GFxgqrcTEa2mZJGfuumBBHA==
   dependencies:
     "@discordjs/collection" "^0.1.6"
     "@discordjs/form-data" "^3.0.1"
@@ -2917,7 +2917,6 @@ lunawork@siberianmh/lunawork:
   resolved "https://codeload.github.com/siberianmh/lunawork/tar.gz/df8bd312c582134c79dc0b801a2ea06d1361e4cc"
   dependencies:
     reflect-metadata "^0.1.13"
-    rimraf "^3.0.2"
 
 luxon@^1.27.0:
   version "1.27.0"
