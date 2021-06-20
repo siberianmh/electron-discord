@@ -16,7 +16,7 @@ ts_project(
         "@npm//humanize-duration",
         "@npm//ioredis",
         "@npm//lunawork",
-        "@npm//mysql",
+        "@npm//mysql2",
         "@npm//reflect-metadata",
         "@npm//typeorm",
     ],

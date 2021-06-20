@@ -17,7 +17,7 @@ ts_project(
         "@npm//axios",
         "@npm//express",
         "@npm//ioredis",
-        "@npm//mysql",
+        "@npm//mysql2",
         "@npm//reflect-metadata",
         "@npm//typeorm",
         "@npm//uuid",
