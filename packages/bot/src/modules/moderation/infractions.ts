@@ -19,7 +19,7 @@ import { toBigIntLiteral as b } from '../../lib/to-bigint-literal'
 import { guild } from '../../lib/config'
 import { splittyArgs } from '../../lib/split-args'
 import { extendedCommand } from '../../lib/extended-command'
-import { InfractionType } from '../../lib/types'
+import { InfractionType, infractionType } from '../../lib/types'
 
 interface IPerformInfractionProps {
   readonly user: User
@@ -237,12 +237,12 @@ export class InfractionsModule extends ExtendedModule {
       }
     }
 
-    let message = '🙇‍♂️ infraction applied'
-    await this.notifyInfraction({
+    const mailSended = await this.notifyInfraction({
       reason: props.reason,
       type: props.type,
       user: member.user,
     })
+    let message = `${mailSended ? '📨' : '📪'} `
 
     if (process.env.NODE_ENV !== 'development') {
       switch (props.type) {
@@ -262,15 +262,15 @@ export class InfractionsModule extends ExtendedModule {
 
     switch (props.type) {
       case InfractionType.Kick:
-        message = `Applied **kick** to <@${member.id}>, reason: ${props.reason}`
+        message += `Applied **kick** to <@${member.id}>, reason: ${props.reason}`
         break
       case InfractionType.Ban:
-        message = `Applied **${props.purge ? 'purgeban' : 'ban'}** to <@${
+        message += `Applied **${props.purge ? 'purgeban' : 'ban'}** to <@${
           member.id
         }>, reason: ${props.reason}`
         break
       case InfractionType.Warn:
-        message = `Applied **warning** to <@${member.id}>, reason: ${props.reason}`
+        message += `Applied **warning** to <@${member.id}>, reason: ${props.reason}`
         break
     }
 
@@ -288,7 +288,7 @@ export class InfractionsModule extends ExtendedModule {
   }
 
   private async notifyInfraction(props: INotifyInfractionProps) {
-    const description = `**Type: ${props.type}**\n
+    const description = `**Type:** ${infractionType[props.type]}
 **Reason:** ${props.reason}`
 
     const embed = new MessageEmbed().setDescription(description)
@@ -297,7 +297,7 @@ export class InfractionsModule extends ExtendedModule {
     embed.setTitle('Plese review the future actions')
 
     embed.setFooter(
-      'If you would like to discuss or appeal this infraction, please send a message to the ModMail bot',
+      'If you would like to discuss or appeal this infraction, please send a message to the `Hashimoto#2752`, please include all information that you can',
     )
 
     try {
