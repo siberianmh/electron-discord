@@ -26,7 +26,7 @@
     "gray-matter": "^4.0.3",
     "humanize-duration": "^3.27.0",
     "ioredis": "^4.27.6",
-    "jest": "^27.0.4",
+    "jest": "^27.0.5",
     "lunawork": "siberianmh/lunawork",
     "luxon": "^1.27.0",
     "mysql2": "^2.2.5",
