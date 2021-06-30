@@ -1,6 +1,7 @@
 import { toBigIntLiteral as b } from '../to-bigint-literal'
+import { IStyle } from './types'
 
-export const style = {
+export const style: IStyle = {
   colors: {
     softRed: 0xcd6d6d,
     softGreen: 0x68c290,

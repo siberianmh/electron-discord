@@ -1,8 +1,8 @@
-import { Collection, GuildChannel } from 'discord.js'
+import { Collection, GuildChannel, ThreadChannel } from 'discord.js'
 import { helpChannels } from '../../lib/config'
 
 export const helpMessage = (
-  availableChannels: Collection<string, GuildChannel>,
+  availableChannels: Collection<`${bigint}`, GuildChannel | ThreadChannel>,
 ) => `
 **How to Ask For Help**
 

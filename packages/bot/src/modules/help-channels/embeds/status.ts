@@ -1,13 +1,23 @@
 import { LunaworkClient } from 'lunawork'
-import { Message, Collection, MessageEmbed, GuildChannel } from 'discord.js'
+import {
+  Message,
+  Collection,
+  MessageEmbed,
+  GuildChannel,
+  ThreadChannel,
+} from 'discord.js'
 import { IListHelpChannelsRespone } from '../../../lib/types'
 
 export const helpChannelStatusEmbed = (
   client: LunaworkClient,
   msg: Message,
-  availableChannels: Collection<string, GuildChannel> | undefined,
+  availableChannels:
+    | Collection<`${bigint}`, GuildChannel | ThreadChannel>
+    | undefined,
   ongoingChannels: IListHelpChannelsRespone,
-  dormantChannels: Collection<string, GuildChannel> | undefined,
+  dormantChannels:
+    | Collection<`${bigint}`, GuildChannel | ThreadChannel>
+    | undefined,
 ) => {
   return new MessageEmbed()
     .setAuthor(

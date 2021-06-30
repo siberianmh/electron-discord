@@ -6,6 +6,7 @@ import {
   TextChannel,
   ChannelData,
   Guild,
+  ThreadChannel,
 } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { helpChannels, guild } from '../../lib/config'
@@ -26,7 +27,7 @@ export class HelpChanBase extends ExtendedModule {
     category: GuildChannelResolvable,
   ) {
     const parent = channel.guild.channels.resolve(category)
-    if (parent === null) {
+    if (parent === null || parent instanceof ThreadChannel) {
       return
     }
 

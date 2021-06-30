@@ -12,7 +12,7 @@ export const rulesText = () =>
     )
     .addField(
       'Rule 2',
-      'Follow the [Electron OpenJS Foundation Code Of Conduct](https://github.com/electron/electron/blob/master/CODE_OF_CONDUCT.md).',
+      'Follow the [Electron OpenJS Foundation Code Of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md).',
     )
     .addField(
       'Rule 3',
