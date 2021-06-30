@@ -27,26 +27,25 @@ export const helpChannelStatusEmbed = (
     .setTitle('Help Channels Status')
     .addField(
       'Available',
-      // @ts-expect-error
       availableChannels && availableChannels.size >= 1
-        ? availableChannels.map((channel) => `<#${channel.id}>`)
+        ? availableChannels.map((channel) => `<#${channel.id}>`).join('\n')
         : '**All channels is on Ongoing/Dormant state**',
     )
     .addField(
       'Ongoing',
-      // @ts-expect-error
       ongoingChannels.length >= 1
-        ? ongoingChannels.map(
-            (channel) =>
-              `<#${channel.channel_id}> - Owner <@${channel.user_id}>`,
-          )
+        ? ongoingChannels
+            .map(
+              (channel) =>
+                `<#${channel.channel_id}> - Owner <@${channel.user_id}>`,
+            )
+            .join('\n')
         : '**No Channels in Ongoing Category**',
     )
     .addField(
       'Dormant',
-      // @ts-expect-error
       dormantChannels && dormantChannels.size >= 1
-        ? dormantChannels.map((channel) => `<#${channel.id}>`)
+        ? dormantChannels.map((channel) => `<#${channel.id}>`).join('\n')
         : '**All channels in on Available/Ongoing state**',
     )
     .setFooter(client.user!.username, client.user?.displayAvatarURL())
