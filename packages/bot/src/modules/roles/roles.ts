@@ -7,6 +7,7 @@ import {
   IGetMessageRoleResponse,
   IGetMessageRolesActionsResponse,
 } from '../../lib/types'
+import { toBigIntLiteral } from '../../lib/to-bigint-literal'
 
 export class RolesModule extends ExtendedModule {
   public constructor(client: LunaworkClient) {
@@ -85,7 +86,7 @@ export class RolesModule extends ExtendedModule {
         user,
       })
 
-      await member.roles.add(role.role_id)
+      await member.roles.add(toBigIntLiteral(role.role_id))
       if (!reaction.users.cache.has(this.client.user!.id)) {
         await msg.react(reaction.emoji)
       }
@@ -125,7 +126,7 @@ export class RolesModule extends ExtendedModule {
         const member = await msg.guild.members.fetch({
           user,
         })
-        await member.roles.remove(role.role_id)
+        await member.roles.remove(toBigIntLiteral(role.role_id))
       } catch {}
     }
   }
