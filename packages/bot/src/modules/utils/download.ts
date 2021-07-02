@@ -22,6 +22,7 @@ export class DownloadModule extends ExtendedModule {
     'dowlaud',
     'dowlaid',
     'dowloand',
+    'verify',
   ]
 
   private DOWNLOAD_MESSAGE = `⚠⚠⚠ PLEASE READ THIS BEFORE CONTINUING IN THE ELECTRON DISCORD SERVER ⚠⚠⚠
