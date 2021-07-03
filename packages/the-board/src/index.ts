@@ -17,7 +17,7 @@ connectMySQL()
   .then(() => {
     client.login(process.env.DISCORD_TOKEN)
     client.on('ready', () => {
-      client.logger.info(`Logged in as ${client.user?.tag}`)
+      console.log(`Logged in as ${client.user?.tag}`)
     })
   })
   .catch((err) => {

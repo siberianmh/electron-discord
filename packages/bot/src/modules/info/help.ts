@@ -1,4 +1,4 @@
-import { LunaworkClient, guildsOnly, optional } from 'lunawork'
+import { LunaworkClient, optional } from 'lunawork'
 import { Message, MessageEmbed } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { extendedCommand } from '../../lib/extended-command'
@@ -10,7 +10,6 @@ export class HelpMessageModule extends ExtendedModule {
 
   @extendedCommand({
     aliases: ['help', 'commands', 'h'],
-    inhibitors: [guildsOnly],
     description: "Sends what you're looking right now",
   })
   async help(msg: Message, @optional cmdTrigger?: string) {
@@ -48,7 +47,7 @@ export class HelpMessageModule extends ExtendedModule {
 
       return await msg.channel.send({ embeds: [embed] })
     } else {
-      const cmd = this.client.commandManager.getPrefixedByTrigger(cmdTrigger)
+      const cmd = this.client.manager.getPrefixedCommandByTrigger(cmdTrigger)
 
       if (!cmd) {
         return msg.channel.send({

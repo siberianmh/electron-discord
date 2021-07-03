@@ -62,7 +62,7 @@ export class EtcModule extends ExtendedModule {
     return
   }
 
-  @button({ customId: 'trashIcon' })
+  @button({ customID: 'trashIcon' })
   public async bucketButtonClicked(msg: ButtonInteraction) {
     const key = await redis.get(selfDestructMessage(msg.message.id))
 

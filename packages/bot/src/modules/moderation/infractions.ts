@@ -2,6 +2,7 @@ import {
   LunaworkClient,
   Context,
   isCommandMessage,
+  isSelectMenuMessage,
   isButtonMessage,
 } from 'lunawork'
 import {
@@ -93,7 +94,11 @@ export class InfractionsModule extends ExtendedModule {
     aliases: ['purgeban', 'pban'],
   })
   public async ban({ msg, trigger }: Context, args: string) {
-    if (isCommandMessage(msg) || isButtonMessage(msg)) {
+    if (
+      isCommandMessage(msg) ||
+      isButtonMessage(msg) ||
+      isSelectMenuMessage(msg)
+    ) {
       return
     }
 

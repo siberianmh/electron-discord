@@ -31,7 +31,7 @@ export class HelpChanBase extends ExtendedModule {
       return
     }
 
-    this.client.logger.info(
+    console.log(
       `Moving #${channel.name} (${channel.id}) to the ${parent.name} category`,
     )
     const data: ChannelData = {

@@ -1,4 +1,4 @@
-import { LunaworkClient, listener, Context } from 'lunawork'
+import { LunaworkClient, listener } from 'lunawork'
 import { GuildMember, Message, TextChannel } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import * as config from '../../lib/config'
@@ -41,9 +41,10 @@ export class StatsModule extends ExtendedModule {
     return this.stats.gauge('guild.total_members', member.guild.memberCount)
   }
 
-  @listener({ event: 'commandExecution' })
-  public onCommandComplete(ctx: Context) {
-    const commandName = ctx.trigger
-    return this.stats.increment(`commands.${commandName}`)
-  }
+  // TODO: Maybe someday we should back this.
+  // @listener({ event: 'commandExecution' })
+  // public onCommandComplete(ctx: Context) {
+  //   const commandName = ctx.trigger
+  //   return this.stats.increment(`commands.${commandName}`)
+  // }
 }

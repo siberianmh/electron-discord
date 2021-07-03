@@ -203,9 +203,7 @@ export class HelpChanModule extends HelpChanBase {
   }
 
   private async claimChannel(msg: Message) {
-    this.client.logger.info(
-      `Channel #${msg.channel.id} was cliamed by '${msg.author.id}'`,
-    )
+    console.log(`Channel #${msg.channel.id} was cliamed by '${msg.author.id}'`)
     await msg.pin()
     await this.addCooldown(msg.member!)
     await this.moveChannel(
