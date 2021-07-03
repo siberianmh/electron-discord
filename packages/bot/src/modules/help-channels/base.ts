@@ -36,8 +36,7 @@ export class HelpChanBase extends ExtendedModule {
 
     return await channel.edit({
       parentID: parent.id,
-      // @ts-expect-error
-      permissionOverwrites: parent.permissionOverwrites,
+      permissionOverwrites: parent.permissionOverwrites.cache,
     })
   }
 
