@@ -4,7 +4,6 @@ import {
   GuildMember,
   GuildChannelResolvable,
   TextChannel,
-  ChannelData,
   Guild,
   ThreadChannel,
 } from 'discord.js'
@@ -34,11 +33,12 @@ export class HelpChanBase extends ExtendedModule {
     console.log(
       `Moving #${channel.name} (${channel.id}) to the ${parent.name} category`,
     )
-    const data: ChannelData = {
+
+    return await channel.edit({
       parentID: parent.id,
+      // @ts-expect-error
       permissionOverwrites: parent.permissionOverwrites,
-    }
-    return await channel.edit(data)
+    })
   }
 
   protected async addCooldown(member: GuildMember) {
