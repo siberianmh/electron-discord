@@ -18,7 +18,7 @@ export const createSelfDestructMessage = async (
 
   const row = new MessageActionRow().addComponents(
     new MessageButton()
-      .setCustomID('trashIcon')
+      .setCustomId('trashIcon')
       .setLabel('🗑')
       .setStyle('DANGER'),
   )

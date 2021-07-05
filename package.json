@@ -18,7 +18,7 @@
     "@sentry/tracing": "^6.8.0",
     "algoliasearch": "^4.10.2",
     "axios": "^0.21.1",
-    "discord.js": "13.0.0-dev.7e30011.1625338909",
+    "discord.js": "13.0.0-dev.fe5d56c.1625443439",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "fs-extra": "^10.0.0",

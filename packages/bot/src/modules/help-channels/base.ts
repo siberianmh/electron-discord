@@ -35,7 +35,7 @@ export class HelpChanBase extends ExtendedModule {
     )
 
     return await channel.edit({
-      parentID: parent.id,
+      parentId: parent.id,
       permissionOverwrites: parent.permissionOverwrites.cache,
     })
   }
@@ -59,7 +59,7 @@ export class HelpChanBase extends ExtendedModule {
   protected async ensureAskChannels(guild: Guild): Promise<void | Message> {
     const askChannels = guild.channels.cache
       .filter(
-        (channel) => channel.parentID === config.guild.categories.helpAvailable,
+        (channel) => channel.parentId === config.guild.categories.helpAvailable,
       )
       .filter((channel) => channel.name.startsWith(this.CHANNEL_PREFIX))
 
@@ -68,7 +68,7 @@ export class HelpChanBase extends ExtendedModule {
     }
 
     const dormantChannels = guild.channels.cache.filter(
-      (channel) => channel.parentID === config.guild.categories.helpDormant,
+      (channel) => channel.parentId === config.guild.categories.helpDormant,
     )
 
     if (dormantChannels.size < 1) {
@@ -77,7 +77,7 @@ export class HelpChanBase extends ExtendedModule {
     }
 
     const dormant = guild.channels.cache.find(
-      (channel) => channel.parentID === config.guild.categories.helpDormant,
+      (channel) => channel.parentId === config.guild.categories.helpDormant,
     ) as TextChannel
 
     if (dormant) {
@@ -114,7 +114,7 @@ export class HelpChanBase extends ExtendedModule {
       availHelpChannels = msgGuild.channels.cache
         .filter(
           (channel) =>
-            channel.parentID === config.guild.categories.helpAvailable,
+            channel.parentId === config.guild.categories.helpAvailable,
         )
         .filter((channel) => channel.name.startsWith(this.CHANNEL_PREFIX))
     } else {
@@ -124,7 +124,7 @@ export class HelpChanBase extends ExtendedModule {
           guild.channels.cache
             .filter(
               (channel) =>
-                channel.parentID === config.guild.categories.helpAvailable,
+                channel.parentId === config.guild.categories.helpAvailable,
             )
             .filter((channel) => channel.name.startsWith(this.CHANNEL_PREFIX)),
         )

@@ -54,9 +54,9 @@ export class HelpChannelStaff extends HelpChanBase {
     // Currently it's not possible due to discord limitation
     // ref: https://github.com/discord/discord-api-docs/issues/2714
     if (isMessage(msg)) {
-      if (msg.reference && msg.reference.messageID) {
+      if (msg.reference && msg.reference.messageId) {
         const refMessage = await msg.channel.messages.fetch(
-          msg.reference.messageID,
+          msg.reference.messageId,
         )
         return this.claimBase({
           msg: refMessage,
@@ -110,7 +110,7 @@ export class HelpChannelStaff extends HelpChanBase {
   private async showStatus(msg: Message) {
     const available = msg
       .guild!.channels.cache.filter(
-        (channel) => channel.parentID === guild.categories.helpAvailable,
+        (channel) => channel.parentId === guild.categories.helpAvailable,
       )
       .filter((channel) => channel.name.startsWith(this.CHANNEL_PREFIX))
 
@@ -120,7 +120,7 @@ export class HelpChannelStaff extends HelpChanBase {
 
     const dormant = msg
       .guild!.channels.cache.filter(
-        (channel) => channel.parentID === guild.categories.helpDormant,
+        (channel) => channel.parentId === guild.categories.helpDormant,
       )
       .filter((channel) => channel.name.startsWith(this.CHANNEL_PREFIX))
 
@@ -221,7 +221,7 @@ export class HelpChannelStaff extends HelpChanBase {
     const claimedChannel = msg.guild?.channels.cache.find(
       (channel) =>
         channel.type === 'text' &&
-        channel.parentID === guild.categories.helpAvailable &&
+        channel.parentId === guild.categories.helpAvailable &&
         channel.name.startsWith(this.CHANNEL_PREFIX),
     ) as TextChannel | undefined
 

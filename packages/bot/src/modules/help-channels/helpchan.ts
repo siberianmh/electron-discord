@@ -68,8 +68,8 @@ export class HelpChanModule extends HelpChanBase {
       !msg.guild ||
       !msg.member ||
       msg.channel.type !== 'text' ||
-      !msg.channel.parentID ||
-      msg.channel.parentID !== guild.categories.helpAvailable ||
+      !msg.channel.parentId ||
+      msg.channel.parentId !== guild.categories.helpAvailable ||
       !msg.channel.name.startsWith(this.CHANNEL_PREFIX)
     ) {
       return
@@ -84,8 +84,8 @@ export class HelpChanModule extends HelpChanBase {
       !msg.guild ||
       !msg.member ||
       msg.channel.type !== 'text' ||
-      !msg.channel.parentID ||
-      msg.channel.parentID !== guild.categories.helpOngoing ||
+      !msg.channel.parentId ||
+      msg.channel.parentId !== guild.categories.helpOngoing ||
       !msg.channel.name.startsWith(this.CHANNEL_PREFIX)
     ) {
       return
@@ -109,8 +109,8 @@ export class HelpChanModule extends HelpChanBase {
       msg.type !== 'PINS_ADD' ||
       msg.channel.type !== 'text' ||
       !(
-        msg.channel.parentID === guild.categories.helpAvailable ||
-        msg.channel.parentID === guild.categories.helpOngoing
+        msg.channel.parentId === guild.categories.helpAvailable ||
+        msg.channel.parentId === guild.categories.helpOngoing
       )
     ) {
       return
@@ -132,7 +132,7 @@ export class HelpChanModule extends HelpChanBase {
     }
 
     if (
-      (msg.channel as TextChannel).parentID !== guild.categories.helpOngoing
+      (msg.channel as TextChannel).parentId !== guild.categories.helpOngoing
     ) {
       return this.sendToChannel(
         msg,
@@ -236,7 +236,7 @@ export class HelpChanModule extends HelpChanBase {
     const ongoingChannels = this.client.channels.cache
       .filter(
         (channel) =>
-          (channel as TextChannel).parentID ===
+          (channel as TextChannel).parentId ===
           config.guild.categories.helpOngoing,
       )
       .array() as Array<TextChannel>

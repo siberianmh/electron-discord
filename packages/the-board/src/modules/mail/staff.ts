@@ -17,8 +17,8 @@ export class MailStaff extends MailBase {
       !msg.guild ||
       !msg.member ||
       msg.channel.type !== 'text' ||
-      !msg.channel.parentID ||
-      msg.channel.parentID !== guild.categories.modMail ||
+      !msg.channel.parentId ||
+      msg.channel.parentId !== guild.categories.modMail ||
       !msg.channel.name.startsWith(this.CHANNEL_PREFIX)
     ) {
       return

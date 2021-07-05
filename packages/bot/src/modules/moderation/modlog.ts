@@ -165,7 +165,7 @@ export class ModLogModule extends ExtendedModule {
       constants.guild.categories.helpOngoing,
     ]
 
-    if (helpCategories.includes(after.parentID!)) {
+    if (helpCategories.includes(after.parentId!)) {
       return
     }
   }
@@ -255,10 +255,10 @@ export class ModLogModule extends ExtendedModule {
 
     let response: string = ''
 
-    if (channel.parentID) {
+    if (channel.parentId) {
       response = `
 **Author:** ${formatUser(author)}\n
-**Channel:** <#${channel.parentID}>/<#${channel.id}> (\`${channel.id}\`)\n
+**Channel:** <#${channel.parentId}>/<#${channel.id}> (\`${channel.id}\`)\n
 **Message ID:** \`${message.id}\`\n`
     } else {
       response = `
