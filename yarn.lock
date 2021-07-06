@@ -2021,10 +2021,10 @@ function-bind@^1.1.1:
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
-fuzzball@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/fuzzball/-/fuzzball-1.4.0.tgz#d4ae8b596d6e7cb7cc86425d7d02fa563ad94057"
-  integrity sha512-ufKO0SHW65RSqZNu4rmLmraQVuwb8kVf8S/ICpkih/PfIff2YW3sa8zTvt7d7hJFXY1IvOOGJTeXxs69XLBd4Q==
+fuzzball@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/fuzzball/-/fuzzball-2.0.0.tgz#1ac2d5fe99be91855a24ad65eb334a8871a2896c"
+  integrity sha512-aDezg1/rQtrjY3FabFawEW+etBHCG9UmFI+Hq3Bxfcubx2YLF+xSS7xnghsI1YlD8o+nrNfeKO68hJNsTvHg8w==
   dependencies:
     heap ">=0.2.0"
     setimmediate "^1.0.5"
