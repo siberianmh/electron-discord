@@ -2950,7 +2950,7 @@ lru_map@^0.3.3:
 
 lunawork@siberianmh/lunawork:
   version "0.0.0"
-  resolved "https://codeload.github.com/siberianmh/lunawork/tar.gz/6e849a03a04b457cf924db239df642be03dfca1c"
+  resolved "https://codeload.github.com/siberianmh/lunawork/tar.gz/5c62bade2465b8ed13e36bb418617534863e8e9c"
   dependencies:
     reflect-metadata "^0.1.13"
     rimraf "^3.0.2"
