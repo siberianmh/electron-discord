@@ -43,7 +43,7 @@
     "@types/express": "^4.17.13",
     "@types/fs-extra": "^9.0.12",
     "@types/humanize-duration": "^3.25.1",
-    "@types/ioredis": "^4.26.4",
+    "@types/ioredis": "^4.26.5",
     "@types/jest": "^26.0.24",
     "@types/luxon": "^1.27.1",
     "@types/node": "^15.12.2",
