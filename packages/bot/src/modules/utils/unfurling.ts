@@ -42,7 +42,9 @@ export class UnfurlModule extends ExtendedModule {
 
         const findChannel = fetchGuildChannels
           .valueOf()
-          .find((c) => c.id === channel && c.type === 'text') as TextChannel
+          .find(
+            (c) => c.id === channel && c.type === 'GUILD_TEXT',
+          ) as TextChannel
 
         if (!findChannel) {
           return

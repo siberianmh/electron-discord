@@ -170,7 +170,7 @@ export class HelpChannelStaff extends HelpChanBase {
 
   private async createHelpChannel(guild: Guild, channelName: string) {
     const channel = await guild.channels.create(`help-${channelName}`, {
-      type: 'text',
+      type: 'GUILD_TEXT',
       topic:
         'This is a help channel. You can claim own your own help channel in the Help: Available category.',
       reason: 'Maintain help channel goal',
@@ -220,7 +220,7 @@ export class HelpChannelStaff extends HelpChanBase {
 
     const claimedChannel = msg.guild?.channels.cache.find(
       (channel) =>
-        channel.type === 'text' &&
+        channel.type === 'GUILD_TEXT' &&
         channel.parentId === guild.categories.helpAvailable &&
         channel.name.startsWith(this.CHANNEL_PREFIX),
     ) as TextChannel | undefined

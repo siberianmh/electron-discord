@@ -67,7 +67,7 @@ export class HelpChanModule extends HelpChanBase {
       msg.author.bot ||
       !msg.guild ||
       !msg.member ||
-      msg.channel.type !== 'text' ||
+      msg.channel.type !== 'GUILD_TEXT' ||
       !msg.channel.parentId ||
       msg.channel.parentId !== guild.categories.helpAvailable ||
       !msg.channel.name.startsWith(this.CHANNEL_PREFIX)
@@ -83,7 +83,7 @@ export class HelpChanModule extends HelpChanBase {
     if (
       !msg.guild ||
       !msg.member ||
-      msg.channel.type !== 'text' ||
+      msg.channel.type !== 'GUILD_TEXT' ||
       !msg.channel.parentId ||
       msg.channel.parentId !== guild.categories.helpOngoing ||
       !msg.channel.name.startsWith(this.CHANNEL_PREFIX)
@@ -107,7 +107,7 @@ export class HelpChanModule extends HelpChanBase {
   async onNewSystemPinMessage(msg: Message) {
     if (
       msg.type !== 'PINS_ADD' ||
-      msg.channel.type !== 'text' ||
+      msg.channel.type !== 'GUILD_TEXT' ||
       !(
         msg.channel.parentId === guild.categories.helpAvailable ||
         msg.channel.parentId === guild.categories.helpOngoing

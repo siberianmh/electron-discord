@@ -16,7 +16,7 @@ export class MailStaff extends MailBase {
       msg.author.bot ||
       !msg.guild ||
       !msg.member ||
-      msg.channel.type !== 'text' ||
+      msg.channel.type !== 'GUILD_TEXT' ||
       !msg.channel.parentId ||
       msg.channel.parentId !== guild.categories.modMail ||
       !msg.channel.name.startsWith(this.CHANNEL_PREFIX)

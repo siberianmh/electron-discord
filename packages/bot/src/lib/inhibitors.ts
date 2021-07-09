@@ -3,7 +3,7 @@ import { Permissions } from 'discord.js'
 import { guild } from './config'
 
 export const isTrustedMember: Inhibitor = async (msg) => {
-  if (!msg.guild || !msg.member || msg.channel?.type !== 'text') {
+  if (!msg.guild || !msg.member || msg.channel?.type !== 'GUILD_TEXT') {
     return ":man_gesturing_no: you can't use that command here"
   }
 
@@ -20,7 +20,7 @@ export const isTrustedMember: Inhibitor = async (msg) => {
 }
 
 export const noDM: Inhibitor = async (msg) => {
-  if (!msg.guild || !msg.member || msg.channel?.type !== 'text') {
+  if (!msg.guild || !msg.member || msg.channel?.type !== 'GUILD_TEXT') {
     return ":man_gesturing_no: you can't use that command here"
   }
 
