@@ -3,7 +3,7 @@ import {
   listener,
   isCommandMessage,
   slashCommand,
-} from 'lunawork'
+} from '@siberianmh/lunawork'
 import {
   CommandInteraction,
   Message,

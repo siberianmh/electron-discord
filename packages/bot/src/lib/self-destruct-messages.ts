@@ -5,7 +5,7 @@ import {
   MessageActionRow,
   MessageButton,
 } from 'discord.js'
-import { isMessage, isCommandMessage } from 'lunawork'
+import { isMessage, isCommandMessage } from '@siberianmh/lunawork'
 import { redis, selfDestructMessage } from './redis'
 import { style } from './config'
 

@@ -1,4 +1,4 @@
-import { LunaworkClient, optional, slashCommand } from 'lunawork'
+import { LunaworkClient, optional, slashCommand } from '@siberianmh/lunawork'
 import * as fs from 'fs-extra'
 import * as path from 'path'
 import grayMatter = require('gray-matter')

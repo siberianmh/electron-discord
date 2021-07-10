@@ -1,4 +1,4 @@
-import { LunaworkClient, Stage, command } from 'lunawork'
+import { LunaworkClient, Stage, command } from '@siberianmh/lunawork'
 import { Message, MessageEmbed } from 'discord.js'
 import * as humanizeDuration from 'humanize-duration'
 

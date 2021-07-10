@@ -1,4 +1,4 @@
-import { LunaworkClient, listener, command } from 'lunawork'
+import { LunaworkClient, listener, command } from '@siberianmh/lunawork'
 import { Message } from 'discord.js'
 import { MailBase } from './base'
 import { Mail as MailEntity } from '../../entities/mail'

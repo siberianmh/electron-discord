@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from 'axios'
 import * as StatsDClient from 'statsd-client'
-import { Stage, isMessage } from 'lunawork'
+import { Stage, isMessage } from '@siberianmh/lunawork'
 import {
   Message,
   CommandInteraction,

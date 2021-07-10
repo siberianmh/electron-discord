@@ -1,4 +1,4 @@
-import { LunaworkClient } from 'lunawork'
+import { LunaworkClient } from '@siberianmh/lunawork'
 import { Intents } from 'discord.js'
 
 export const client = new LunaworkClient({

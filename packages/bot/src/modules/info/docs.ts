@@ -1,4 +1,4 @@
-import { LunaworkClient, slashCommand } from 'lunawork'
+import { LunaworkClient, slashCommand } from '@siberianmh/lunawork'
 import { CommandInteraction, Message, MessageEmbed } from 'discord.js'
 import algoliasearch, { SearchClient, SearchIndex } from 'algoliasearch'
 import type { Hit } from '@algolia/client-search'

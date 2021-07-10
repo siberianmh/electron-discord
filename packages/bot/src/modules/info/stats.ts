@@ -1,4 +1,4 @@
-import { LunaworkClient, listener } from 'lunawork'
+import { LunaworkClient, listener } from '@siberianmh/lunawork'
 import { GuildMember, Message, TextChannel } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import * as config from '../../lib/config'

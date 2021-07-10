@@ -4,7 +4,7 @@ import {
   isCommandMessage,
   isSelectMenuMessage,
   isButtonMessage,
-} from 'lunawork'
+} from '@siberianmh/lunawork'
 import {
   Message,
   TextChannel,

@@ -1,4 +1,4 @@
-import type { Inhibitor } from 'lunawork'
+import type { Inhibitor } from '@siberianmh/lunawork'
 import { Permissions } from 'discord.js'
 import { guild } from './config'
 

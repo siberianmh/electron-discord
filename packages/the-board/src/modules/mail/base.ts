@@ -1,4 +1,4 @@
-import { LunaworkClient, Stage } from 'lunawork'
+import { LunaworkClient, Stage } from '@siberianmh/lunawork'
 import { guild } from '../../lib/config'
 
 export class MailBase extends Stage {

@@ -1,4 +1,4 @@
-import { LunaworkClient, optional } from 'lunawork'
+import { LunaworkClient, optional } from '@siberianmh/lunawork'
 import { Message, MessageEmbed } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { extendedCommand } from '../../lib/extended-command'
