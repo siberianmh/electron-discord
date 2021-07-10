@@ -15,6 +15,7 @@ ts_project(
     srcs = glob(["src/**/*.ts"]),
     deps = [
         "@npm//@sentry/node",
+        "@npm//@siberianmh/lunawork",
         "@npm//@types/fs-extra",
         "@npm//@types/humanize-duration",
         "@npm//@types/ioredis",
@@ -30,7 +31,6 @@ ts_project(
         "@npm//gray-matter",
         "@npm//humanize-duration",
         "@npm//ioredis",
-        "@npm//lunawork",
         "@npm//luxon",
         "@npm//parse-duration",
         "@npm//reflect-metadata",
