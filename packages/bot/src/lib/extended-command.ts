@@ -1,4 +1,5 @@
-import { command, Stage, IPrefixCommandDecoratorOptions } from '@siberianmh/lunawork'
+import { command, Stage } from '@siberianmh/lunawork'
+import type { IPrefixCommandDecoratorOptions } from '@siberianmh/lunawork'
 import { Message, MessageEmbed } from 'discord.js'
 import { ModLogModule } from '../modules/moderation/modlog'
 import { style } from './config'
