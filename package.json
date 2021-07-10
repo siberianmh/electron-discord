@@ -28,7 +28,7 @@
     "ioredis": "^4.27.6",
     "jest": "^27.0.6",
     "@siberianmh/lunawork": "^0.0.1",
-    "luxon": "^1.27.0",
+    "luxon": "^1.28.0",
     "mysql2": "^2.2.5",
     "parse-duration": "^1.0.0",
     "prettier": "^2.3.2",
