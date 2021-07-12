@@ -1,9 +1,10 @@
-import { LunaworkClient, listener, button } from '@siberianmh/lunawork'
+import { LunaworkClient, slashCommand, listener, button } from '@siberianmh/lunawork'
 import {
   Message,
   MessageEmbed,
   MessageReaction,
   User,
+  CommandInteraction,
   Permissions,
   ButtonInteraction,
   GuildMemberRoleManager,
@@ -12,6 +13,7 @@ import * as humanizeDuration from 'humanize-duration'
 import { ExtendedModule } from '../../lib/extended-module'
 import { extendedCommand } from '../../lib/extended-command'
 import { guild } from '../../lib/config'
+import { isTrustedMember } from '../../lib/inhibitors'
 import { redis, selfDestructMessage } from '../../lib/redis'
 import { toBigIntLiteral } from '../../lib/to-bigint-literal'
 
@@ -37,6 +39,47 @@ export class EtcModule extends ExtendedModule {
       .setTimestamp()
 
     return await msg.channel.send({ embeds: [embed] })
+  }
+
+  @slashCommand({
+    name: 'fiddle',
+    description: 'Create a user friendly Fiddle link',
+    options: [
+      {
+        name: 'gist_id',
+        description: 'The id of the gist',
+        type: 'STRING',
+        required: true,
+      },
+    ],
+    // Because it's test and i don't want to peoples to use this
+    inhibitors: [isTrustedMember],
+  })
+  public async fiddle(msg: CommandInteraction, gistId: string) {
+    if (gistId.startsWith('https://' || 'http://')) {
+      return msg.reply({
+        content: 'The id should be in format number',
+        ephemeral: true,
+      })
+    }
+
+    // Possible be to `gist/username/hash` and `gist/hash`
+    // Documented on https://github.com/electron/fiddle/blob/master/src/main/protocol.ts#L29
+    const fiddleURL = `<electron-fiddle://gist/${gistId}>`
+
+    const message = `Electron Fiddle lets you create and play with small Electron experiments.
+You can launch Electron Fiddle with the provided Gist using this URL: ${fiddleURL}
+
+[Learn More about Fiddle](https://electronjs.org/fiddle)`
+
+    const embed = new MessageEmbed()
+      .setTitle('Launch in Fiddle')
+      .setDescription(message)
+      .setThumbnail(
+        'https://raw.githubusercontent.com/electron/fiddle/master/assets/icons/fiddle.png',
+      )
+
+    return msg.reply({ embeds: [embed] })
   }
   //#endregion
 
