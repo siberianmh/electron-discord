@@ -307,7 +307,6 @@ export class HelpChannelStaff extends HelpChanBase {
   }
 
   private async syncChannels(msg: Message) {
-    await this.fixCooldowns(msg.guild!)
     await this.ensureAskChannels(msg.guild!)
     await this.syncHowToGetHelp(msg.guild!)
     return msg.channel.send({

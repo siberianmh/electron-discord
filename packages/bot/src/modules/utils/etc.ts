@@ -1,4 +1,5 @@
-import { LunaworkClient, slashCommand, listener, button } from '@siberianmh/lunawork'
+import { LunaworkClient } from '@siberianmh/lunawork'
+import { slashCommand, listener, button } from '@siberianmh/lunawork'
 import {
   Message,
   MessageEmbed,

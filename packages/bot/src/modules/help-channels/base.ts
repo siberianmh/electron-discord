@@ -12,7 +12,6 @@ import { helpChannels, guild } from '../../lib/config'
 import * as config from '../../lib/config'
 import { availableEmbed } from './embeds/available'
 import { helpMessage } from './help-message'
-import { IGetHelpChanByUserIdResponse } from '../../lib/types'
 
 export class HelpChanBase extends ExtendedModule {
   public constructor(client: LunaworkClient) {
@@ -140,23 +139,5 @@ export class HelpChanBase extends ExtendedModule {
     } else {
       await lastMessage.edit(helpMessage(availHelpChannels))
     }
-  }
-
-  protected async fixCooldowns(msgGuild: Guild) {
-    const cooldownedByRole = (
-      await msgGuild.roles.fetch(guild.roles.helpCooldown)
-    )?.members.array()
-
-    if (!cooldownedByRole || !cooldownedByRole.length) {
-      return
-    }
-
-    cooldownedByRole.forEach(async (member) => {
-      await this.api
-        .get<IGetHelpChanByUserIdResponse>(`/helpchan/user/${member.id}`)
-        .catch(async () => {
-          await member.roles.remove(guild.roles.helpCooldown)
-        })
-    })
   }
 }

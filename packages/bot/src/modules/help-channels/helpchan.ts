@@ -58,7 +58,6 @@ export class HelpChanModule extends HelpChanBase {
     await this.ensureAskChannels(guild)
     await this.syncHowToGetHelp()
     await this.verifyNumberOfChannels()
-    await this.fixCooldowns(guild)
   }
 
   @listener({ event: 'message' })
