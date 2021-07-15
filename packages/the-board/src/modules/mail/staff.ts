@@ -1,5 +1,5 @@
-import { LunaworkClient, listener, command } from '@siberianmh/lunawork'
-import { Message } from 'discord.js'
+import { LunaworkClient, slashCommand, listener } from '@siberianmh/lunawork'
+import { Message, CommandInteraction } from 'discord.js'
 import { MailBase } from './base'
 import { Mail as MailEntity } from '../../entities/mail'
 import { guild } from '../../lib/config'
@@ -24,8 +24,7 @@ export class MailStaff extends MailBase {
       return
     }
 
-    const prefixes = await this.client.fetchPrefix(msg)
-    const parsed = this.getPrefix(msg.content, prefixes)
+    const parsed = this.getPrefix(msg.content, ['-', '!', '.'])
 
     if (parsed) {
       return
@@ -55,15 +54,16 @@ export class MailStaff extends MailBase {
     }
   }
 
-  @command({ aliases: ['mm-close'] })
-  public async mmclose(msg: Message): Promise<Message | void> {
+  @slashCommand({ description: 'Close the ModMail thread' })
+  public async mmclose(msg: CommandInteraction): Promise<Message | void> {
     const mailChannel = await MailEntity.findOne({
-      where: { channel_id: msg.channel.id },
+      where: { channel_id: msg.channel?.id },
     })
 
     if (!mailChannel) {
-      return msg.channel.send({
+      return msg.reply({
         content: 'Unable to find the channel in the database',
+        ephemeral: true,
       })
     }
 
@@ -77,7 +77,7 @@ export class MailStaff extends MailBase {
     })
 
     await mailChannel.remove()
-    await msg.channel.delete()
+    await msg.channel?.delete()
     return
   }
 

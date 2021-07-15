@@ -51,7 +51,7 @@ export class MailUser extends MailBase {
       parent: guildConfig.categories.modMail,
       reason: 'Someone search for help',
       topic:
-        "This is a Mod Mail Channel. This channel doesn't be closed automatically, and should be closed by `-mm-close` command",
+        "This is a Mod Mail Channel. This channel doesn't be closed automatically, and should be closed by `/mmclose` command",
     })
 
     const entity = MailEntity.create({
@@ -66,7 +66,7 @@ export class MailUser extends MailBase {
 
     await channel.send({
       content:
-        '👋 here Someone is requesting help from the Moderation team. Please notice that these channels will not be closed automatically, and have a specific amount of active channels. For closing the channel you can use the `-mm-close` command. All messages that start with `-` or `tb!` will be skipped and can be used for internal discussion. For now, all messages are not saved, in the future, all messages will be saved for future investigation. Thanks for reading and good luck 🙏',
+        '👋 here Someone is requesting help from the Moderation team. Please notice that these channels will not be closed automatically, and have a specific amount of active channels. For closing the channel you can use the `/mm-close` command. All messages that start with `-` will be skipped and can be used for internal discussion. For now, all messages are not saved, in the future, all messages will be saved for future investigation. Thanks for reading and good luck 🙏',
     })
     await channel.send({ embeds: [userInfoEmbed(member)] })
     return await channel.send({ embeds: [userMessageEmbed(msg)] })
