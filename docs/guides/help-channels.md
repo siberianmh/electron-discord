@@ -47,7 +47,7 @@ older**.
 ### For how long is the channel mine?
 
 The channel is yours until it has been inactive for **10 hours**, or send
-`!close` to close the channel earlier. When this happens, we move the channel
+`/close` to close the channel earlier. When this happens, we move the channel
 down to the `Help: Dormant` category, and make the channel read-only. After a
 while, the channel will be rotated back into `Help: Available` for the next
 question. Please try to resist the urge to continue _bumping_ the channel so

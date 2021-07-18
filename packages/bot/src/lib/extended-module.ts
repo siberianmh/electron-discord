@@ -23,7 +23,7 @@ export class ExtendedModule extends Stage {
       resp = await this.api.post('/infractions', {
         ...opts,
       })
-    } catch (err) {
+    } catch (err: any) {
       throw new Error(err)
     }
 

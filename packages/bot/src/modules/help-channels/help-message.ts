@@ -13,7 +13,7 @@ export const helpMessage = (
 3. Our bot will move your channel to \`📝 Help: Ongoing\`
 4. Somebody will (hopefully) come along and help you.
 
-Channel is closing using the \`!close\` command, or if you don't get activity more than \`${
+Channel is closing using the \`/close\` command, or if you don't get activity more than \`${
   helpChannels.dormantChannelTimeout
 }\` hours automatically. After the channel has been closed, it will move into the \`Help: Dormant\` category at the bottom of channel list.
 

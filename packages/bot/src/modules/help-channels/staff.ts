@@ -52,7 +52,7 @@ export class HelpChannelStaff extends HelpChanBase {
     @optional member: GuildMember,
   ) {
     // Currently it's not possible due to discord limitation
-    // ref: https://github.com/discord/discord-api-docs/issues/2714
+    // ref: https://github.com/discord/discord-api-docs/discussions/3311
     if (isMessage(msg)) {
       if (msg.reference && msg.reference.messageId) {
         const refMessage = await msg.channel.messages.fetch(
@@ -76,11 +76,68 @@ export class HelpChannelStaff extends HelpChanBase {
     return await this.claimBase({ msg: msg, member: member })
   }
 
+  @slashCommand({
+    name: 'helpchan',
+    description: 'The single command to maintain help channels',
+    options: [
+      {
+        type: 1,
+        name: 'status',
+        description: 'Get the status of the help channels',
+      },
+      {
+        type: 1,
+        name: 'create',
+        description: 'Create the help channel',
+        options: [
+          {
+            type: 3,
+            name: 'name',
+            description: 'The name of the channel, without `help-` prefix',
+            required: true,
+          },
+        ],
+      },
+      {
+        type: 1,
+        name: 'update',
+        description: 'Update the help channels',
+      },
+      {
+        type: 1,
+        name: 'sync',
+        description: 'Synchronize the help channels to the current status',
+      },
+    ],
+    inhibitors: [isTrustedMember],
+  })
+  public async helpchan(
+    msg: CommandInteraction,
+    baseCommand: string,
+    arg1: string,
+  ) {
+    switch (baseCommand) {
+      case 'status':
+        return await this.showStatus(msg)
+      case 'create':
+        return await this.createChannel(msg, arg1)
+      case 'update':
+        return await this.updateHelpChannels(msg)
+      case 'sync':
+        return await this.syncChannels(msg)
+      default:
+        return msg.reply({ content: 'Uh okay.', ephemeral: true })
+    }
+  }
+
+  /**
+   * @deprecated
+   */
   @extendedCommand({
     inhibitors: [isTrustedMember],
     single: true,
   })
-  public async helpchan(msg: Message, rawArgs: string) {
+  public async helpchanOld(msg: Message, rawArgs: string) {
     const args = splittyArgs(rawArgs)
 
     if (args.length <= 0) {
@@ -94,7 +151,7 @@ export class HelpChannelStaff extends HelpChanBase {
       case 'status':
         return await this.showStatus(msg)
       case 'create':
-        return await this.createChannel(msg, args)
+        return await this.createChannel(msg, args[1])
       case 'update':
         return await this.updateHelpChannels(msg)
       case 'sync':
@@ -107,7 +164,7 @@ export class HelpChannelStaff extends HelpChanBase {
   //#endregion
 
   // List the status of help channels
-  private async showStatus(msg: Message) {
+  private async showStatus(msg: Message | CommandInteraction) {
     const available = msg
       .guild!.channels.cache.filter(
         (channel) => channel.parentId === guild.categories.helpAvailable,
@@ -124,27 +181,41 @@ export class HelpChannelStaff extends HelpChanBase {
       )
       .filter((channel) => channel.name.startsWith(this.CHANNEL_PREFIX))
 
-    return msg.channel.send({
-      embeds: [
-        helpChannelStatusEmbed(this.client, msg, available, ongoing, dormant),
-      ],
-    })
+    if (isMessage(msg)) {
+      return msg.channel.send({
+        embeds: [
+          helpChannelStatusEmbed(this.client, msg, available, ongoing, dormant),
+        ],
+      })
+    } else {
+      return msg.reply({
+        embeds: [
+          helpChannelStatusEmbed(this.client, msg, available, ongoing, dormant),
+        ],
+      })
+    }
   }
 
   // Create help channel
-  private async createChannel(msg: Message, args: Array<string>) {
-    const channelName = args[1]
+  private async createChannel(msg: Message | CommandInteraction, args: string) {
+    const channelName = args
 
-    if (!channelName) {
+    if (!channelName && isMessage(msg)) {
       return msg.channel.send({
-        content: `⚠ Expected 1 argument, but got ${args.length}`,
+        content: '⚠ Expected 1 argument, but got 0',
       })
     }
 
     const created = await this.createHelpChannel(msg.guild!, channelName)
-    return msg.channel.send({
-      content: `Successfully created <#${created.id}> channel`,
-    })
+    if (isMessage(msg)) {
+      return msg.channel.send({
+        content: `Successfully created <#${created.id}> channel`,
+      })
+    } else {
+      return msg.reply({
+        content: `Successfully created <#${created.id}> channel`,
+      })
+    }
   }
 
   // Show help
@@ -282,7 +353,7 @@ export class HelpChannelStaff extends HelpChanBase {
     return await this.syncHowToGetHelp(msg.guild!)
   }
 
-  private async updateHelpChannels(msg: Message) {
+  private async updateHelpChannels(msg: Message | CommandInteraction) {
     const helpChannels = msg
       .guild!.channels.cache.filter((channel) =>
         channel.name.startsWith(this.CHANNEL_PREFIX),
@@ -303,14 +374,26 @@ export class HelpChannelStaff extends HelpChanBase {
       .setTitle('✅ Successfully updated')
       .setDescription('Help Channels topic successfully updated')
 
-    return await msg.channel.send({ embeds: [embed] })
+    if (isMessage(msg)) {
+      return await msg.channel.send({ embeds: [embed] })
+    } else {
+      return await msg.reply({ embeds: [embed] })
+    }
   }
 
-  private async syncChannels(msg: Message) {
+  private async syncChannels(msg: Message | CommandInteraction) {
     await this.ensureAskChannels(msg.guild!)
     await this.syncHowToGetHelp(msg.guild!)
-    return msg.channel.send({
-      content: 'Help Channel System successfully synced',
-    })
+
+    const content = 'Help Channel system successfully synced'
+    if (isMessage(msg)) {
+      return msg.channel.send({
+        content,
+      })
+    } else {
+      return msg.reply({
+        content,
+      })
+    }
   }
 }

@@ -14,5 +14,5 @@ export const availableEmbed = new MessageEmbed()
       "Try to write the best question you can by providing a detailed description and telling us what you've tried already",
   )
   .setFooter(
-    `Closes when you send !close or after ${helpChannels.dormantChannelTimeout} hours of inactivity`,
+    `Closes when you send /close or after ${helpChannels.dormantChannelTimeout} hours of inactivity`,
   )

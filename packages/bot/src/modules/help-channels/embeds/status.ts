@@ -4,13 +4,14 @@ import {
   Collection,
   MessageEmbed,
   GuildChannel,
+  CommandInteraction,
   ThreadChannel,
 } from 'discord.js'
 import { IListHelpChannelsRespone } from '../../../lib/types'
 
 export const helpChannelStatusEmbed = (
   client: LunaworkClient,
-  msg: Message,
+  msg: Message | CommandInteraction,
   availableChannels:
     | Collection<`${bigint}`, GuildChannel | ThreadChannel>
     | undefined,
