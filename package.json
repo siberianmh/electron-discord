@@ -49,6 +49,6 @@
     "@types/node": "^15.12.2",
     "@types/statsd-client": "^0.4.2",
     "@types/uuid": "^8.3.1",
-    "discord-api-types": "^0.18.1"
+    "discord-api-types": "^0.19.0"
   }
 }
