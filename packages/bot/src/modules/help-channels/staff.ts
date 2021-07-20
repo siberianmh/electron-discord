@@ -46,6 +46,7 @@ export class HelpChannelStaff extends HelpChanBase {
         required: true,
       },
     ],
+    inhibitors: [noAuthorizedClaim, noDM],
   })
   public async claim(
     msg: Message | CommandInteraction,
