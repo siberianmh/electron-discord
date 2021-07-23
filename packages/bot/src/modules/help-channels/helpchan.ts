@@ -18,6 +18,7 @@ import { HelpChanBase } from './base'
 import { extendedCommand } from '../../lib/extended-command'
 import { CloseReason } from '../../lib/types/help-chan'
 import { claimedEmbed } from './embeds/claimed'
+import { closedSuccessfullyEmbed } from './embeds/closed-successfully'
 import { dormantEmbed } from './embeds/dormant'
 import { toBigIntLiteral } from '../../lib/to-bigint-literal'
 
@@ -195,7 +196,13 @@ export class HelpChanModule extends HelpChanBase {
     await this.api.delete(`/helpchan/${channel.id}`)
     await this.moveChannel(channel, guild.categories.helpDormant)
 
-    await channel.send({ embeds: [dormantEmbed] })
+    // Question resolved successfuly, aka `/close`
+    if (closeReason === CloseReason.Command) {
+      await channel.send({ embeds: [closedSuccessfullyEmbed] })
+    } else {
+      // Message is deleted or channel is timed out.
+      await channel.send({ embeds: [dormantEmbed] })
+    }
 
     await this.ensureAskChannels(channel.guild)
     await this.syncHowToGetHelp(channel.guild)
