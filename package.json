@@ -29,7 +29,7 @@
     "jest": "^27.0.6",
     "@siberianmh/lunawork": "^0.0.2",
     "luxon": "^2.0.1",
-    "mysql2": "^2.2.5",
+    "mysql2": "^2.3.0",
     "parse-duration": "^1.0.0",
     "prettier": "^2.3.2",
     "reflect-metadata": "^0.1.13",
