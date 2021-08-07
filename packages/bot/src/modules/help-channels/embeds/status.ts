@@ -13,12 +13,10 @@ export const helpChannelStatusEmbed = (
   client: LunaworkClient,
   msg: Message | CommandInteraction,
   availableChannels:
-    | Collection<`${bigint}`, GuildChannel | ThreadChannel>
+    | Collection<string, GuildChannel | ThreadChannel>
     | undefined,
   ongoingChannels: IListHelpChannelsRespone,
-  dormantChannels:
-    | Collection<`${bigint}`, GuildChannel | ThreadChannel>
-    | undefined,
+  dormantChannels: Collection<string, GuildChannel | ThreadChannel> | undefined,
 ) => {
   return new MessageEmbed()
     .setAuthor(

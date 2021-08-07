@@ -17,7 +17,7 @@ export const userInfoEmbed = (member: GuildMember): MessageEmbed => {
     )
     .addField(
       'Roles',
-      `${member.roles.cache.array().map((role) => `<@&${role.id}>`)}`,
+      `${[...member.roles.cache.values()].map((role) => `<@&${role.id}>`)}`,
     )
     .setTimestamp()
 }

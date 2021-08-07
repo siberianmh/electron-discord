@@ -33,9 +33,11 @@ client.login(process.env.DISCORD_TOKEN)
 client.on('ready', async () => {
   console.log(`Logged in as ${client.user!.tag}`)
 
-  const unverefMembers = (await client.guilds.fetch(guildId)).roles.cache
-    .get(unverefRole)
-    ?.members!.array()!
+  const unverefMembers = [
+    ...(await client.guilds.fetch(guildId)).roles.cache
+      .get(unverefRole)
+      ?.members!.values()!,
+  ]
 
   for (let i = 0; i < 25; i++) {
     const member = unverefMembers[i]

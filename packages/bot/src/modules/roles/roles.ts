@@ -21,7 +21,7 @@ export class RolesModule extends ExtendedModule {
       guild.channels.roles,
     )) as TextChannel
 
-    let allMessages = (await channel.messages.fetch()).array()
+    let allMessages = [...(await channel.messages.fetch()).values()]
 
     if (!allMessages.length) {
       return await initiateMessages(channel)
@@ -41,7 +41,7 @@ export class RolesModule extends ExtendedModule {
       return
     })
 
-    allMessages = (await channel.messages.fetch()).array()
+    allMessages = [...(await channel.messages.fetch()).values()]
 
     if (!allMessages.length) {
       return await initiateMessages(channel)

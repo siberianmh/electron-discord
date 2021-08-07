@@ -34,7 +34,7 @@ export class HelpChanBase extends ExtendedModule {
     )
 
     return await channel.edit({
-      parentId: parent.id,
+      parent: parent.id,
       permissionOverwrites: parent.permissionOverwrites.cache,
     })
   }
@@ -82,15 +82,14 @@ export class HelpChanBase extends ExtendedModule {
     if (dormant) {
       await this.moveChannel(dormant, config.guild.categories.helpAvailable)
 
-      let lastMessage = dormant.messages.cache
-        .array()
+      let lastMessage = [...dormant.messages.cache.values()]
         .reverse()
         .find((m) => m.author.id === this.client.user?.id)
 
       if (!lastMessage) {
-        lastMessage = (await dormant.messages.fetch({ limit: 3 }))
-          .array()
-          .find((m) => m.author.id === this.client.user?.id)
+        lastMessage = [
+          ...(await dormant.messages.fetch({ limit: 3 })).values(),
+        ].find((m) => m.author.id === this.client.user?.id)
       }
 
       if (lastMessage) {

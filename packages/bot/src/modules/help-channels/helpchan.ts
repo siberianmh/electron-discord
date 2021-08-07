@@ -106,7 +106,7 @@ export class HelpChanModule extends HelpChanBase {
   @listener({ event: 'message' })
   async onNewSystemPinMessage(msg: Message) {
     if (
-      msg.type !== 'PINS_ADD' ||
+      msg.type !== 'CHANNEL_PINNED_MESSAGE' ||
       msg.channel.type !== 'GUILD_TEXT' ||
       !(
         msg.channel.parentId === guild.categories.helpAvailable ||
@@ -226,9 +226,9 @@ export class HelpChanModule extends HelpChanBase {
   }
 
   private async updateEmbedToClaimed(channel: TextChannel, claimer: string) {
-    const embedMessage = (await channel.messages.fetch({ limit: 3 }))
-      .array()
-      .find((m) => m.author.id === this.client.user?.id)
+    const embedMessage = [
+      ...(await channel.messages.fetch({ limit: 3 })).values(),
+    ].find((m) => m.author.id === this.client.user?.id)
 
     if (!embedMessage) {
       // Maybe just post message, but I'm don't want spam
@@ -239,16 +239,18 @@ export class HelpChanModule extends HelpChanBase {
   }
 
   private async checkDormantPossibilities() {
-    const ongoingChannels = this.client.channels.cache
-      .filter(
-        (channel) =>
-          (channel as TextChannel).parentId ===
-          config.guild.categories.helpOngoing,
-      )
-      .array() as Array<TextChannel>
+    const ongoingChannels = [
+      ...this.client.channels.cache
+        .filter(
+          (channel) =>
+            (channel as TextChannel).parentId ===
+            config.guild.categories.helpOngoing,
+        )
+        .values(),
+    ] as Array<TextChannel>
 
     for (const channel of ongoingChannels) {
-      const messages = (await channel.messages.fetch()).array()
+      const messages = [...(await channel.messages.fetch()).values()]
 
       const message = messages[0]
       const diff = (Date.now() - message.createdAt.getTime()) / 1000

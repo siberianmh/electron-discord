@@ -318,8 +318,7 @@ export class HelpChannelStaff extends HelpChanBase {
           questionMsg.author.id === member.id && questionMsg.id !== msg.id,
       )
 
-      msgContent = questionMessages
-        .array()
+      msgContent = [...questionMessages.values()]
         .slice(0, 10) // TODO: return the limit
         .map((msg) => msg.cleanContent)
         .reverse()
@@ -355,11 +354,13 @@ export class HelpChannelStaff extends HelpChanBase {
   }
 
   private async updateHelpChannels(msg: Message | CommandInteraction) {
-    const helpChannels = msg
-      .guild!.channels.cache.filter((channel) =>
-        channel.name.startsWith(this.CHANNEL_PREFIX),
-      )
-      .array()
+    const helpChannels = [
+      ...msg
+        .guild!.channels.cache.filter((channel) =>
+          channel.name.startsWith(this.CHANNEL_PREFIX),
+        )
+        .values(),
+    ]
 
     for (const channel of helpChannels) {
       await channel.edit(
