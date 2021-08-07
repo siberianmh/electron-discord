@@ -10,6 +10,11 @@ filegroup(
     srcs = glob(["src/resources/tags/**/*.md"]),
 )
 
+filegroup(
+    name = "faq-resources",
+    srcs = glob(["src/resources/faq/**/*.md"]),
+)
+
 ts_project(
     name = "bot",
     srcs = glob(["src/**/*.ts"]),
@@ -42,6 +47,7 @@ nodejs_binary(
     name = "serve",
     data = [
         ":bot",
+        ":faq-resources",
         ":tags-resources",
     ],
     entry_point = ":src/index.ts",
@@ -51,6 +57,7 @@ nodejs_image(
     name = "docker-bot",
     data = [
         ":bot",
+        ":faq-resources",
         ":tags-resources",
     ],
     entry_point = ":src/index.ts",
