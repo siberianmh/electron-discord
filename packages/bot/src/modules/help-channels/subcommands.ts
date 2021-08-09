@@ -1,1 +1,1 @@
-export type Subcommands = 'status' | 'create' | 'sync' | 'update' | 'help'
+export type Subcommands = 'status' | 'create' | 'sync' | 'update'
