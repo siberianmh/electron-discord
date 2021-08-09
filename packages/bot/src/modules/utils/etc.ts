@@ -12,7 +12,6 @@ import {
 } from 'discord.js'
 import * as humanizeDuration from 'humanize-duration'
 import { ExtendedModule } from '../../lib/extended-module'
-import { extendedCommand } from '../../lib/extended-command'
 import { guild } from '../../lib/config'
 import { isTrustedMember } from '../../lib/inhibitors'
 import { redis, selfDestructMessage } from '../../lib/redis'
@@ -24,7 +23,7 @@ export class EtcModule extends ExtendedModule {
   }
 
   //#region Commands
-  @extendedCommand()
+  @slashCommand({ description: 'Check if we still alive' })
   async ping(msg: Message): Promise<Message> {
     const bot_ping = +new Date() - +msg.createdAt
     const dsAPILatency = this.client.ws.ping

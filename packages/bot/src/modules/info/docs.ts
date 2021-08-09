@@ -1,10 +1,9 @@
 import { LunaworkClient, slashCommand } from '@siberianmh/lunawork'
-import { CommandInteraction, Message, MessageEmbed } from 'discord.js'
+import { CommandInteraction, MessageEmbed } from 'discord.js'
 import algoliasearch, { SearchClient, SearchIndex } from 'algoliasearch'
 import type { Hit } from '@algolia/client-search'
 import { ExtendedModule } from '../../lib/extended-module'
 import { createSelfDestructMessage } from '../../lib/self-destruct-messages'
-import { extendedCommand } from '../../lib/extended-command'
 
 interface IHitHierarchy {
   readonly lvl0: string | null
@@ -51,10 +50,6 @@ export class DocsModule extends ExtendedModule {
       .setTitle(`\`${searchIndex}\``)
       .setDescription('Unable to find result for searching string.')
 
-  @extendedCommand({
-    aliases: ['d', 'doc', 'tutorials', 'tutorial', 'guide', 'guides'],
-    single: true,
-  })
   @slashCommand({
     description: 'Search in the docs',
     options: [
@@ -66,7 +61,7 @@ export class DocsModule extends ExtendedModule {
       },
     ],
   })
-  public async docs(msg: Message | CommandInteraction, searchIndex: string) {
+  public async docs(msg: CommandInteraction, searchIndex: string) {
     const { hits } = await this.newIndex.search<IHitResult>(searchIndex, {
       hitsPerPage: 5,
     })

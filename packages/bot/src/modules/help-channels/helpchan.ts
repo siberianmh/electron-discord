@@ -15,7 +15,6 @@ import { IGetHelpChanByChannelIdResponse } from '../../lib/types'
 import { helpChannels, guild } from '../../lib/config'
 import * as config from '../../lib/config'
 import { HelpChanBase } from './base'
-import { extendedCommand } from '../../lib/extended-command'
 import { CloseReason } from '../../lib/types/help-chan'
 import { claimedEmbed } from './embeds/claimed'
 import { closedSuccessfullyEmbed } from './embeds/closed-successfully'
@@ -121,12 +120,8 @@ export class HelpChanModule extends HelpChanBase {
   //#endregion
 
   //#region Commands
-  @extendedCommand({
-    aliases: ['resolved', 'done', 'resolve', 'dormant'],
-    description: 'Marks __ongoing__ help channel as resolved',
-  })
   @slashCommand({ description: 'Marks __ongoing__ help channel as resolved' })
-  async close(msg: Message | CommandInteraction) {
+  async close(msg: CommandInteraction) {
     if (!msg.guild) {
       return
     }

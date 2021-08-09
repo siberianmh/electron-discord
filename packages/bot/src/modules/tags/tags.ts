@@ -3,7 +3,6 @@ import * as fs from 'fs-extra'
 import * as path from 'path'
 import grayMatter = require('gray-matter')
 import { Message, CommandInteraction, MessageEmbed } from 'discord.js'
-import { extendedCommand } from '../../lib/extended-command'
 import { ExtendedModule } from '../../lib/extended-module'
 import { createSelfDestructMessage } from '../../lib/self-destruct-messages'
 
@@ -18,9 +17,6 @@ export class TagsModule extends ExtendedModule {
     super(client)
   }
 
-  @extendedCommand({
-    aliases: ['t', 'topic', 'r', 'resources'],
-  })
   @slashCommand({
     description: 'Get some useful information',
     options: [

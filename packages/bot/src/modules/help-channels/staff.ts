@@ -6,7 +6,6 @@ import {
   TextChannel,
   MessageEmbed,
 } from 'discord.js'
-import { extendedCommand } from '../../lib/extended-command'
 import { isTrustedMember, noAuthorizedClaim, noDM } from '../../lib/inhibitors'
 import { guild } from '../../lib/config'
 import * as config from '../../lib/config'
@@ -26,10 +25,6 @@ export class HelpChannelStaff extends HelpChanBase {
   }
 
   //#region Commands
-  @extendedCommand({
-    inhibitors: [noAuthorizedClaim, noDM],
-    aliases: ['take'],
-  })
   @slashCommand({
     description: 'Claim a someone message into the help channel',
     options: [

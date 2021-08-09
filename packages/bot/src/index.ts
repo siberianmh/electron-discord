@@ -12,7 +12,6 @@ import {
   EtcModule,
   HelpChanModule,
   HelpChannelStaff,
-  InformationModule,
   InfractionsModule,
   ModLogModule,
   RblxGamePresenceModule,
@@ -32,14 +31,13 @@ Sentry.init({
   tracesSampleRate: 1.0,
 })
 
-for (const mod of [
+client.registerStages([
   DownloadModule,
   DocsModule,
   CleanModule,
   EtcModule,
   HelpChanModule,
   HelpChannelStaff,
-  InformationModule,
   InfractionsModule,
   ModLogModule,
   RblxGamePresenceModule,
@@ -50,9 +48,7 @@ for (const mod of [
   StatsModule,
   TagsModule,
   UnfurlModule,
-]) {
-  client.registerStage(mod)
-}
+])
 
 client.login(process.env.DISCORD_TOKEN)
 client.on('ready', () => {
