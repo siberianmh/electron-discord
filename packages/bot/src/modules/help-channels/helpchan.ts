@@ -60,7 +60,7 @@ export class HelpChanModule extends HelpChanBase {
     await this.verifyNumberOfChannels()
   }
 
-  @listener({ event: 'message' })
+  @listener({ event: 'messageCreate' })
   async onNewQuestion(msg: Message) {
     if (
       msg.author.bot ||
@@ -102,7 +102,7 @@ export class HelpChanModule extends HelpChanBase {
     return
   }
 
-  @listener({ event: 'message' })
+  @listener({ event: 'messageCreate' })
   async onNewSystemPinMessage(msg: Message) {
     if (
       msg.type !== 'CHANNEL_PINNED_MESSAGE' ||

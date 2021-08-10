@@ -27,7 +27,7 @@ export class UnfurlModule extends ExtendedModule {
       )
 
   //#region Listeners
-  @listener({ event: 'message' })
+  @listener({ event: 'messageCreate' })
   public async maybeNeedUnfuring(msg: Message) {
     let parsed: Array<string> | null = null
 

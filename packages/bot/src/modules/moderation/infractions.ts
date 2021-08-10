@@ -1,33 +1,24 @@
-import {
-  LunaworkClient,
-  Context,
-  isCommandMessage,
-  isSelectMenuMessage,
-  isButtonMessage,
-} from '@siberianmh/lunawork'
+import { LunaworkClient, slashCommand } from '@siberianmh/lunawork'
 import {
   Message,
-  TextChannel,
   MessageEmbed,
   User,
-  Snowflake,
   Permissions,
   GuildMember,
+  CommandInteraction,
 } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { isTrustedMember } from '../../lib/inhibitors'
-import { toBigIntLiteral as b } from '../../lib/to-bigint-literal'
 import { guild } from '../../lib/config'
-import { splittyArgs } from '../../lib/split-args'
-import { extendedCommand } from '../../lib/extended-command'
 import { InfractionType, infractionType } from '../../lib/types'
 
 interface IPerformInfractionProps {
-  readonly user: User
+  readonly user: User | GuildMember
   readonly type: InfractionType
   readonly reason: string
   readonly purge?: boolean
-  readonly ctx?: Message
+  readonly msg?: Message | CommandInteraction
+  readonly silence?: boolean
 }
 
 interface INotifyInfractionProps {
@@ -36,191 +27,175 @@ interface INotifyInfractionProps {
   readonly user: User
 }
 
-// TODO:
-//  - notify user
 export class InfractionsModule extends ExtendedModule {
   public constructor(client: LunaworkClient) {
     super(client)
   }
 
-  private USER_PATTERN = /(?:<@!?)?(\d+)>?/
-
   /**
    * Kick a user for the given reason.
    */
-  @extendedCommand({
-    single: true,
+  @slashCommand({
+    description: 'Kick the bad person',
+    options: [
+      {
+        type: 'USER',
+        name: 'user',
+        description: 'The user which needed to be kicked',
+        required: true,
+      },
+      {
+        type: 'STRING',
+        name: 'reason',
+        description: 'Reason to kick',
+        required: true,
+      },
+      {
+        type: 'BOOLEAN',
+        name: 'silence',
+        description: 'Kick the person in the silent mode',
+      },
+    ],
     inhibitors: [isTrustedMember],
-    description: 'Kick a user for the given reason.',
   })
-  public async kick(msg: Message, args: string) {
-    const splitArgs = splittyArgs(args)
-    if (splitArgs.length === 0) {
-      return await msg.channel.send({
-        content: ':warning: syntax !kick <@userID> [?reason]',
-      })
-    }
-
-    const user_id = splitArgs.shift()
-
-    if (!user_id) {
-      return await msg.channel.send({ content: ':warning: invalid syntax' })
-    }
-
-    const res = this.USER_PATTERN.exec(user_id)
-    let user: User | undefined
-
-    if (res && res[1]) {
-      user = msg.client.users.cache.get(b(res[1]))
-    } else {
-      user = msg.client.users.cache.get(b(user_id))
-    }
-
-    const reason = splitArgs.join(' ')
-
+  public async kick(
+    msg: CommandInteraction,
+    user: GuildMember,
+    reason: string,
+    silence?: boolean,
+  ) {
     return await this.performInfraction({
-      user: user!,
+      msg: msg,
       reason: reason,
       type: InfractionType.Kick,
-      ctx: msg,
+      silence: silence,
+      user: user,
     })
   }
 
-  @extendedCommand({
-    single: true,
+  @slashCommand({
+    description: 'Warn the bad person',
+    options: [
+      {
+        type: 'USER',
+        name: 'user',
+        description: 'The user which needed to be kicked',
+        required: true,
+      },
+      {
+        type: 'STRING',
+        name: 'reason',
+        description: 'Reason to kick',
+        required: true,
+      },
+      {
+        type: 'BOOLEAN',
+        name: 'purge',
+        description: 'Cleans the messages',
+      },
+      {
+        type: 'BOOLEAN',
+        name: 'silence',
+        description: 'Kick the person in the silent mode',
+      },
+    ],
     inhibitors: [isTrustedMember],
-    description: 'syntax !ban snowflake [?reason]',
-    usesContextAPI: true,
-    aliases: ['purgeban', 'pban'],
   })
-  public async ban({ msg, trigger }: Context, args: string) {
-    if (
-      isCommandMessage(msg) ||
-      isButtonMessage(msg) ||
-      isSelectMenuMessage(msg)
-    ) {
-      return
-    }
-
-    const splitArgs = splittyArgs(args)
-    if (splitArgs.length === 0) {
-      return await (msg.channel as TextChannel)!.send({
-        content: ':warning: syntax !kick <@userID> [?reason]',
-      })
-    }
-
-    const [user_id, ...reason] = splitArgs
-
-    if (!user_id) {
-      return await (msg.channel as TextChannel)!.send({
-        content: ':warning: invalid syntax',
-      })
-    }
-
-    const res = this.USER_PATTERN.exec(user_id)
-    let user: User | undefined
-
-    if (res && res[1]) {
-      user = msg.client.users.cache.get(b(res[1]))
-    } else {
-      user = msg.client.users.cache.get(b(user_id))
-    }
-
-    const purge = trigger === 'pban' || trigger === 'purgeban'
-
-    return await this.performInfraction({
-      ctx: msg,
-      user: user!,
-      reason: reason.join(' '),
-      type: InfractionType.Ban,
+  public async ban(
+    msg: CommandInteraction,
+    user: GuildMember,
+    reason: string,
+    purge: boolean,
+    silence: boolean,
+  ) {
+    return this.performInfraction({
+      reason,
+      msg,
       purge,
+      silence,
+      type: InfractionType.Ban,
+      user,
     })
   }
 
-  @extendedCommand({
-    inhibitors: [isTrustedMember],
-    description: 'syntax !unban <snowflake>',
-    aliases: ['pardon'],
-  })
-  public async unban(msg: Message, snowflake: Snowflake) {
-    try {
-      await msg.guild?.members.unban(snowflake)
+  // @extendedCommand({
+  //   inhibitors: [isTrustedMember],
+  //   description: 'syntax !unban <snowflake>',
+  //   aliases: ['pardon'],
+  // })
+  // public async unban(msg: Message, snowflake: Snowflake) {
+  //   try {
+  //     await msg.guild?.members.unban(snowflake)
 
-      return msg.channel.send({ content: '🤗 pardonned' })
-    } catch (e) {
-      const errEmbed = new MessageEmbed().setDescription('Unable to unban')
-      return msg.channel.send({ embeds: [errEmbed] })
-    }
-  }
+  //     return msg.channel.send({ content: '🤗 pardonned' })
+  //   } catch (e) {
+  //     const errEmbed = new MessageEmbed().setDescription('Unable to unban')
+  //     return msg.channel.send({ embeds: [errEmbed] })
+  //   }
+  // }
 
   /**
    * Warn a user for the given reason.
    */
-  @extendedCommand({
-    single: true,
+  @slashCommand({
+    description: 'Warn the bad person',
+    options: [
+      {
+        type: 'USER',
+        name: 'user',
+        description: 'The user which needed to be kicked',
+        required: true,
+      },
+      {
+        type: 'STRING',
+        name: 'reason',
+        description: 'Reason to kick',
+        required: true,
+      },
+      {
+        type: 'BOOLEAN',
+        name: 'silence',
+        description: 'Kick the person in the silent mode',
+      },
+    ],
     inhibitors: [isTrustedMember],
-    description: 'Warn a user for the given reason.',
-    aliases: ['warning'],
   })
-  public async warn(msg: Message, args: string) {
-    const splitArgs = splittyArgs(args)
-    if (splitArgs.length === 0) {
-      return await msg.channel.send({
-        content: ':warning: syntax !warn <@userID> [?reason]',
-      })
-    }
-
-    const [user_id, ...reason] = splitArgs
-
-    if (!user_id) {
-      return await msg.channel.send({ content: ':warning: invalid syntax' })
-    }
-
-    const res = this.USER_PATTERN.exec(user_id)
-    let user: User | undefined
-
-    if (res && res[1]) {
-      user = msg.client.users.cache.get(b(res[1]))
-    } else {
-      user = msg.client.users.cache.get(b(user_id))
-    }
-
-    return await this.performInfraction({
-      user: user!,
-      ctx: msg,
-      reason: reason.join(' '),
+  public async warn(
+    msg: CommandInteraction,
+    user: GuildMember,
+    reason: string,
+    silence?: boolean,
+  ) {
+    return this.performInfraction({
+      msg,
+      user,
+      reason,
+      silence,
       type: InfractionType.Warn,
     })
   }
 
-  @extendedCommand({
-    inhibitors: [isTrustedMember],
-    description: 'Pardon the warning to the person',
-    aliases: ['unwarn'],
-  })
-  public async unwarning(_msg: Message, _snowflake: Snowflake) {
-    // TODO: Implement this command
-  }
-  //#endregion
+  // @extendedCommand({
+  //   inhibitors: [isTrustedMember],
+  //   description: 'Pardon the warning to the person',
+  //   aliases: ['unwarn'],
+  // })
+  // public async unwarning(_msg: Message, _snowflake: Snowflake) {
+  //   // TODO: Implement this command
+  // }
 
   public async performInfraction(props: IPerformInfractionProps) {
-    if (!props.reason && props.ctx) {
-      return props.ctx.channel.send({
-        content: 'Unable to apply infraction without reason',
-      })
-    }
-
     let member: GuildMember | undefined
-    if (props.ctx) {
-      member = await props.ctx.guild?.members.fetch(props.user.id)
+    if (props.msg) {
+      member = await props.msg.guild?.members.fetch(props.user.id)
     } else {
       member = await (
         await this.client.guilds.fetch(guild.id)
       ).members.fetch(props.user.id)
     }
 
-    if (!member && props.ctx) {
-      return props.ctx.channel.send({
+    if (!member && props.msg) {
+      return props.msg.reply({
         content: 'Unable to find specified user.',
       })
     }
@@ -233,21 +208,24 @@ export class InfractionsModule extends ExtendedModule {
       member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES) ||
       member.roles.cache.has(guild.roles.maintainer)
     ) {
-      if (props.ctx) {
-        return props.ctx.channel.send({
-          content: 'You can apply infraction to the mod user.',
+      if (props.msg) {
+        return props.msg.reply({
+          content: "You can't apply infraction to the mod user.",
         })
       } else {
         return
       }
     }
 
-    const mailSended = await this.notifyInfraction({
-      reason: props.reason,
-      type: props.type,
-      user: member.user,
-    })
-    let message = `${mailSended ? '📨' : '📪'} `
+    let mailSended: boolean = false
+    if (!props.silence) {
+      mailSended = await this.notifyInfraction({
+        reason: props.reason,
+        type: props.type,
+        user: member.user,
+      })
+    }
+    let message = `${mailSended ? '📨' : props.silence ? '🔇' : '📪'} `
 
     if (process.env.NODE_ENV !== 'development') {
       switch (props.type) {
@@ -260,6 +238,7 @@ export class InfractionsModule extends ExtendedModule {
             days: props.purge ? 7 : 0,
           })
           break
+        case InfractionType.Mute:
         case InfractionType.Warn:
           break
       }
@@ -274,18 +253,21 @@ export class InfractionsModule extends ExtendedModule {
           member.id
         }>, reason: ${props.reason}`
         break
+      case InfractionType.Mute:
+        message += `Applied **mute** to <@${member.id}>, reason: ${props.reason}`
+        break
       case InfractionType.Warn:
         message += `Applied **warning** to <@${member.id}>, reason: ${props.reason}`
         break
     }
 
-    if (props.ctx) {
-      await props.ctx.channel.send(message)
+    if (props.msg) {
+      await props.msg.reply(message)
     }
 
     return await this.addInfraction({
       user_id: member.user.id,
-      actor_id: props.ctx?.author.id ?? '762678768032546819',
+      actor_id: props.msg?.member!.user.id ?? '762678768032546819',
       reason: props.reason,
       type: props.type,
       active: true,

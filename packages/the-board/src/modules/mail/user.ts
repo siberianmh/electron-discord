@@ -12,7 +12,7 @@ export class MailUser extends MailBase {
     super(client)
   }
 
-  @listener({ event: 'message' })
+  @listener({ event: 'messageCreate' })
   public async onNewMail(msg: Message) {
     if (msg.author.bot || msg.channel.type !== 'DM') {
       return

@@ -8,7 +8,7 @@ export class StatsModule extends ExtendedModule {
     super(client)
   }
 
-  @listener({ event: 'message' })
+  @listener({ event: 'messageCreate' })
   public async onMessage(msg: Message) {
     if (!msg.guild) {
       return

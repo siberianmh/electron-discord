@@ -10,7 +10,7 @@ export class MailStaff extends MailBase {
     super(client)
   }
 
-  @listener({ event: 'message' })
+  @listener({ event: 'messageCreate' })
   public async onNewResponse(msg: Message) {
     if (
       msg.author.bot ||

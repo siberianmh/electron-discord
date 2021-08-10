@@ -84,7 +84,7 @@ You can launch Electron Fiddle with the provided Gist using this URL: ${fiddleUR
   //#endregion
 
   //#region Listeners
-  @listener({ event: 'message' })
+  @listener({ event: 'messageCreate' })
   public async onNewRelease(msg: Message): Promise<Message | undefined> {
     if (msg.channel.id !== guild.channels.releases) {
       return
@@ -93,7 +93,7 @@ You can launch Electron Fiddle with the provided Gist using this URL: ${fiddleUR
     return await msg.crosspost()
   }
 
-  @listener({ event: 'message' })
+  @listener({ event: 'messageCreate' })
   public async createPoll(msg: Message): Promise<void> {
     if (msg.author.bot || !msg.content.toLowerCase().startsWith('poll:')) {
       return

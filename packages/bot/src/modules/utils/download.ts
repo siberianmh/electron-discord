@@ -33,7 +33,7 @@ The members of this server will not help you download the exploit or get informa
 
 ⚠⚠⚠ USING AND SHARING EXPLOITS VIOLATES THE DISCORD TERMS OF SERVICE AND MAY RESULT IN A DISCORD-WIDE BAN. ⚠⚠⚠`
 
-  @listener({ event: 'message' })
+  @listener({ event: 'messageCreate' })
   public async download(msg: Message) {
     if (msg.author && msg.author.bot) {
       return
