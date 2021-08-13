@@ -23,7 +23,7 @@ export const client = new LunaworkClient({
     activities: [
       {
         type: 'WATCHING',
-        name: 'Rick And Morty',
+        name: 'DARK',
       },
     ],
   },

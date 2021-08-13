@@ -1,5 +1,5 @@
 import * as express from 'express'
-import { validate } from 'uuid'
+import { validateUUID } from './uuid'
 import { AccessTokenStore } from './stores'
 
 const store = new AccessTokenStore()
@@ -36,7 +36,7 @@ export const requiresBotAuth = async (
     })
   }
 
-  const validUUID = validate(token)
+  const validUUID = validateUUID(token)
 
   if (!validUUID) {
     return res.status(401).json({

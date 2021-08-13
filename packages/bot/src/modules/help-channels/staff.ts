@@ -32,6 +32,7 @@ export class HelpChannelStaff extends HelpChanBase {
     description: '',
     // @ts-expect-error
     type: 'MESSAGE',
+    inhibitors: [noAuthorizedClaim],
   })
   public async claimContextMenu(msg: ContextMenuInteraction) {
     const targetMessage = msg.options.getMessage('message')

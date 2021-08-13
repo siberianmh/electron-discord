@@ -1,4 +1,4 @@
-import { LunaworkClient, slashCommand } from '@siberianmh/lunawork'
+import { LunaworkClient, applicationCommand } from '@siberianmh/lunawork'
 import { CommandInteraction, MessageEmbed } from 'discord.js'
 import algoliasearch, { SearchClient, SearchIndex } from 'algoliasearch'
 import type { Hit } from '@algolia/client-search'
@@ -50,7 +50,7 @@ export class DocsModule extends ExtendedModule {
       .setTitle(`\`${searchIndex}\``)
       .setDescription('Unable to find result for searching string.')
 
-  @slashCommand({
+  @applicationCommand({
     description: 'Search in the docs',
     options: [
       {

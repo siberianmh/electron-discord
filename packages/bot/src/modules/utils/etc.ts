@@ -1,5 +1,5 @@
-import { LunaworkClient } from '@siberianmh/lunawork'
-import { slashCommand, listener, button } from '@siberianmh/lunawork'
+import { applicationCommand, LunaworkClient } from '@siberianmh/lunawork'
+import { listener, button } from '@siberianmh/lunawork'
 import {
   Message,
   MessageEmbed,
@@ -23,7 +23,7 @@ export class EtcModule extends ExtendedModule {
   }
 
   //#region Commands
-  @slashCommand({ description: 'Check if we still alive' })
+  @applicationCommand({ description: 'Check if we still alive' })
   async ping(msg: Message): Promise<Message> {
     const bot_ping = +new Date() - +msg.createdAt
     const dsAPILatency = this.client.ws.ping
@@ -41,7 +41,7 @@ export class EtcModule extends ExtendedModule {
     return await msg.channel.send({ embeds: [embed] })
   }
 
-  @slashCommand({
+  @applicationCommand({
     name: 'fiddle',
     description: 'Create a user friendly Fiddle link',
     options: [

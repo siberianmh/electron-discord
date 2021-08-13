@@ -2,7 +2,7 @@ import {
   LunaworkClient,
   listener,
   isCommandMessage,
-  slashCommand,
+  applicationCommand,
 } from '@siberianmh/lunawork'
 import {
   CommandInteraction,
@@ -120,7 +120,9 @@ export class HelpChanModule extends HelpChanBase {
   //#endregion
 
   //#region Commands
-  @slashCommand({ description: 'Marks __ongoing__ help channel as resolved' })
+  @applicationCommand({
+    description: 'Marks __ongoing__ help channel as resolved',
+  })
   async close(msg: CommandInteraction) {
     if (!msg.guild) {
       return
@@ -129,11 +131,10 @@ export class HelpChanModule extends HelpChanBase {
     if (
       (msg.channel as TextChannel).parentId !== guild.categories.helpOngoing
     ) {
-      return this.sendToChannel(
-        msg,
-        ':warning: you can only run this in ongoing help channel',
-        { slashOptions: { ephemeral: true } },
-      )
+      return msg.reply({
+        content: ':warning: you can only run this in ongoing help channel',
+        ephemeral: true,
+      })
     }
 
     const { data: owner } = await this.api.get<IGetHelpChanByChannelIdResponse>(
@@ -159,11 +160,10 @@ export class HelpChanModule extends HelpChanBase {
         CloseReason.Command,
       )
     } else {
-      this.sendToChannel(
-        msg,
-        ':warning: you have to be the asker to close the channel.',
-        { slashOptions: { ephemeral: true } },
-      )
+      return msg.reply({
+        content: ':warning: you have to be the asker to close the channel.',
+        ephemeral: true,
+      })
     }
   }
 

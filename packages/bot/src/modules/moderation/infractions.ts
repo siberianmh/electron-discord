@@ -1,4 +1,4 @@
-import { LunaworkClient, slashCommand } from '@siberianmh/lunawork'
+import { LunaworkClient, applicationCommand } from '@siberianmh/lunawork'
 import {
   Message,
   MessageEmbed,
@@ -35,13 +35,14 @@ export class InfractionsModule extends ExtendedModule {
   /**
    * Kick a user for the given reason.
    */
-  @slashCommand({
+  @applicationCommand({
     description: 'Kick the bad person',
     options: [
       {
-        type: 'USER',
+        type: 'STRING',
         name: 'user',
-        description: 'The user which needed to be kicked',
+        description:
+          'The user id which needed to be kicked (the id, not user nickname)',
         required: true,
       },
       {
@@ -60,32 +61,34 @@ export class InfractionsModule extends ExtendedModule {
   })
   public async kick(
     msg: CommandInteraction,
-    user: GuildMember,
+    user: string,
     reason: string,
     silence?: boolean,
   ) {
+    const member = await msg.guild?.members.fetch(user)
+
     return await this.performInfraction({
       msg: msg,
       reason: reason,
       type: InfractionType.Kick,
       silence: silence,
-      user: user,
+      user: member!,
     })
   }
 
-  @slashCommand({
-    description: 'Warn the bad person',
+  @applicationCommand({
+    description: 'Ban the bad person',
     options: [
       {
-        type: 'USER',
+        type: 'STRING',
         name: 'user',
-        description: 'The user which needed to be kicked',
+        description: 'The user which needed to be banned',
         required: true,
       },
       {
         type: 'STRING',
         name: 'reason',
-        description: 'Reason to kick',
+        description: 'Reason to ban',
         required: true,
       },
       {
@@ -103,18 +106,20 @@ export class InfractionsModule extends ExtendedModule {
   })
   public async ban(
     msg: CommandInteraction,
-    user: GuildMember,
+    user: string,
     reason: string,
     purge: boolean,
     silence: boolean,
   ) {
+    const member = await msg.guild?.members.fetch(user)
+
     return this.performInfraction({
       reason,
       msg,
       purge,
       silence,
       type: InfractionType.Ban,
-      user,
+      user: member!,
     })
   }
 
@@ -137,7 +142,7 @@ export class InfractionsModule extends ExtendedModule {
   /**
    * Warn a user for the given reason.
    */
-  @slashCommand({
+  @applicationCommand({
     description: 'Warn the bad person',
     options: [
       {
@@ -186,6 +191,7 @@ export class InfractionsModule extends ExtendedModule {
 
   public async performInfraction(props: IPerformInfractionProps) {
     let member: GuildMember | undefined
+
     if (props.msg) {
       member = await props.msg.guild?.members.fetch(props.user.id)
     } else {

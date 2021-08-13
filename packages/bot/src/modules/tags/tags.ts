@@ -1,4 +1,4 @@
-import { LunaworkClient, optional, slashCommand } from '@siberianmh/lunawork'
+import { LunaworkClient, applicationCommand } from '@siberianmh/lunawork'
 import * as fs from 'fs-extra'
 import * as path from 'path'
 import grayMatter = require('gray-matter')
@@ -17,7 +17,7 @@ export class TagsModule extends ExtendedModule {
     super(client)
   }
 
-  @slashCommand({
+  @applicationCommand({
     description: 'Get some useful information',
     options: [
       {
@@ -38,7 +38,7 @@ export class TagsModule extends ExtendedModule {
       },
     ],
   })
-  public async tags(msg: Message | CommandInteraction, @optional tag?: string) {
+  public async tags(msg: Message | CommandInteraction, tag: string) {
     if (!tag) {
       return await this.notFoundEmbed(msg, tag)
     }
@@ -66,7 +66,7 @@ export class TagsModule extends ExtendedModule {
     return createSelfDestructMessage(msg, embed)
   }
 
-  @slashCommand({
+  @applicationCommand({
     description: 'Get an answer for frequet question',
     options: [
       {

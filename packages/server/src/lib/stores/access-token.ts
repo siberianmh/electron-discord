@@ -1,5 +1,5 @@
 import * as express from 'express'
-import * as uuid from 'uuid'
+import { v4 } from '../uuid'
 import { AccessToken } from '../../entities/access-token'
 
 export class AccessTokenStore {
@@ -16,7 +16,7 @@ export class AccessTokenStore {
     const token = AccessToken.create({
       name: name,
       user_id: user_id,
-      token: uuid.v4(),
+      token: v4(),
     })
 
     await token.save()

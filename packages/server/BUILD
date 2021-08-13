@@ -13,14 +13,12 @@ ts_project(
         "@npm//@sentry/tracing",
         "@npm//@types/express",
         "@npm//@types/node",
-        "@npm//@types/uuid",
         "@npm//axios",
         "@npm//express",
         "@npm//ioredis",
         "@npm//mysql2",
         "@npm//reflect-metadata",
         "@npm//typeorm",
-        "@npm//uuid",
     ],
 )
 
