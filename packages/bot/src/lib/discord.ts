@@ -18,10 +18,7 @@ export const client = new LunaworkClient({
     Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
   partials: ['REACTION', 'MESSAGE', 'USER', 'CHANNEL'],
   retryLimit: 3,
-  // @ts-ignore | Update on the next lunawork update
-  experimental: {
-    autoRegisterSlash: true,
-  },
+  manageApplicationCommands: true,
   presence: {
     activities: [
       {
