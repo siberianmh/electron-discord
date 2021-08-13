@@ -27,7 +27,7 @@
     "humanize-duration": "^3.27.0",
     "ioredis": "^4.27.7",
     "jest": "^27.0.6",
-    "@siberianmh/lunawork": "^0.0.2",
+    "@siberianmh/lunawork": "^0.0.3",
     "luxon": "^2.0.2",
     "mysql2": "^2.3.0",
     "parse-duration": "^1.0.0",

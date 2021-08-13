@@ -875,10 +875,10 @@
     "@sentry/types" "6.11.0"
     tslib "^1.9.3"
 
-"@siberianmh/lunawork@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@siberianmh/lunawork/-/lunawork-0.0.2.tgz#1e6673fc5c9815c26dc48ddf4a96fa73fb76def7"
-  integrity sha512-dGddKGnldQ1CJiAThfCDxd32eMHyBc1odnF5nFL7pvhQqXvBjmE2UCeMrUTE4/K8XkUl6FsuLMMSI2QboWM49w==
+"@siberianmh/lunawork@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@siberianmh/lunawork/-/lunawork-0.0.3.tgz#89bb95677d740121bdf94e146b9d00ed73b31bbd"
+  integrity sha512-a3TjC2GuTLSSpcjAmJM60Bn146Xv6IdhX3W72Z1HbnOykcuy1/pUo7iQWYb52FaJGAA03Sh0btAuS3Z68d5Ocw==
   dependencies:
     reflect-metadata "^0.1.13"
 
