@@ -1,6 +1,8 @@
-import { LunaworkClient, slashCommand } from '@siberianmh/lunawork'
+import { LunaworkClient } from '@siberianmh/lunawork'
+import { applicationCommand } from '@siberianmh/lunawork'
 import {
   Guild,
+  Message,
   CommandInteraction,
   GuildMember,
   TextChannel,
@@ -16,7 +18,6 @@ import {
 } from '../../lib/types'
 import { availableEmbed } from './embeds/available'
 import { helpChannelStatusEmbed } from './embeds/status'
-import { createSelfDestructMessage } from '../../lib/self-destruct-messages'
 import { Subcommands } from './subcommands'
 
 export class HelpChannelStaff extends HelpChanBase {
@@ -25,7 +26,7 @@ export class HelpChannelStaff extends HelpChanBase {
   }
 
   //#region Commands
-  @slashCommand({
+  @applicationCommand({
     description: 'Claim a someone message into the help channel',
     options: [
       {
@@ -34,10 +35,20 @@ export class HelpChannelStaff extends HelpChanBase {
         type: 'USER',
         required: true,
       },
+      {
+        type: 'NUMBER',
+        name: 'limit',
+        description:
+          'The limit of messages which needed to be claimed (default to 10)',
+      },
     ],
     inhibitors: [noAuthorizedClaim, noDM],
   })
-  public async claim(msg: CommandInteraction, member: GuildMember) {
+  public async claim(
+    msg: CommandInteraction,
+    member: GuildMember,
+    limit?: number,
+  ) {
     // Currently it's not possible due to discord limitation
     // ref: https://github.com/discord/discord-api-docs/discussions/3311
     /*
@@ -55,10 +66,10 @@ export class HelpChannelStaff extends HelpChanBase {
     }
     */
 
-    return await this.claimBase({ msg: msg, member: member })
+    return await this.claimBase({ msg: msg, member: member, limit })
   }
 
-  @slashCommand({
+  @applicationCommand({
     name: 'helpchan',
     description: 'The single command to maintain help channels',
     options: [
@@ -166,18 +177,19 @@ export class HelpChannelStaff extends HelpChanBase {
   private async claimBase({
     msg,
     member,
-    replyClaim = false,
+    limit = 10,
+    replyMsg,
   }: {
     msg: CommandInteraction
     member: GuildMember
-    replyClaim?: boolean
-  }) {
+    limit?: number
+    replyMsg?: Message
+  }): Promise<void> {
     if (member?.user.bot) {
-      return this.sendToChannel(
-        msg,
-        `:warning: I cannot open a help channel for ${member.displayName} because he is a turtle.`,
-        { slashOptions: { ephemeral: true } },
-      )
+      return msg.reply({
+        content: `:warning: I cannot open a help channel for ${member.displayName} because he is a turtle.`,
+        ephemeral: true,
+      })
     }
 
     try {
@@ -187,11 +199,10 @@ export class HelpChannelStaff extends HelpChanBase {
         )
 
       if (helpChannel) {
-        return this.sendToChannel(
-          msg,
-          `${member.displayName} already has <#${helpChannel.channel_id}>`,
-          { slashOptions: { ephemeral: true } },
-        )
+        return msg.reply({
+          content: `${member.displayName} already has <#${helpChannel.channel_id}>`,
+          ephemeral: true,
+        })
       }
     } catch {
       // It's fine because it's that what's we search
@@ -205,19 +216,16 @@ export class HelpChannelStaff extends HelpChanBase {
     ) as TextChannel | undefined
 
     if (!claimedChannel) {
-      return this.sendToChannel(
-        msg,
-        ':warning: failed to claim a help channel, no available channels is found.',
-        { slashOptions: { ephemeral: true } },
-      )
+      return msg.reply({
+        content:
+          ':warning: failed to claim a help channel, no available channels is found.',
+        ephemeral: true,
+      })
     }
 
     let msgContent = ''
-    if (replyClaim) {
-      // msgContent = msg.cleanContent
-      // await reactAsSelfDesturct(msg)
-      // It's anyway not possible
-      return
+    if (replyMsg) {
+      msgContent = replyMsg.cleanContent
     } else {
       const channelMessage = await (msg.channel as TextChannel).messages.fetch({
         limit: 50,
@@ -228,7 +236,7 @@ export class HelpChannelStaff extends HelpChanBase {
       )
 
       msgContent = [...questionMessages.values()]
-        .slice(0, 10) // TODO: return the limit
+        .slice(0, limit)
         .map((msg) => msg.cleanContent)
         .reverse()
         .join('\n')
@@ -254,12 +262,15 @@ export class HelpChannelStaff extends HelpChanBase {
       content: `${member.user} this channel has been claimed for your question. Please review <#${guild.channels.askHelpChannel}> for how to get help`,
     })
 
-    await createSelfDestructMessage(
-      msg,
-      `🙇‍♂️ Successfully claimed ${claimedChannel}`,
-    )
+    await msg.reply({
+      content: `🙇‍♂️ Successfully claimed ${claimedChannel}`,
+      ephemeral: true,
+    })
+
     await this.ensureAskChannels(msg.guild!)
-    return await this.syncHowToGetHelp(msg.guild!)
+    await this.syncHowToGetHelp(msg.guild!)
+
+    return
   }
 
   private async updateHelpChannels(msg: CommandInteraction) {
