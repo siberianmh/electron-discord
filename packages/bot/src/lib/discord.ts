@@ -19,8 +19,6 @@ export const client = new LunaworkClient({
   partials: ['REACTION', 'MESSAGE', 'USER', 'CHANNEL'],
   retryLimit: 3,
   // @ts-ignore | Update on the next lunawork update
-  autoRegisterSlash: true,
-  // @ts-ignore | Update on the next lunawork update
   experimental: {
     autoRegisterSlash: true,
   },

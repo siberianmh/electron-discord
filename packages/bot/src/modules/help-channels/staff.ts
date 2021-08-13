@@ -7,6 +7,7 @@ import {
   GuildMember,
   TextChannel,
   MessageEmbed,
+  ContextMenuInteraction,
 } from 'discord.js'
 import { isTrustedMember, noAuthorizedClaim, noDM } from '../../lib/inhibitors'
 import { guild } from '../../lib/config'
@@ -26,6 +27,36 @@ export class HelpChannelStaff extends HelpChanBase {
   }
 
   //#region Commands
+  @applicationCommand({
+    name: 'Claim Message',
+    description: '',
+    // @ts-expect-error
+    type: 'MESSAGE',
+  })
+  public async claimContextMenu(msg: ContextMenuInteraction) {
+    const targetMessage = msg.options.getMessage('message')
+
+    if (!targetMessage) {
+      return msg.reply({
+        content: 'Something goes wrong',
+        ephemeral: true,
+      })
+    }
+
+    if (
+      !(targetMessage instanceof Message) ||
+      !(targetMessage.member instanceof GuildMember)
+    ) {
+      return msg.reply({ content: 'Something goes wrong', ephemeral: true })
+    }
+
+    return this.claimBase({
+      member: targetMessage.member!,
+      replyMsg: targetMessage,
+      msg: msg,
+    })
+  }
+
   @applicationCommand({
     description: 'Claim a someone message into the help channel',
     options: [
@@ -49,23 +80,6 @@ export class HelpChannelStaff extends HelpChanBase {
     member: GuildMember,
     limit?: number,
   ) {
-    // Currently it's not possible due to discord limitation
-    // ref: https://github.com/discord/discord-api-docs/discussions/3311
-    /*
-    if (isMessage(msg)) {
-      if (msg.reference && msg.reference.messageId) {
-        const refMessage = await msg.channel.messages.fetch(
-          msg.reference.messageId,
-        )
-        return this.claimBase({
-          msg: refMessage,
-          member: refMessage.member!,
-          replyClaim: true,
-        })
-      }
-    }
-    */
-
     return await this.claimBase({ msg: msg, member: member, limit })
   }
 
