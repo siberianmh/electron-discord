@@ -32,6 +32,8 @@ export class InfractionsModule extends ExtendedModule {
     super(client)
   }
 
+  private USER_PATTERN = /(?:<@!?)?(\d+)>?/
+
   /**
    * Kick a user for the given reason.
    */
@@ -65,7 +67,14 @@ export class InfractionsModule extends ExtendedModule {
     reason: string,
     silence?: boolean,
   ) {
-    const member = await msg.guild?.members.fetch(user)
+    let member: GuildMember | undefined
+    const res = this.USER_PATTERN.exec(user)
+
+    if (res && res[1]) {
+      member = await msg.guild?.members.fetch(res[1])
+    } else {
+      member = await msg.guild?.members.fetch(user)
+    }
 
     return await this.performInfraction({
       msg: msg,
@@ -99,7 +108,7 @@ export class InfractionsModule extends ExtendedModule {
       {
         type: 'BOOLEAN',
         name: 'silence',
-        description: 'Kick the person in the silent mode',
+        description: 'Ban the person in the silent mode',
       },
     ],
     inhibitors: [isTrustedMember],
@@ -111,7 +120,14 @@ export class InfractionsModule extends ExtendedModule {
     purge: boolean,
     silence: boolean,
   ) {
-    const member = await msg.guild?.members.fetch(user)
+    let member: GuildMember | undefined
+    const res = this.USER_PATTERN.exec(user)
+
+    if (res && res[1]) {
+      member = await msg.guild?.members.fetch(res[1])
+    } else {
+      member = await msg.guild?.members.fetch(user)
+    }
 
     return this.performInfraction({
       reason,
@@ -146,34 +162,43 @@ export class InfractionsModule extends ExtendedModule {
     description: 'Warn the bad person',
     options: [
       {
-        type: 'USER',
+        type: 'STRING',
         name: 'user',
-        description: 'The user which needed to be kicked',
+        description: 'The user which needed to be warned',
         required: true,
       },
       {
         type: 'STRING',
         name: 'reason',
-        description: 'Reason to kick',
+        description: 'Reason to warn',
         required: true,
       },
       {
         type: 'BOOLEAN',
         name: 'silence',
-        description: 'Kick the person in the silent mode',
+        description: 'Warn the person in the silent mode',
       },
     ],
     inhibitors: [isTrustedMember],
   })
   public async warn(
     msg: CommandInteraction,
-    user: GuildMember,
+    user: string,
     reason: string,
     silence?: boolean,
   ) {
+    let member: GuildMember | undefined
+    const res = this.USER_PATTERN.exec(user)
+
+    if (res && res[1]) {
+      member = await msg.guild?.members.fetch(res[1])
+    } else {
+      member = await msg.guild?.members.fetch(user)
+    }
+
     return this.performInfraction({
       msg,
-      user,
+      user: member!,
       reason,
       silence,
       type: InfractionType.Warn,
