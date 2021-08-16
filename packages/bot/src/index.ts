@@ -4,12 +4,14 @@ if (process.env.NODE_ENV === 'development') {
   })
 }
 
+import { Stage } from '@siberianmh/lunawork'
 import * as Sentry from '@sentry/node'
 import {
   DownloadModule,
   DocsModule,
   CleanModule,
   EtcModule,
+  ThreadHelpStage,
   HelpChanModule,
   HelpChannelStaff,
   InfractionsModule,
@@ -24,6 +26,7 @@ import {
   UnfurlModule,
 } from './modules'
 import { client } from './lib/discord'
+import { enableThreadHelp } from './lib/runtime'
 
 Sentry.init({
   dsn: 'https://a22da8923d5f4ea7875fa8518335410b@o102026.ingest.sentry.io/5474186',
@@ -31,7 +34,7 @@ Sentry.init({
   tracesSampleRate: 1.0,
 })
 
-client.registerStages([
+const stages: Array<typeof Stage | Stage> = [
   DownloadModule,
   DocsModule,
   CleanModule,
@@ -48,7 +51,13 @@ client.registerStages([
   StatsModule,
   TagsModule,
   UnfurlModule,
-])
+]
+
+if (enableThreadHelp) {
+  stages.push(ThreadHelpStage)
+}
+
+client.registerStages(stages)
 
 client.login(process.env.DISCORD_TOKEN)
 client.on('ready', () => {

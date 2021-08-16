@@ -1,9 +1,5 @@
-import {
-  LunaworkClient,
-  listener,
-  isCommandMessage,
-  applicationCommand,
-} from '@siberianmh/lunawork'
+import { LunaworkClient } from '@siberianmh/lunawork'
+import { listener, applicationCommand } from '@siberianmh/lunawork'
 import {
   CommandInteraction,
   Message,
@@ -20,6 +16,7 @@ import { claimedEmbed } from './embeds/claimed'
 import { closedSuccessfullyEmbed } from './embeds/closed-successfully'
 import { dormantEmbed } from './embeds/dormant'
 import { toBigIntLiteral } from '../../lib/to-bigint-literal'
+import { threadCloseCommand } from './threads/close-command'
 
 /**
  * Manage the help channel system of the guild.
@@ -61,7 +58,7 @@ export class HelpChanModule extends HelpChanBase {
   }
 
   @listener({ event: 'messageCreate' })
-  async onNewQuestion(msg: Message) {
+  public async onNewQuestion(msg: Message) {
     if (
       msg.author.bot ||
       !msg.guild ||
@@ -121,11 +118,18 @@ export class HelpChanModule extends HelpChanBase {
 
   //#region Commands
   @applicationCommand({
-    description: 'Marks __ongoing__ help channel as resolved',
+    description: 'Marks ongoing help channel as resolved',
   })
   async close(msg: CommandInteraction) {
     if (!msg.guild) {
       return
+    }
+
+    if (
+      msg.channel!.isThread() &&
+      msg.channel.parentId === config.guild.channels.threadHelpChannel
+    ) {
+      return await threadCloseCommand(msg)
     }
 
     if (
@@ -149,12 +153,10 @@ export class HelpChanModule extends HelpChanBase {
       // @ts-expect-error
       msg.member?.roles.cache.has(guild.roles.maintainer)
     ) {
-      if (isCommandMessage(msg)) {
-        await msg.reply({
-          content: 'Channel is starting closing 🎈',
-          ephemeral: true,
-        })
-      }
+      await msg.reply({
+        content: 'Channel is starting closing 🎈',
+        ephemeral: true,
+      })
       return await this.markChannelAsDormant(
         msg.channel as TextChannel,
         CloseReason.Command,
