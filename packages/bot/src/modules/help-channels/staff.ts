@@ -30,7 +30,7 @@ export class HelpChannelStaff extends HelpChanBase {
   @applicationCommand({
     name: 'Claim Message',
     description: '',
-    // @ts-expect-error
+    // @ts-ignore | Will be fixed on the next @siberianmh/lunawork release
     type: 'MESSAGE',
     inhibitors: [noAuthorizedClaim],
   })
