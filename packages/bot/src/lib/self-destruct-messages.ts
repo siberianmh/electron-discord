@@ -28,13 +28,17 @@ export const selfDestructLegacy = async (
   },
 ) => {
   const toUsageComponents = new MessageActionRow()
-    .spliceComponents(0, 0, ...components)
-    .addComponents(
-      new MessageButton()
-        .setCustomId('trashIcon')
-        .setEmoji('🗑️')
-        .setStyle('DANGER'),
-    )
+
+  if (components?.length) {
+    toUsageComponents.spliceComponents(0, 0, ...components)
+  }
+
+  toUsageComponents.addComponents(
+    new MessageButton()
+      .setCustomId('trashIcon')
+      .setEmoji('🗑️')
+      .setStyle('DANGER'),
+  )
 
   const message = await msg.channel.send({
     content: content,
@@ -63,13 +67,17 @@ export const createSelfDestructMessage = async (
   },
 ) => {
   const toUsageComponents = new MessageActionRow()
-    .spliceComponents(0, 0, ...components)
-    .addComponents(
-      new MessageButton()
-        .setCustomId('trashIcon')
-        .setLabel('🗑')
-        .setStyle('DANGER'),
-    )
+
+  if (components?.length) {
+    toUsageComponents.spliceComponents(0, 0, ...components)
+  }
+
+  toUsageComponents.addComponents(
+    new MessageButton()
+      .setCustomId('trashIcon')
+      .setEmoji('🗑️')
+      .setStyle('DANGER'),
+  )
 
   await msg.reply({
     content: content,

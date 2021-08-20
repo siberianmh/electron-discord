@@ -38,8 +38,11 @@ export class TagsModule extends ExtendedModule {
       },
     ],
   })
-  public async tags(msg: CommandInteraction, tag: string) {
-    const tagData = await this.findItem(this.tagsFolder, tag)
+  public async tags(
+    msg: CommandInteraction,
+    { resource }: { resource: string },
+  ) {
+    const tagData = await this.findItem(this.tagsFolder, resource)
 
     if (!tagData) {
       return await msg.reply({ content: 'Wrong way Mario' })
@@ -91,7 +94,7 @@ export class TagsModule extends ExtendedModule {
       },
     ],
   })
-  public async faq(msg: CommandInteraction, entry: 'google-login') {
+  public async faq(msg: CommandInteraction, entry: string): Promise<void> {
     const itemData = await this.findItem(this.faqFolder, entry)
 
     if (!itemData) {

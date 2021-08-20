@@ -1,6 +1,5 @@
 import { LunaworkClient } from '@siberianmh/lunawork'
 import {
-  Message,
   Collection,
   MessageEmbed,
   GuildChannel,
@@ -11,7 +10,7 @@ import { IListHelpChannelsRespone } from '../../../lib/types'
 
 export const helpChannelStatusEmbed = (
   client: LunaworkClient,
-  msg: Message | CommandInteraction,
+  msg: CommandInteraction,
   availableChannels:
     | Collection<string, GuildChannel | ThreadChannel>
     | undefined,

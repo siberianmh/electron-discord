@@ -1,11 +1,6 @@
 import { AxiosInstance, AxiosResponse } from 'axios'
 import * as StatsDClient from 'statsd-client'
-import { Stage, isMessage } from '@siberianmh/lunawork'
-import {
-  Message,
-  CommandInteraction,
-  InteractionReplyOptions,
-} from 'discord.js'
+import { Stage } from '@siberianmh/lunawork'
 import { api } from './api'
 import { statsd } from './statsd'
 import { IInfraction } from './types'
@@ -28,19 +23,5 @@ export class ExtendedModule extends Stage {
     }
 
     return resp
-  }
-
-  protected async sendToChannel(
-    msg: Message | CommandInteraction,
-    content: string,
-    options?: {
-      slashOptions?: InteractionReplyOptions
-    },
-  ): Promise<Message | void> {
-    if (isMessage(msg)) {
-      return msg.channel.send(content)
-    } else {
-      return msg.reply({ content, ...options?.slashOptions })
-    }
   }
 }

@@ -24,7 +24,7 @@ export class EtcModule extends ExtendedModule {
 
   //#region Commands
   @applicationCommand({ description: 'Check if we still alive' })
-  async ping(msg: Message): Promise<Message> {
+  async ping(msg: CommandInteraction): Promise<void> {
     const bot_ping = +new Date() - +msg.createdAt
     const dsAPILatency = this.client.ws.ping
     const uptime = this.client.uptime
@@ -38,7 +38,7 @@ export class EtcModule extends ExtendedModule {
       .addField('Discord API Latency', `${dsAPILatency}ms`)
       .setTimestamp()
 
-    return await msg.channel.send({ embeds: [embed] })
+    return await msg.reply({ embeds: [embed] })
   }
 
   @applicationCommand({
@@ -55,7 +55,7 @@ export class EtcModule extends ExtendedModule {
     // Because it's test and i don't want to peoples to use this
     inhibitors: [isTrustedMember],
   })
-  public async fiddle(msg: CommandInteraction, gistId: string) {
+  public async fiddle(msg: CommandInteraction, gistId: string): Promise<void> {
     if (gistId.startsWith('https://' || 'http://')) {
       return msg.reply({
         content: 'The id should be in format number',
