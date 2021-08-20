@@ -3,5 +3,5 @@ export function formatTimestamp(date: Date | null): string {
     return '?'
   }
 
-  return `<t:${Math.floor(date.getTime() / 1000)}:R`
+  return `<t:${Math.floor(date.getTime() / 1000)}:R>`
 }
