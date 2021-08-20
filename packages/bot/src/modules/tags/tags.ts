@@ -2,7 +2,7 @@ import { LunaworkClient, applicationCommand } from '@siberianmh/lunawork'
 import * as fs from 'fs-extra'
 import * as path from 'path'
 import grayMatter = require('gray-matter')
-import { Message, CommandInteraction, MessageEmbed } from 'discord.js'
+import { CommandInteraction, MessageEmbed } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { createSelfDestructMessage } from '../../lib/self-destruct-messages'
 
@@ -38,15 +38,11 @@ export class TagsModule extends ExtendedModule {
       },
     ],
   })
-  public async tags(msg: Message | CommandInteraction, tag: string) {
-    if (!tag) {
-      return await this.notFoundEmbed(msg, tag)
-    }
-
+  public async tags(msg: CommandInteraction, tag: string) {
     const tagData = await this.findItem(this.tagsFolder, tag)
 
     if (!tagData) {
-      return await this.notFoundEmbed(msg, tag)
+      return await msg.reply({ content: 'Wrong way Mario' })
     }
 
     const parsed = grayMatter(tagData)
@@ -63,7 +59,7 @@ export class TagsModule extends ExtendedModule {
 
     embed.setDescription(parsed.content.trim())
 
-    return createSelfDestructMessage(msg, embed)
+    return createSelfDestructMessage(msg, { embeds: [embed] })
   }
 
   @applicationCommand({
@@ -121,7 +117,7 @@ export class TagsModule extends ExtendedModule {
 
     embed.setDescription(cleanContent)
 
-    return createSelfDestructMessage(msg, embed)
+    return createSelfDestructMessage(msg, { embeds: [embed] })
   }
 
   private async findItem(basePath: string, item: string) {
@@ -141,19 +137,5 @@ export class TagsModule extends ExtendedModule {
   private async listItems(basePath: string) {
     const items = await fs.readdir(basePath)
     return items
-  }
-
-  private async notFoundEmbed(msg: Message | CommandInteraction, tag?: string) {
-    const possibleTags = await this.listItems(this.tagsFolder)
-
-    const embed = new MessageEmbed()
-      .setTitle(`Unable to find tag ${tag ?? ''}. List of all available tags:`)
-      .setDescription(
-        possibleTags
-          .map((tag) => tag.split('.').slice(0, -1).join('.'))
-          .join(', '),
-      )
-
-    return createSelfDestructMessage(msg, embed)
   }
 }

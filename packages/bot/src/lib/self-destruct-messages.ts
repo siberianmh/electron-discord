@@ -4,65 +4,87 @@ import {
   CommandInteraction,
   MessageActionRow,
   MessageButton,
+  MessageActionRowComponentResolvable,
 } from 'discord.js'
-import { isMessage, isCommandMessage } from '@siberianmh/lunawork'
 import { redis, selfDestructMessage } from './redis'
 import { style } from './config'
 
-export const createSelfDestructMessage = async (
-  msg: Message | CommandInteraction,
-  messageContent: MessageEmbed | string,
+/**
+ * Selft destruct message, but which only support prefixed
+ * commands, Message class.
+ *
+ * @see {createSelfDestructMessage} for usage with applicaticon command
+ */
+export const selfDestructLegacy = async (
+  msg: Message,
+  {
+    content,
+    embeds,
+    components,
+  }: {
+    content?: string
+    embeds?: Array<MessageEmbed>
+    components?: Array<MessageActionRowComponentResolvable>
+  },
 ) => {
-  let createdMessage: Message | null = null
-  const flipper = Math.random()
+  const toUsageComponents = new MessageActionRow()
+    .spliceComponents(0, 0, ...components)
+    .addComponents(
+      new MessageButton()
+        .setCustomId('trashIcon')
+        .setEmoji('🗑️')
+        .setStyle('DANGER'),
+    )
 
-  const row = new MessageActionRow().addComponents(
-    new MessageButton()
-      .setCustomId('trashIcon')
-      .setLabel('🗑')
-      .setStyle('DANGER'),
-  )
-
-  if (isMessage(msg)) {
-    if (typeof messageContent === 'string') {
-      createdMessage = await msg.channel.send({
-        content: messageContent,
-        components: flipper > 0.5 ? [row] : undefined,
-      })
-    } else {
-      createdMessage = await msg.channel.send({
-        embeds: [messageContent],
-        components: flipper > 0.5 ? [row] : undefined,
-      })
-    }
-  } else if (isCommandMessage(msg)) {
-    if (typeof messageContent === 'string') {
-      await msg.reply({
-        content: messageContent,
-        components: flipper > 0.5 ? [row] : undefined,
-      })
-      // @ts-expect-error
-      createdMessage = await msg.fetchReply()
-    } else {
-      await msg.reply({
-        embeds: [messageContent],
-        components: flipper > 0.5 ? [row] : undefined,
-      })
-      // @ts-expect-error
-      createdMessage = await msg.fetchReply()
-    }
-  }
+  const message = await msg.channel.send({
+    content: content,
+    embeds: embeds,
+    components: [toUsageComponents],
+  })
 
   await redis.set(
-    selfDestructMessage(createdMessage!.id),
-    msg.member!.user.id,
+    selfDestructMessage(message.id),
+    msg.author.id,
     'ex',
     60 * 60 * 24,
   )
+}
 
-  if (flipper < 0.5) {
-    return await createdMessage?.react(style.emojis.deleteBucket)
-  }
+export const createSelfDestructMessage = async (
+  msg: CommandInteraction,
+  {
+    content,
+    embeds,
+    components,
+  }: {
+    content?: string
+    embeds?: Array<MessageEmbed>
+    components?: Array<MessageActionRowComponentResolvable>
+  },
+) => {
+  const toUsageComponents = new MessageActionRow()
+    .spliceComponents(0, 0, ...components)
+    .addComponents(
+      new MessageButton()
+        .setCustomId('trashIcon')
+        .setLabel('🗑')
+        .setStyle('DANGER'),
+    )
+
+  await msg.reply({
+    content: content,
+    embeds: embeds,
+    components: [toUsageComponents],
+  })
+
+  const message = await msg.fetchReply()
+
+  await redis.set(
+    selfDestructMessage(message.id),
+    msg.user.id,
+    'ex',
+    60 * 60 * 24,
+  )
 
   return
 }

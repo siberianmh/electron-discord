@@ -2,7 +2,7 @@ import { LunaworkClient, listener } from '@siberianmh/lunawork'
 import { Message } from 'discord.js'
 import * as fuzz from 'fuzzball'
 import { ExtendedModule } from '../../lib/extended-module'
-import { createSelfDestructMessage } from '../../lib/self-destruct-messages'
+import { selfDestructLegacy } from '../../lib/self-destruct-messages'
 
 export class DownloadModule extends ExtendedModule {
   public constructor(client: LunaworkClient) {
@@ -66,7 +66,7 @@ The members of this server will not help you download the exploit or get informa
         try {
           await msg.member?.send(this.DOWNLOAD_MESSAGE)
         } catch {
-          await createSelfDestructMessage(msg, this.DOWNLOAD_MESSAGE)
+          await selfDestructLegacy(msg, { content: this.DOWNLOAD_MESSAGE })
         }
 
         try {

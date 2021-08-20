@@ -1,5 +1,5 @@
 import { LunaworkClient, applicationCommand } from '@siberianmh/lunawork'
-import { CommandInteraction, MessageEmbed } from 'discord.js'
+import { CommandInteraction, MessageButton, MessageEmbed } from 'discord.js'
 import algoliasearch, { SearchClient, SearchIndex } from 'algoliasearch'
 import type { Hit } from '@algolia/client-search'
 import { ExtendedModule } from '../../lib/extended-module'
@@ -67,10 +67,9 @@ export class DocsModule extends ExtendedModule {
     })
 
     if (!hits.length) {
-      return await createSelfDestructMessage(
-        msg,
-        this.NOT_FOUND_EMBED(searchIndex),
-      )
+      return await createSelfDestructMessage(msg, {
+        embeds: [this.NOT_FOUND_EMBED(searchIndex)],
+      })
     }
 
     const result = hits[0]
@@ -89,7 +88,15 @@ export class DocsModule extends ExtendedModule {
 
     const embed = this.createEmbed(displayTitle, url, text)
 
-    return await createSelfDestructMessage(msg, embed)
+    const linkButton = new MessageButton()
+      .setStyle('LINK')
+      .setURL(url)
+      .setLabel('Open in a browser')
+
+    return await createSelfDestructMessage(msg, {
+      embeds: [embed],
+      components: [linkButton],
+    })
   }
 
   private createEmbed(title: string, url: string, content?: string) {

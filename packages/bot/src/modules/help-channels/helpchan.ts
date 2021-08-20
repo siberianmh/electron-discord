@@ -1,11 +1,18 @@
-import { LunaworkClient } from '@siberianmh/lunawork'
-import { listener, applicationCommand } from '@siberianmh/lunawork'
+import {
+  LunaworkClient,
+  listener,
+  applicationCommand,
+  button,
+} from '@siberianmh/lunawork'
 import {
   CommandInteraction,
   Message,
   MessageEmbed,
   TextChannel,
   Permissions,
+  MessageActionRow,
+  MessageButton,
+  ButtonInteraction,
 } from 'discord.js'
 import { IGetHelpChanByChannelIdResponse } from '../../lib/types'
 import { helpChannels, guild } from '../../lib/config'
@@ -146,17 +153,57 @@ export class HelpChanModule extends HelpChanBase {
     )
 
     if (
-      // @ts-expect-error
-      (owner && owner.user_id === msg.member.id) ||
+      (owner && owner.user_id === msg.user.id) ||
       // @ts-expect-error
       msg.member?.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES) ||
       // @ts-expect-error
       msg.member?.roles.cache.has(guild.roles.maintainer)
     ) {
       await msg.reply({
-        content: 'Channel is starting closing 🎈',
+        content:
+          'Thanks for using Help Channel, you can share feedback in #community-meta channel 💖.',
         ephemeral: true,
       })
+      return await this.markChannelAsDormant(
+        msg.channel as TextChannel,
+        CloseReason.Command,
+      )
+    } else {
+      return msg.reply({
+        content: ':warning: you have to be the asker to close the channel.',
+        ephemeral: true,
+      })
+    }
+  }
+
+  @button({ customID: 'closeClaimed' })
+  public async onCloseButtonPressed(msg: ButtonInteraction) {
+    if (!msg.guild) {
+      return
+    }
+
+    const { data: owner } = await this.api.get<IGetHelpChanByChannelIdResponse>(
+      `/helpchan/${msg.channel!.id}`,
+    )
+
+    if (
+      (owner && owner.user_id === msg.user.id) ||
+      // @ts-expect-error
+      msg.member!.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES) ||
+      // @ts-expect-error
+      msg.member!.roles.cache.has(guild.roles.maintainer)
+    ) {
+      await msg.update({
+        embeds: [...(msg.message.embeds as Array<MessageEmbed>)],
+        components: [],
+      })
+
+      // await msg.reply({
+      //   content:
+      //     'Thanks for using Help Channel, you can share feedback in #community-meta channel 💖.',
+      //   ephemeral: true,
+      // })
+
       return await this.markChannelAsDormant(
         msg.channel as TextChannel,
         CloseReason.Command,
@@ -232,7 +279,18 @@ export class HelpChanModule extends HelpChanBase {
       return
     }
 
-    return await embedMessage.edit({ embeds: [claimedEmbed(claimer)] })
+    const flipper = Math.random()
+    const row = new MessageActionRow().addComponents(
+      new MessageButton()
+        .setCustomId('closeClaimed')
+        .setLabel('Close channel')
+        .setStyle('PRIMARY'),
+    )
+
+    return await embedMessage.edit({
+      embeds: [claimedEmbed(claimer)],
+      components: flipper > 0.5 ? [row] : undefined,
+    })
   }
 
   private async checkDormantPossibilities() {

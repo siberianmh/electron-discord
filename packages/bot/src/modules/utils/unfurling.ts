@@ -2,7 +2,7 @@ import { LunaworkClient, listener } from '@siberianmh/lunawork'
 import { Message, MessageEmbed, TextChannel } from 'discord.js'
 import { style } from '../../lib/config'
 import { ExtendedModule } from '../../lib/extended-module'
-import { createSelfDestructMessage } from '../../lib/self-destruct-messages'
+import { selfDestructLegacy } from '../../lib/self-destruct-messages'
 import { toBigIntLiteral } from '../../lib/to-bigint-literal'
 
 const DSRegex =
@@ -63,10 +63,9 @@ export class UnfurlModule extends ExtendedModule {
 
         await new Promise((resolve) => setTimeout(resolve, 3000))
 
-        return createSelfDestructMessage(
-          msg,
-          this.UNFURL_EMBED(fetchedMessage, msg),
-        )
+        return selfDestructLegacy(msg, {
+          embeds: [this.UNFURL_EMBED(fetchedMessage, msg)],
+        })
       }
     }
 

@@ -4,18 +4,20 @@ import {
   ColorResolvable,
   DMChannel,
   Guild,
+  ThreadChannel,
   GuildChannel,
   GuildMember,
   Message,
+  StageChannel,
   MessageEmbed,
   Role,
   Snowflake,
   TextChannel,
   VoiceChannel,
 } from 'discord.js'
-import { DateTime } from 'luxon'
 import { ExtendedModule } from '../../lib/extended-module'
 import { formatUser } from '../../lib/format-user'
+import { formatTimestamp } from '../../lib/format'
 import * as constants from '../../lib/config'
 
 interface ISendLogMessageProps {
@@ -105,6 +107,9 @@ export class ModLogModule extends ExtendedModule {
     } else if (channel instanceof VoiceChannel) {
       title = 'Voice channel created'
       message = `${channel.name} (\`${channel.id}\`)`
+    } else if (channel instanceof StageChannel) {
+      title = 'Stage channel created'
+      message = `${channel.name} (\`${channel.id}\`)`
     } else {
       title = 'Text channel created'
       message = `${channel.name} (\`${channel.id}\`)`
@@ -168,6 +173,48 @@ export class ModLogModule extends ExtendedModule {
     if (helpCategories.includes(after.parentId!)) {
       return
     }
+  }
+
+  /**
+   * Log thread create event to mod log.
+   */
+  @listener({ event: 'threadCreate' })
+  public async onThreadCreate(thread: ThreadChannel) {
+    if (thread.guild.id !== constants.guild.id) {
+      return
+    }
+
+    const message = `${thread.name} (\`${thread.id}\`)
+
+Owner: <@${thread.ownerId}> (\`${thread.ownerId}\`)`
+
+    return this.sendLogMessage({
+      iconURL: constants.style.icons.hashGreen,
+      colour: constants.style.colors.softGreen,
+      title: 'Thread created',
+      text: message,
+    })
+  }
+
+  /**
+   * Log thread delete event to mod log.
+   * This is not archiving, this is deleting.
+   */
+  @listener({ event: 'threadDelete' })
+  public async onThreadDelete(thread: ThreadChannel) {
+    if (thread.guild.id !== constants.guild.id) {
+      return
+    }
+
+    const title = 'Thread deleted (not archived)'
+    const message = `${thread.name} (\`${thread.id}\`)`
+
+    return await this.sendLogMessage({
+      iconURL: constants.style.icons.hashRed,
+      colour: constants.style.colors.softRed,
+      title: title,
+      text: message,
+    })
   }
 
   /**
@@ -313,11 +360,9 @@ export class ModLogModule extends ExtendedModule {
       return
     }
 
-    const created = DateTime.fromJSDate(member.user.createdAt).toRelative()
-
     const message = `${formatUser(member)}
 
-Account age: ${created}`
+Created: ${formatTimestamp(member.user.createdAt)}`
 
     return await this.sendLogMessage({
       iconURL: constants.style.icons.userJoin,
@@ -335,11 +380,15 @@ Account age: ${created}`
       return
     }
 
+    const message = `${formatUser(member)}
+
+Be a member: ${formatTimestamp(member.joinedAt)}`
+
     return await this.sendLogMessage({
       iconURL: constants.style.icons.userRemove,
       colour: constants.style.colors.softRed,
       title: 'User Left',
-      text: formatUser(member),
+      text: message,
       thumbnail: member.user.displayAvatarURL({ dynamic: false }),
       channelId: constants.guild.channels.memberLog,
     })

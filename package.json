@@ -28,7 +28,6 @@
     "ioredis": "^4.27.7",
     "jest": "^27.0.6",
     "@siberianmh/lunawork": "^0.0.3",
-    "luxon": "^2.0.2",
     "mysql2": "^2.3.0",
     "parse-duration": "^1.0.0",
     "prettier": "^2.3.2",
@@ -44,7 +43,6 @@
     "@types/humanize-duration": "^3.25.1",
     "@types/ioredis": "^4.26.7",
     "@types/jest": "^27.0.1",
-    "@types/luxon": "^2.0.0",
     "@types/node": "^15.12.2",
     "@types/statsd-client": "^0.4.3"
   }
