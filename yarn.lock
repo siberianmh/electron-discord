@@ -1992,10 +1992,10 @@ function-bind@^1.1.1:
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
-fuzzball@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/fuzzball/-/fuzzball-2.0.0.tgz#1ac2d5fe99be91855a24ad65eb334a8871a2896c"
-  integrity sha512-aDezg1/rQtrjY3FabFawEW+etBHCG9UmFI+Hq3Bxfcubx2YLF+xSS7xnghsI1YlD8o+nrNfeKO68hJNsTvHg8w==
+fuzzball@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/fuzzball/-/fuzzball-2.0.2.tgz#3f4e558ec2088b1460548359a61186792a597fe4"
+  integrity sha512-BTt/AuvMfQBMQaBQYZmtotktDR0CO2UTmXdGYrGkmMWbuuQADQ11Z7FuzjjxLeoCszqgcTs/JwgLHZN+HW3QEw==
   dependencies:
     heap ">=0.2.0"
     setimmediate "^1.0.5"
