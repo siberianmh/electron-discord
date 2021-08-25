@@ -40,7 +40,9 @@ export class TagsModule extends ExtendedModule {
   })
   public async tags(
     msg: CommandInteraction,
-    { resource }: { resource: string },
+    resource: string,
+    // Requires update of @siberianmh/lunawork
+    // { resource }: { resource: string },
   ) {
     const tagData = await this.findItem(this.tagsFolder, resource)
 
