@@ -25,7 +25,7 @@
     "fuzzball": "^2.0.2",
     "gray-matter": "^4.0.3",
     "humanize-duration": "^3.27.0",
-    "ioredis": "^4.27.7",
+    "ioredis": "^4.27.8",
     "jest": "^27.0.6",
     "@siberianmh/lunawork": "^0.0.3",
     "mysql2": "^2.3.0",
@@ -41,7 +41,7 @@
     "@types/express": "^4.17.13",
     "@types/fs-extra": "^9.0.12",
     "@types/humanize-duration": "^3.25.1",
-    "@types/ioredis": "^4.26.7",
+    "@types/ioredis": "^4.27.1",
     "@types/jest": "^27.0.1",
     "@types/node": "^15.12.2",
     "@types/statsd-client": "^0.4.3"
