@@ -9,8 +9,8 @@ export const helpMessage = (
 1. If your question fits into the \`Ecosystem\` or \`Frameworks\` category, post it into them.
 2. If no, send a question to the ${availableChannels
   .map((channel) => `<#${channel.id}>`)
-  .join(' or ')} channels in the \`❓ Help: Available\` category.
-3. Our bot will move your channel to \`📝 Help: Ongoing\`
+  .join(' or ')} channels in the \`❓ Help: Open\` category.
+3. Our bot will move your channel to \`📝 Help: Busy\`
 4. Somebody will (hopefully) come along and help you.
 
 Channel is closing using the \`/close\` command, or if you don't get activity more than \`${

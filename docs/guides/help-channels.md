@@ -27,13 +27,13 @@ someone else.
 ### How to claim a channel
 
 There are always 2 available help channels waiting to be claimed in the
-`Help: Available` category.
+`Help: Open` category.
 
 ![Available Help Channels](https://user-images.githubusercontent.com/24681191/103448612-057c0880-4cad-11eb-886b-17695a096395.png)
 
 In order to claim one, simple start typing you question into one of these
 channels. Once your question has been posted, you have claimed the channel, and
-the channel will be moved down to the `Help: Ongoing` category.
+the channel will be moved down to the `Help: Busy` category.
 
 ![Ready to claim message](https://user-images.githubusercontent.com/24681191/103448645-6c99bd00-4cad-11eb-80f9-656060d84ed9.png)
 
@@ -49,7 +49,7 @@ older**.
 The channel is yours until it has been inactive for **10 hours**, or send
 `/close` to close the channel earlier. When this happens, we move the channel
 down to the `Help: Dormant` category, and make the channel read-only. After a
-while, the channel will be rotated back into `Help: Available` for the next
+while, the channel will be rotated back into `Help: Open` for the next
 question. Please try to resist the urge to continue _bumping_ the channel so
 that it never gets marked as inactive. If nobody is answering your question, you
 should try to reformulate the question to increase your chances of getting help.
