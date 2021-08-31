@@ -6,7 +6,7 @@ export const claimedEmbed = (claimedBy: string) =>
     .setColor(style.colors.yellow)
     .setTitle('🔐 Claimed help channel')
     .setDescription(
-      `This help channels is claimed by <@${claimedBy}>. You can claim own channel under the \`Help: Available\` category.`,
+      `This help channels is claimed by <@${claimedBy}>. You can claim own channel under the \`Help: Open\` category.`,
     )
     .setFooter(
       `Closes when you send /close or after ${helpChannels.dormantChannelTimeout} hours of inactivity`,

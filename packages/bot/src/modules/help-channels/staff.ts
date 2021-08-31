@@ -177,7 +177,7 @@ export class HelpChannelStaff extends HelpChanBase {
     const channel = await guild.channels.create(`help-${channelName}`, {
       type: 'GUILD_TEXT',
       topic:
-        'This is a help channel. You can claim own your own help channel in the Help: Available category.',
+        'This is a help channel. You can claim own your own help channel in the Help: Open category.',
       reason: 'Maintain help channel goal',
       parent: config.guild.categories.helpAvailable,
     })
@@ -301,7 +301,7 @@ export class HelpChannelStaff extends HelpChanBase {
       await channel.edit(
         {
           topic:
-            'This is a help channel. You can claim your own help channel in the Help: Available category.',
+            'This is a help channel. You can claim your own help channel in the Help: Open category.',
         },
         'Maintain help channel goal',
       )

@@ -38,7 +38,7 @@ export const noAuthorizedClaim: Inhibitor = async (msg) => {
       msg.member!.user.id
     }>, however, this command is can be only used by the moderation team, if you are searching for help you can read the guide at <#${
       guild.channels.askHelpChannel
-    }> channel, and claim a channel from the \`Help: Available\` category.`
+    }> channel, and claim a channel from the \`Help: Open\` category.`
   }
   return
 }

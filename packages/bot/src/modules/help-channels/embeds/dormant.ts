@@ -9,6 +9,6 @@ export const dormantEmbed = new MessageEmbed()
       'It is no longer possible to send messages to this channel until ' +
       'it becomes available again.\n\n' +
       'If your question does not answer yet, you can ask them in another help ' +
-      'channel from the **❓ Help: Available** category by simply asking again.\n\n' +
+      'channel from the **❓ Help: Open** category by simply asking again.\n\n' +
       'Consider rephrasing your question to maximize the chance of getting a good answer.',
   )
