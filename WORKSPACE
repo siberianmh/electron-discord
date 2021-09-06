@@ -42,9 +42,9 @@ yarn_install(
 
 http_archive(
     name = "io_bazel_rules_docker",
-    sha256 = "dd55ce861f7e7284cc29922aa764b325a4624c2db859c89607d5cb98dd4136bd",
-    strip_prefix = "rules_docker-8e5198f1b1c9c250650a06e3b5550e2614ebdaba",
-    urls = ["https://github.com/bazelbuild/rules_docker/archive/8e5198f1b1c9c250650a06e3b5550e2614ebdaba.tar.gz"],
+    sha256 = "96011abe27849e3ba4670d8e81c395931380dcf3ed033c0daafa03de0118e864",
+    strip_prefix = "rules_docker-bdea23404dd256c7ae2f8e02d346428044cc7d91",
+    urls = ["https://github.com/bazelbuild/rules_docker/archive/bdea23404dd256c7ae2f8e02d346428044cc7d91.tar.gz"],
 )
 
 load(
