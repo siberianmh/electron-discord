@@ -69,7 +69,6 @@ export const guild = {
     everyone: b('745037351163527189'),
     admin: b('745038904532402237'),
     maintainer: b('745039155498582067'),
-    hashithemoto: b('835050861830733884'),
     helpCooldown: b('772835574197256199'),
     regular: b('828009346251227148'),
 

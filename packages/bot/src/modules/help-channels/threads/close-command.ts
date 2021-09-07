@@ -14,11 +14,11 @@ export async function threadCloseCommand(msg: CommandInteraction) {
   )
 
   if (
-    (owner && owner.user_id === msg.member!.user.id) ||
-    // @ts-expect-error
-    msg.member?.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES) ||
-    // @ts-expect-error
-    msg.member?.roles.cache.has(guild.roles.maintainer)
+    (owner && owner.user_id === msg.member?.user.id) ||
+    (typeof msg.member?.permissions !== 'string' &&
+      msg.member?.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) ||
+    (!Array.isArray(msg.member?.roles) &&
+      msg.member?.roles.cache.has(guild.roles.maintainer))
   ) {
     await msg.reply({
       content: 'Channel is starting closing 🙇‍♂️',

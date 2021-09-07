@@ -8,9 +8,9 @@ export const isTrustedMember: Inhibitor = async (msg) => {
   }
 
   if (
-    // @ts-ignore
+    typeof msg.member.permissions !== 'string' &&
     !msg.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES) &&
-    // @ts-ignore
+    !Array.isArray(msg.member.roles) &&
     !msg.member.roles.cache.has(guild.roles.maintainer)
   ) {
     return ":man_gesturing_no: you don't have permissions to use that command"
@@ -29,10 +29,10 @@ export const noDM: Inhibitor = async (msg) => {
 
 export const noAuthorizedClaim: Inhibitor = async (msg) => {
   if (
-    // @ts-ignore
+    typeof msg.member?.permissions !== 'string' &&
     !msg.member?.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES) &&
-    // @ts-ignore
-    !msg.member.roles.cache.has(guild.roles.maintainer)
+    !Array.isArray(msg.member?.roles) &&
+    !msg.member?.roles.cache.has(guild.roles.maintainer)
   ) {
     return `Hello <@${
       msg.member!.user.id

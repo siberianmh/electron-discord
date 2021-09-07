@@ -154,10 +154,10 @@ export class HelpChanModule extends HelpChanBase {
 
     if (
       (owner && owner.user_id === msg.user.id) ||
-      // @ts-expect-error
-      msg.member?.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES) ||
-      // @ts-expect-error
-      msg.member?.roles.cache.has(guild.roles.maintainer)
+      (typeof msg.member?.permissions !== 'string' &&
+        msg.member?.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) ||
+      (!Array.isArray(msg.member?.roles) &&
+        msg.member?.roles.cache.has(guild.roles.maintainer))
     ) {
       await msg.reply({
         content:
@@ -188,10 +188,10 @@ export class HelpChanModule extends HelpChanBase {
 
     if (
       (owner && owner.user_id === msg.user.id) ||
-      // @ts-expect-error
-      msg.member!.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES) ||
-      // @ts-expect-error
-      msg.member!.roles.cache.has(guild.roles.maintainer)
+      (typeof msg.member?.permissions !== 'string' &&
+        msg.member!.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) ||
+      (!Array.isArray(msg.member?.roles) &&
+        msg.member!.roles.cache.has(guild.roles.maintainer))
     ) {
       await msg.update({
         embeds: [...(msg.message.embeds as Array<MessageEmbed>)],
