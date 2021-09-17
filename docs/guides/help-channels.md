@@ -49,10 +49,10 @@ older**.
 The channel is yours until it has been inactive for **10 hours**, or send
 `/close` to close the channel earlier. When this happens, we move the channel
 down to the `Help: Dormant` category, and make the channel read-only. After a
-while, the channel will be rotated back into `Help: Open` for the next
-question. Please try to resist the urge to continue _bumping_ the channel so
-that it never gets marked as inactive. If nobody is answering your question, you
-should try to reformulate the question to increase your chances of getting help.
+while, the channel will be rotated back into `Help: Open` for the next question.
+Please try to resist the urge to continue _bumping_ the channel so that it never
+gets marked as inactive. If nobody is answering your question, you should try to
+reformulate the question to increase your chances of getting help.
 
 ![Dormant Help Channel](https://user-images.githubusercontent.com/24681191/103448674-f053a980-4cad-11eb-8304-f7dc4f4f1e19.png)
 
