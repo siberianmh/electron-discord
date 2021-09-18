@@ -9,6 +9,9 @@ ts_project(
     name = "the-board",
     srcs = glob(["src/**/*.ts"]),
     deps = [
+        # BEGIN-INTERNAL
+        "//third_party/github/lunawork/src:lunawork",
+        # END-INTERNAL
         "@npm//@siberianmh/lunawork",
         "@npm//@types/humanize-duration",
         "@npm//@types/node",
