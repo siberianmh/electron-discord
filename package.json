@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
-    "@types/fs-extra": "^9.0.12",
+    "@types/fs-extra": "^9.0.13",
     "@types/humanize-duration": "^3.25.1",
     "@types/ioredis": "^4.26.7",
     "@types/jest": "^27.0.2",
