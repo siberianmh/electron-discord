@@ -42,7 +42,7 @@
     "@types/fs-extra": "^9.0.12",
     "@types/humanize-duration": "^3.25.1",
     "@types/ioredis": "^4.26.7",
-    "@types/jest": "^27.0.1",
+    "@types/jest": "^27.0.2",
     "@types/node": "^15.12.2",
     "@types/statsd-client": "^0.4.3"
   }
