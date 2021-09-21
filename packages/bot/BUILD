@@ -19,9 +19,6 @@ ts_project(
     name = "bot",
     srcs = glob(["src/**/*.ts"]),
     deps = [
-        # BEGIN-INTERNAL
-        "//third_party/github/lunawork/src:lunawork",
-        # END-INTERNAL
         "@npm//@sentry/node",
         "@npm//@siberianmh/lunawork",
         "@npm//@types/fs-extra",
