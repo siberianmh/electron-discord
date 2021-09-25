@@ -23,56 +23,24 @@ jobs:
       - name: Compile bot
         run: |
           bazel build //packages/bot
-
-  #################
-  # Docker Builds #
-  #################
-  docker-bot:
-    runs-on: ubuntu-20.04
-    if: github['ref'] == 'refs/heads/main'
-
-    needs:
-      - compile-bot
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        id: bazel-cache
-        with:
-          path: /home/runner/.cache/bazel
-          key: bazel_core
+      #################
+      # Docker Builds #
+      #################
       - name: Login to Packages Container registry
+        if: github['ref'] == 'refs/heads/main'
         uses: docker/login-action@v1.10.0
         with:
           registry: ghcr.io
           username: pacificocean-bot
           password: ${{ secrets.CR_PAT }}
-      - name: Build Docker Image
+      - name: Build OCI Image and publish OCI image 
+        if: github['ref'] == 'refs/heads/main'
         run: |
           bazel build //packages/bot:docker-bot
-      - name: Publish Latest Docker Image
-        run: |
           bazel run //packages/bot:push-bot
-
-  #############
-  # Deploying #
-  #############
-  deploy-bot:
-    environment: production-bot
-    runs-on: ubuntu-20.04
-    if: github['ref'] == 'refs/heads/main'
-
-    needs:
-      - docker-bot
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      - name: Save DigitalOcean kubeconfig
-        run: doctl kubernetes cluster kubeconfig save siberianmh-core
+      #############
+      # Deploying #
+      #############
       - name: Rollout
         run: |
-          kubectl rollout restart deploy/edis-bot
+          echo "Usually we don't deploy code, so here we do the same"
