@@ -101,9 +101,7 @@ export class DocsModule extends ExtendedModule {
 
   private createEmbed(title: string, url: string, content?: string) {
     // NOTE: This probably should be the latest level in hierarchy
-    const embed = new MessageEmbed()
-      .setTitle(title)
-      .setURL(url)
+    const embed = new MessageEmbed().setTitle(title).setURL(url)
 
     return embed
   }
