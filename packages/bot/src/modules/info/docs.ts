@@ -101,12 +101,9 @@ export class DocsModule extends ExtendedModule {
 
   private createEmbed(title: string, url: string, content?: string) {
     // NOTE: This probably should be the latest level in hierarchy
-    const description = content ?? 'Unable to find description'
-
     const embed = new MessageEmbed()
       .setTitle(title)
       .setURL(url)
-      .setDescription(description)
 
     return embed
   }
