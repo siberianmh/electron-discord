@@ -33,7 +33,7 @@ jobs:
           registry: ghcr.io
           username: pacificocean-bot
           password: ${{ secrets.CR_PAT }}
-      - name: Build OCI Image and publish OCI image 
+      - name: Build OCI Image and publish OCI image
         if: github['ref'] == 'refs/heads/main'
         run: |
           bazel build //packages/bot:docker-bot

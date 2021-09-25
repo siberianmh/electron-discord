@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "lint": "yarn lint:prettier",
-    "lint:prettier": "prettier --check \"./**/*.{ts,tsx,js,yaml,yml}\"",
+    "lint:prettier": "prettier --check \"./**/*.{ts,tsx,js,yaml,yml,md,mdx}\"",
     "lint:fix": "yarn lint:prettier --write"
   },
   "dependencies": {
