@@ -1,6 +1,6 @@
 if (process.env.NODE_ENV === 'development') {
   require('dotenv').config({
-    path: `${process.env.SIBERIAN_HOME}/.env` ?? undefined,
+    path: `${process.env.BUILD_WORKSPACE_DIRECTORY}/.env` ?? undefined,
   })
 }
 import { Client, Intents } from 'discord.js'

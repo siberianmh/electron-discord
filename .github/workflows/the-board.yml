@@ -1,3 +1,4 @@
+# Note: this doesn't get deploy, but we still build them
 name: The Board
 
 on:
@@ -23,56 +24,18 @@ jobs:
       - name: Compile The Board
         run: |
           bazel build //packages/the-board
-
-  ################
-  # Docker Build #
-  ################
-  docker-the-board:
-    runs-on: ubuntu-latest
-    if: github['ref'] == 'refs/heads/main'
-
-    needs:
-      - compile-the-board
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        id: bazel-cache
-        with:
-          path: /home/runner/.cache/bazel
-          key: bazel_core
+      ################
+      # Docker Build #
+      ################
       - name: Login to Container registry
         uses: docker/login-action@v1.10.0
+        if: github['ref'] == 'refs/heads/main'
         with:
           registry: ghcr.io
           username: pacificocean-bot
           password: ${{ secrets.CR_PAT }}
       - name: Build Docker Image
+        if: github['ref'] == 'refs/heads/main'
         run: |
           bazel build //packages/the-board:docker
-      - name: Publish Latest Docker Image
-        run: |
           bazel run //packages/the-board:push
-
-  #############
-  # Deploying #
-  #############
-  deploy-the-board:
-    environment: prod-the-board
-    runs-on: ubuntu-latest
-    if: github['ref'] == 'refs/heads/main'
-
-    needs:
-      - docker-the-board
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      - name: Save DigitalOcean kubeconfig
-        run: doctl kubernetes cluster kubeconfig save siberianmh-core
-      - name: Rollout
-        run: |
-          kubectl rollout restart deploy/the-board-bot

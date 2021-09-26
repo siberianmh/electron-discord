@@ -22,56 +22,24 @@ jobs:
           key: bazel_core
       - name: Compile server
         run: bazel build //packages/server
-
-  #################
-  # Docker Builds #
-  #################
-  docker-server:
-    runs-on: ubuntu-20.04
-    if: github['ref'] == 'refs/heads/main'
-
-    needs:
-      - compile-server
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        id: bazel-cache
-        with:
-          path: /home/runner/.cache/bazel
-          key: bazel_core
+      #################
+      # Docker Builds #
+      #################
       - name: Login to Packages Container registry
         uses: docker/login-action@v1.10.0
+        if: github['ref'] == 'refs/heads/main'
         with:
           registry: ghcr.io
           username: pacificocean-bot
           password: ${{ secrets.CR_PAT }}
       - name: Build Docker Image
+        if: github['ref'] == 'refs/heads/main'
         run: |
           bazel build //packages/server:docker
-      - name: Public Latest Docker Image
-        run: |
           bazel run //packages/server:push-server
-
-  #############
-  # Deploying #
-  #############
-  deploy-server:
-    environment: production-server
-    runs-on: ubuntu-20.04
-    if: github['ref'] == 'refs/heads/main'
-
-    needs:
-      - docker-server
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      - name: Save DigitalOcean kubeconfig
-        run: doctl kubernetes cluster kubeconfig save siberianmh-core
+      #############
+      # Deploying #
+      #############
       - name: Rollout
         run: |
-          kubectl rollout restart deploy/edis-server
+          echo "Usually we don't deploy code, so here we do the same"
