@@ -1,5 +1,4 @@
-import { LunaworkClient } from '@siberianmh/lunawork'
-import { applicationCommand } from '@siberianmh/lunawork'
+import { LunaworkClient, applicationCommand } from '@siberianmh/lunawork'
 import {
   Guild,
   Message,
