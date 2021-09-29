@@ -4,6 +4,7 @@ import { HelpChannel } from '../entities/help-channel'
 import { Infractions } from '../entities/infractions'
 import { MessageRoles, MessageRolesActions } from '../entities/roles'
 import { AccessToken } from '../entities/access-token'
+import { Report as ReportModel } from '../entities/report'
 
 export const connectMySQL = (): Promise<Connection> => {
   const entitiesDir = path.resolve(__dirname, '../entities/**/*.js')
@@ -43,6 +44,7 @@ export const connectMySQL = (): Promise<Connection> => {
           Infractions,
           HelpChannel,
           MessageRoles,
+          ReportModel,
           MessageRolesActions,
         ],
         charset: 'utf8mb4_unicode_ci',

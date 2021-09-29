@@ -1,5 +1,6 @@
 import * as express from 'express'
 import { HelpChannel } from '../../entities/help-channel'
+import { ExpressError } from '../error'
 
 export class HelpChannelStore {
   public async listHelpChannels(_req: express.Request) {
@@ -64,16 +65,15 @@ export class HelpChannelStore {
     const { channel_id } = req.params
 
     if (!channel_id) {
-      return {
+      return new ExpressError({
         status: 400,
         message: 'Invalid data',
-      }
+      })
     }
 
     await HelpChannel.delete({ channel_id: channel_id })
     return {
-      status: 200,
-      message: 'Successfully deleted',
+      status: 204,
     }
   }
 }

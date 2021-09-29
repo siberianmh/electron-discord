@@ -1,11 +1,10 @@
+// Copyright (c) 2021 Siberian, Inc. All rights reserved.
+
 import { MessageEmbed, GuildMember } from 'discord.js'
-import * as humanizeDuration from 'humanize-duration'
-import { style } from '../../../lib/config'
+import { formatTimestamp } from '../../../../lib/format'
+import { style } from '../../../../lib/config'
 
 export const userInfoEmbed = (member: GuildMember): MessageEmbed => {
-  const created = humanizeDuration(member.user.createdTimestamp)
-  const joined = humanizeDuration(member.joinedTimestamp!)
-
   const roles = [...member.roles.cache.values()]
 
   return new MessageEmbed()
@@ -15,8 +14,9 @@ export const userInfoEmbed = (member: GuildMember): MessageEmbed => {
     )
     .setColor(style.colors.softRed)
     .setDescription(
-      `<@${member.user.id}> was created ${created}, joined ${joined}`,
+      `<@${member.user.id}> was created ${formatTimestamp(
+        member.user.createdAt,
+      )}, joined ${formatTimestamp(member.joinedAt)}`,
     )
     .addField('Roles', `${roles.map((role) => `<@&${role.id}>`)}`)
-    .setTimestamp()
 }

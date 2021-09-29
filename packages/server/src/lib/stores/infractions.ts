@@ -1,6 +1,7 @@
 import * as express from 'express'
 import { Infractions } from '../../entities/infractions'
 import { InfractionType } from '../types'
+import { ExpressError } from '../error'
 
 export class InfractionsStore {
   public async createInfraction(req: express.Request) {
@@ -17,10 +18,10 @@ export class InfractionsStore {
     } = req.body
 
     if (!user_id || !actor_id || !reason) {
-      return {
+      return new ExpressError({
         status: 400,
         message: 'Invalid data',
-      }
+      })
     }
 
     const infraction = Infractions.create({

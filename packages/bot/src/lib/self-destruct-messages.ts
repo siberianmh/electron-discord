@@ -10,7 +10,7 @@ import { redis, selfDestructMessage } from './redis'
 import { style } from './config'
 
 /**
- * Selft destruct message, but which only support prefixed
+ * Self destruct message, but which only support prefixed
  * commands, Message class.
  *
  * @see {createSelfDestructMessage} for usage with applicaticon command
