@@ -41,7 +41,7 @@
     "@types/express": "^4.17.13",
     "@types/fs-extra": "^9.0.13",
     "@types/humanize-duration": "^3.25.1",
-    "@types/ioredis": "^4.27.4",
+    "@types/ioredis": "^4.27.5",
     "@types/jest": "^27.0.2",
     "@types/node": "^15.12.2",
     "@types/statsd-client": "^0.4.3"
