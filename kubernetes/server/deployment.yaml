@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edis-server
+  labels:
+    app: edis-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edis-server
+  template:
+    metadata:
+      labels:
+        app: edis-server
+    spec:
+      containers:
+        - name: edis-server
+          image: ghcr.io/siberianmh/edis-server:latest
+          imagePullPolicy: Always
+          resources: {}
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: base-secret
+            - secretRef:
+                name: edis-server-secret

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edis-bot
+  labels:
+    app: edis-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edis-bot
+  template:
+    metadata:
+      labels:
+        app: edis-bot
+    spec:
+      containers:
+        - name: edis-bot
+          image: ghcr.io/siberianmh/edis-bot:latest
+          imagePullPolicy: Always
+          resources: {}
+          envFrom:
+            - secretRef:
+                name: edis-bot-secret
+            - secretRef:
+                name: base-secret
