@@ -21,6 +21,7 @@ ts_project(
     deps = [
         "@npm//@sentry/node",
         "@npm//@siberianmh/lunawork",
+        "@npm//@octokit/rest",
         "@npm//@types/fs-extra",
         "@npm//@types/humanize-duration",
         "@npm//@types/ioredis",

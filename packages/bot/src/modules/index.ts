@@ -1,3 +1,4 @@
+export * from './events'
 export * from './help-channels'
 export * from './info'
 export * from './moderation'

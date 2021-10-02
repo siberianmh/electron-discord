@@ -91,6 +91,11 @@ export const guild = {
     linux: b('778343916108906507'),
 
     //#endregion
+
+    //#region Events
+    // Hacktoberfest
+    hacktoberfest: '893578484172091432',
+    //#endregion
   },
 }
 

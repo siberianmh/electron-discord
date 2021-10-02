@@ -14,10 +14,10 @@
     "@bazel/bazelisk": "^1.10.1",
     "@bazel/ibazel": "^0.15.10",
     "@bazel/typescript": "^4.3.0",
+    "@octokit/rest": "^18.11.4",
     "@sentry/node": "^6.13.2",
     "@sentry/tracing": "^6.13.2",
     "@siberianmh/lunawork": "^0.0.3",
-    "@types/twit": "^2.2.30",
     "algoliasearch": "^4.10.5",
     "axios": "^0.21.4",
     "discord.js": "^13.1.0",
@@ -46,6 +46,7 @@
     "@types/ioredis": "^4.27.5",
     "@types/jest": "^27.0.2",
     "@types/node": "^15.12.2",
-    "@types/statsd-client": "^0.4.3"
+    "@types/statsd-client": "^0.4.3",
+    "@types/twit": "^2.2.30"
   }
 }
