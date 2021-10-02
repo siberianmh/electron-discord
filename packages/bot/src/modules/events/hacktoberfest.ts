@@ -40,6 +40,11 @@ export class HacktoberfestStage extends ExtendedModule {
           },
         ],
       },
+      {
+        type: 1,
+        name: 'issue',
+        description: 'Get the random Hacktoberfest issue',
+      },
     ],
   })
   public async hacktoberfest(
@@ -52,6 +57,8 @@ export class HacktoberfestStage extends ExtendedModule {
         return this.subscribeToUpdates(msg)
       case 'stats':
         return this.getStats(msg, value)
+      case 'issue':
+        return this.getIssue(msg)
     }
 
     return msg.reply({
@@ -90,6 +97,48 @@ export class HacktoberfestStage extends ExtendedModule {
     }
 
     const embed = await this.buildStatsEmbed(prs, githubUsername)
+
+    return msg.editReply({
+      embeds: [embed],
+    })
+  }
+
+  private async getIssue(msg: CommandInteraction) {
+    await msg.deferReply()
+
+    const queryParams =
+      '+is:issue+label:hacktoberfest+language:javascript+language:typescript+state:open'
+
+    const { data: issues } = await github.search.issuesAndPullRequests({
+      per_page: 100,
+      q: queryParams,
+    })
+
+    if (!issues.items.length) {
+      return msg.editReply({
+        content: '🤷‍♂️ Probably something goes wrong',
+      })
+    }
+
+    const issue = issues.items[Math.floor(Math.random() * issues.items.length)]
+
+    if (!issue) {
+      return msg.editReply({
+        content: '🤷‍♂️ Probably something goes wrong',
+      })
+    }
+
+    const body = issue.body
+      ? issue.body.length >= 500
+        ? issue.body.substring(-500)
+        : issue.body
+      : 'No description provided'
+
+    const embed = new MessageEmbed()
+      .setTitle(issue.title)
+      .setDescription(body)
+      .setURL(issue.html_url)
+      .setFooter(issue.html_url)
 
     return msg.editReply({
       embeds: [embed],
