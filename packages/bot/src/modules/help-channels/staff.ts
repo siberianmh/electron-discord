@@ -7,6 +7,7 @@ import {
   TextChannel,
   MessageEmbed,
   ContextMenuInteraction,
+  GuildMemberRoleManager,
 } from 'discord.js'
 import { isTrustedMember, noAuthorizedClaim, noDM } from '../../lib/inhibitors'
 import { guild } from '../../lib/config'
@@ -94,6 +95,11 @@ export class HelpChannelStaff extends HelpChanBase {
       },
       {
         type: 1,
+        name: 'cooldown',
+        description: 'Check if you are has an cooldown',
+      },
+      {
+        type: 1,
         name: 'create',
         description: 'Create the help channel',
         options: [
@@ -116,13 +122,24 @@ export class HelpChannelStaff extends HelpChanBase {
         description: 'Synchronize the help channels to the current status',
       },
     ],
-    inhibitors: [isTrustedMember],
   })
   public async helpchan(
     msg: CommandInteraction,
     baseCommand: Subcommands,
     arg1: string,
   ) {
+    if (baseCommand === 'cooldown') {
+      return await this.fixOrTrustCooldown(msg)
+    }
+
+    const forbidden = await isTrustedMember(msg, this.client)
+    if (forbidden) {
+      return msg.reply({
+        content: forbidden,
+        ephemeral: true,
+      })
+    }
+
     switch (baseCommand) {
       case 'status':
         return await this.showStatus(msg)
@@ -321,5 +338,30 @@ export class HelpChannelStaff extends HelpChanBase {
     return msg.reply({
       content,
     })
+  }
+
+  private async fixOrTrustCooldown(msg: CommandInteraction) {
+    const memberRoleManagger = msg.member?.roles as GuildMemberRoleManager
+
+    if (!memberRoleManagger.cache.has(config.guild.roles.helpCooldown)) {
+      return msg.reply({
+        content: `<@${msg.member?.user.id}> doesn't have a cooldown`,
+      })
+    }
+
+    try {
+      const { data } = await this.api.get<IGetHelpChanByUserIdResponse>(
+        `/helpchan/user/${msg.member?.user.id}`,
+      )
+
+      return msg.reply({
+        content: `<@${msg.member?.user.id}> has an active help channel: <#${data.channel_id}>`,
+      })
+    } catch {
+      await memberRoleManagger.remove(config.guild.roles.helpCooldown)
+      return msg.reply({
+        content: 'Cooldown successfully removed',
+      })
+    }
   }
 }
