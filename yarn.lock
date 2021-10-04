@@ -1131,10 +1131,10 @@
   resolved "https://registry.yarnpkg.com/@types/humanize-duration/-/humanize-duration-3.25.1.tgz#b6140d5fc00ff3917b3f521784abef4bc0387ccc"
   integrity sha512-WZU/4bb+lvzyDmZzjJtp++9mfKy6B3lH6gGISgkcz6SU8hMILKRM0vi08TxIsb0dQB4Gzo68MWLmctu6xqUi9g==
 
-"@types/ioredis@^4.27.5":
-  version "4.27.5"
-  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.27.5.tgz#f3bd216d8fdd02e831fbac0fbdcf418a4a46b0f9"
-  integrity sha512-RA8Ba0MPNjCSwukqJlapzu4KRT/MokzauUHbHAfOJtgw93pZ0vX/BBmYvodp2kzIU5bwYycH9n6pGBJaysPqxQ==
+"@types/ioredis@^4.27.6":
+  version "4.27.6"
+  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.27.6.tgz#06f2826ca9bcf4e9c179cd11417a4d0413903cba"
+  integrity sha512-3FeeDlVQ2sdbvU436XnZzOiDMMgFbKfIsiUF2BnJnH7xxqCbJ1teJwfcu9fLwnfmV0qH2W1Vg3jFrtOehNIkMA==
   dependencies:
     "@types/node" "*"
 
@@ -2502,10 +2502,10 @@ inherits@2.0.3:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
   integrity sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=
 
-ioredis@^4.27.9:
-  version "4.27.9"
-  resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-4.27.9.tgz#c27bbade9724f0b8f84c279fb1d567be785ba33d"
-  integrity sha512-hAwrx9F+OQ0uIvaJefuS3UTqW+ByOLyLIV+j0EH8ClNVxvFyH9Vmb08hCL4yje6mDYT5zMquShhypkd50RRzkg==
+ioredis@^4.27.10:
+  version "4.27.10"
+  resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-4.27.10.tgz#3da6c1d2eab440f94c52d6fcd9b91127d7e07470"
+  integrity sha512-BtV2mEoZlhnW0EyxuK49V5iutLeZeJAYi/+Fuc4Q6DpDjq0cGMLODdS/+Kb5CHpT7v3YT6SK0vgJF6y0Ls4+Bg==
   dependencies:
     cluster-key-slot "^1.1.0"
     debug "^4.3.1"
