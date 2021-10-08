@@ -146,7 +146,6 @@ export async function collect() {
   }
 
   const oldNpmCount = old.filter(
-    // @ts-expect-error
     (release) => release.npm_package_name === 'electron',
   ).length
   const newNpmCount = releases.filter(

@@ -13,7 +13,6 @@ const getReleases = async () => {
   const now = new Date()
   const newReleases: Array<any> = []
   for (const release of releases) {
-    // @ts-expect-error
     const releaseDate = new Date(release.published_at)
     const diffTime = Math.abs(now.getTime() - releaseDate.getTime())
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
