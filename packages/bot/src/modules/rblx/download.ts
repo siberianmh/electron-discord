@@ -4,6 +4,14 @@ import * as fuzz from 'fuzzball'
 import { ExtendedModule } from '../../lib/extended-module'
 import { selfDestructLegacy } from '../../lib/self-destruct-messages'
 
+/**
+ * This module is used to check if the message starts from the prefix (`.` or
+ * `!`) and if it checks if contains one of the {@link choices} after that delete
+ * the message and send to the user a {@link DOWNLOAD_MESSAGE}.
+ *
+ * Due to switching to the `application commands` this is the last code that
+ * uses the prefixes. Please do not transform this code to `application commands` 🙏
+ */
 export class DownloadModule extends ExtendedModule {
   public constructor(client: LunaworkClient) {
     super(client)

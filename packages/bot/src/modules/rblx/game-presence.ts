@@ -3,11 +3,11 @@ import { Presence } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { style } from '../../lib/config'
 import { rblxAutoKicker, redis } from '../../lib/redis'
-import { ModLogModule } from './modlog'
-import { InfractionsModule } from './infractions'
+import { ModLogModule } from '../moderation/modlog'
+import { InfractionsModule } from '../moderation/infractions'
 import { InfractionType } from '../../lib/types'
 
-export class RblxGamePresenceModule extends ExtendedModule {
+export class RobloxGamePresenceModule extends ExtendedModule {
   private modLog: ModLogModule
   private infractions: InfractionsModule
 
