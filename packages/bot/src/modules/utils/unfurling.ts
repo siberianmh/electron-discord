@@ -40,11 +40,12 @@ export class UnfurlModule extends ExtendedModule {
         const fetchGuildChannels = (await this.client.guilds.fetch(server))
           .channels
 
-        const findChannel = fetchGuildChannels
-          .valueOf()
-          .find(
-            (c) => c.id === channel && c.type === 'GUILD_TEXT',
-          ) as TextChannel
+        const findChannel = fetchGuildChannels.valueOf().find(
+          (c) =>
+            c.id === channel &&
+            // NOTE: To follow privacy, we don't unfurl private threads.
+            (c.type === 'GUILD_TEXT' || c.type === 'GUILD_PUBLIC_THREAD'),
+        ) as TextChannel
 
         if (!findChannel) {
           return
@@ -57,11 +58,11 @@ export class UnfurlModule extends ExtendedModule {
           })
         ).first()
 
-        if (!fetchedMessage || fetchedMessage.content.length >= 2048) {
+        if (!fetchedMessage || fetchedMessage.content.length >= 4096) {
           return
         }
 
-        await new Promise((resolve) => setTimeout(resolve, 3000))
+        await new Promise((resolve) => setTimeout(resolve, 2000))
 
         return selfDestructLegacy(msg, {
           embeds: [this.UNFURL_EMBED(fetchedMessage, msg)],

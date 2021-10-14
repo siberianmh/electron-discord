@@ -29,7 +29,12 @@ import {
 import { client } from './lib/discord'
 import { enableThreadHelp } from './lib/runtime'
 
-import { AntimalwareStage, RaportStage, FiltersStage } from './private/modules'
+import {
+  AntimalwareStage,
+  RaportStage,
+  FiltersStage,
+  ModerationStuffStage,
+} from './private/modules'
 
 Sentry.init({
   dsn: 'https://a22da8923d5f4ea7875fa8518335410b@o102026.ingest.sentry.io/5474186',
@@ -62,7 +67,7 @@ if (enableThreadHelp) {
 }
 
 // Currently internal stages
-stages.push(AntimalwareStage, RaportStage, FiltersStage)
+stages.push(AntimalwareStage, RaportStage, FiltersStage, ModerationStuffStage)
 
 client.registerStages(stages)
 
