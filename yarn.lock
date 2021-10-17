@@ -3564,10 +3564,10 @@ parent-require@^1.0.0:
   resolved "https://registry.yarnpkg.com/parent-require/-/parent-require-1.0.0.tgz#746a167638083a860b0eef6732cb27ed46c32977"
   integrity sha1-dGoWdjgIOoYLDu9nMssn7UbDKXc=
 
-parse-duration@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/parse-duration/-/parse-duration-1.0.1.tgz#145ea89a4309ec8e9c0df9d82c17e4c12fe3afd7"
-  integrity sha512-vv3rNpBYqRo8m357JeFBYFud+yX6HyxT2oBCI5gi0d/zW7g2C+meWucThqzp47Mdp+90nOjDbXfrqxdvkEIMxA==
+parse-duration@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/parse-duration/-/parse-duration-1.0.2.tgz#b9aa7d3a1363cc7e8845bea8fd3baf8a11df5805"
+  integrity sha512-Dg27N6mfok+ow1a2rj/nRjtCfaKrHUZV2SJpEn/s8GaVUSlf4GGRCRP1c13Hj+wfPKVMrFDqLMLITkYKgKxyyg==
 
 parse5-htmlparser2-tree-adapter@^6.0.0:
   version "6.0.1"
