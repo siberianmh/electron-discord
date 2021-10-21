@@ -1,0 +1,9 @@
+{
+  "name": "@sib-edis/bot",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "serve": "cross-env NODE_ENV=development nodemon ./src/index.ts",
+    "build": "tsc -p tsconfig.json"
+  }
+}

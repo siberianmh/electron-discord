@@ -1,22 +1,6 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "edis/*": ["*", "bazel-bin/*", "bazel-out", "bazel-genfiles/*"]
-    },
-    "target": "es2019",
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
-    "noImplicitReturns": true,
-    "module": "commonjs",
-    "strict": true,
-    "declaration": true,
-    "jsx": "react",
-    "strictPropertyInitialization": false,
-    "emitDecoratorMetadata": true,
-    "skipLibCheck": true,
-    "experimentalDecorators": true,
-    "sourceMap": true
-  },
-  "exclude": ["bazel-*", "node_modules"]
+    "noEmit": true
+  }
 }

@@ -15,13 +15,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        id: bazel-cache
+      - uses: actions/setup-node@v2
         with:
-          path: /home/runner/.cache/bazel
-          key: bazel_core
+          node-version: '16'
+          cache: 'yarn'
+      - run: yarn
       - name: Compile server
-        run: bazel build //packages/server
+        run: yarn workspace @sib-edis/server build
       #################
       # Docker Builds #
       #################
@@ -35,8 +35,8 @@ jobs:
       - name: Build Docker Image
         if: github['ref'] == 'refs/heads/main'
         run: |
-          bazel build //packages/server:docker
-          bazel run //packages/server:push-server
+          docker build --pull -f "packages/server/build/Dockerfile" -t ghcr.io/siberianmh/edis-server:${{ github.event.pull_request.head.sha }} .
+          docker push ghcr.io/siberianmh/edis-server:${{ github.event.pull_request.head.sha }}
       #############
       # Deploying #
       #############
