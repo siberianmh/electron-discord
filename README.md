@@ -19,7 +19,6 @@ any pull requests, issues, or discussions. Thanks for being with us a year 💖.
   folks with specific role.
 - [`/server`](packages/server) - Constains the server source code for Electron
   bot.
-- [`/the-board`](packages/the-board) - The source codes for Mod Mail bot.
 
 ## License
 

@@ -29,6 +29,7 @@
     "humanize-duration": "^3.27.0",
     "ioredis": "^4.28.0",
     "jest": "^27.3.1",
+    "mongoose": "^6.0.11",
     "mysql2": "^2.3.0",
     "parse-duration": "^1.0.2",
     "prettier": "^2.4.1",
@@ -46,6 +47,7 @@
     "@types/ioredis": "^4.27.8",
     "@types/jest": "^27.0.2",
     "@types/node": "^15.12.2",
+    "@types/semver": "^7.3.9",
     "@types/statsd-client": "^0.4.3",
     "@types/twit": "^2.2.30"
   }
