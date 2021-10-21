@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {
-      "edis/*": ["*", "bazel-bin/*", "bazel-out", "bazel-genfiles/*"]
-    },
     "target": "es2019",
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
@@ -18,5 +15,5 @@
     "experimentalDecorators": true,
     "sourceMap": true
   },
-  "exclude": ["bazel-*", "node_modules"]
+  "exclude": ["node_modules"]
 }
