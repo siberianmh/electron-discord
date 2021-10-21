@@ -3,7 +3,7 @@ import axios from 'axios'
 const baseURL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:5000'
-    : 'http://edis-server.default.svc.cluster.local:8080'
+    : process.env.SERVER_URL_OVERRIDE ?? 'http://edis-server.default.svc.cluster.local:8080'
 
 const headers =
   process.env.NODE_ENV === 'development'
