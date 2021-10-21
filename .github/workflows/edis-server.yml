@@ -33,10 +33,10 @@ jobs:
           username: pacificocean-bot
           password: ${{ secrets.CR_PAT }}
       - name: Build Docker Image
-        if: github['ref'] == 'refs/heads/main'
+        # if: github['ref'] == 'refs/heads/main'
         run: |
-          bazel build //packages/server:docker
-          bazel run //packages/server:push-server
+          docker build --pull -f "packages/server/build/Dockerfile" -t ghcr.io/siberianmh/edis-server:${{ github.event.pull_request.head.sha }} .
+          docker push ghcr.io/siberianmh/edis-server:${{ github.event.pull_request.head.sha }}
       #############
       # Deploying #
       #############

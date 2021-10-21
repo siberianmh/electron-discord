@@ -21,7 +21,7 @@ ENV NODE_ENV produdction
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S edisserver -u 1001
 
-COPY --from=builder /packages/server/dist /app
+COPY --from=builder /app/packages/server/dist /app
 COPY --from=builder /app/node_modules ./node_modules
 
 USER edisserver

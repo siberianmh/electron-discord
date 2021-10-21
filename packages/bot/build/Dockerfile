@@ -21,7 +21,7 @@ ENV NODE_ENV produdction
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S edisbot -u 1001
 
-COPY --from=builder /packages/bot/dist /app
+COPY --from=builder /app/packages/bot/dist /app
 COPY --from=builder /app/node_modules ./node_modules
 
 USER edisbot
