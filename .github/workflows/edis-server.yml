@@ -19,6 +19,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'yarn'
+      - run: yarn
       - name: Compile server
         run: yarn workspace @sib-edis/server build
       #################

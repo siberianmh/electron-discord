@@ -19,6 +19,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'yarn'
+      - run: yarn
       - name: Compile bot
         run: |
           yarn workspace @sib-edis/bot build
@@ -32,11 +33,11 @@ jobs:
           registry: ghcr.io
           username: pacificocean-bot
           password: ${{ secrets.CR_PAT }}
-      - name: Build OCI Image and publish OCI image
-        if: github['ref'] == 'refs/heads/main'
+      - name: Build Docker Image
+        # if: github['ref'] == 'refs/heads/main'
         run: |
-          bazel build //packages/bot:docker-bot
-          bazel run //packages/bot:push-bot
+          docker build --pull -f "packages/bot/build/Dockerfile" -t ghcr.io/siberianmh/edis-bot:${{ github.event.pull_request.head.sha }}
+          docker push ghcr.io/siberianmh/edis-bot:${{ github.event.pull_request.head.sha }}
       #############
       # Deploying #
       #############
