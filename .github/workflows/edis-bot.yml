@@ -36,7 +36,7 @@ jobs:
       - name: Build Docker Image
         # if: github['ref'] == 'refs/heads/main'
         run: |
-          docker build --pull -f "packages/bot/build/Dockerfile" -t ghcr.io/siberianmh/edis-bot:${{ github.event.pull_request.head.sha }}
+          docker build --pull -f "packages/bot/build/Dockerfile" -t ghcr.io/siberianmh/edis-bot:${{ github.event.pull_request.head.sha }} .
           docker push ghcr.io/siberianmh/edis-bot:${{ github.event.pull_request.head.sha }}
       #############
       # Deploying #
