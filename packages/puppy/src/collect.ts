@@ -15,15 +15,18 @@ const github = new customOctokit({
 
 export async function collect() {
   console.log('fetching list of `electron` releases on npm')
-  const npmElectronData = await axios('https://registry.npmjs.com/electron', {
-    responseType: 'json',
-  })
+  const npmElectronData = await axios.get<any>(
+    'https://registry.npmjs.com/electron',
+    {
+      responseType: 'json',
+    },
+  )
   const npmVersions = Object.keys(npmElectronData.data.versions)
     // filter out old versions of `electron` that were actually a different module
     .filter((version) => semver.gte(version, firstNpmVersion))
 
   console.log('fetching list of `electron-prebuilt` releases on npm')
-  const npmElectronPrebuiltData = await axios(
+  const npmElectronPrebuiltData = await axios.get<any>(
     'https://registry.npmjs.com/electron-prebuilt',
     { responseType: 'json' },
   )
@@ -32,7 +35,7 @@ export async function collect() {
     .filter((version) => semver.lt(version, firstNpmVersion))
 
   console.log('fetching list of `electron-nightly` releases on npm')
-  const npmElectronNightlyData = await axios(
+  const npmElectronNightlyData = await axios.get<any>(
     'https://registry.npmjs.com/electron-nightly',
     { responseType: 'json' },
   )
@@ -65,7 +68,7 @@ export async function collect() {
   console.log(`found ${releases.length} releases on GitHub`)
 
   console.log('fetching version data for deps like V8, Chromium, and Node.js')
-  const { data: depData } = await axios(
+  const { data: depData } = await axios.get<any>(
     'https://electronjs.org/headers/index.json',
     { responseType: 'json' },
   )

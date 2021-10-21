@@ -23,7 +23,7 @@ import { reportedMsgEmbed } from './embeds/reported-msg'
 import { IReport } from '../../../lib/types/report'
 import { randomUUID } from 'crypto'
 import { InfractionsModule } from '../../../modules'
-import { InfractionType } from '../../../lib/types'
+import { InfractionType, IRaport } from '../../../lib/types'
 
 interface IMaintainReportProps {
   readonly member: GuildMember
@@ -238,7 +238,7 @@ export class RaportStage extends ExtendedModule {
     let createdRaport: IReport
 
     try {
-      const { data } = await this.api.get(`/report/${member.user.id}`)
+      const { data } = await this.api.get<IRaport>(`/report/${member.user.id}`)
       createdRaport = data
     } catch {
       return this.createNewReport({ member, reportedMessage })
