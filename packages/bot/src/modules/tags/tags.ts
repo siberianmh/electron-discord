@@ -41,7 +41,6 @@ export class TagsModule extends ExtendedModule {
     // Requires update of @siberianmh/lunawork
     // { resource }: { resource: string },
   ) {
-    console.log(this.tagsFolder)
     const tagData = await this.findItem(this.tagsFolder, resource)
 
     if (!tagData) {
