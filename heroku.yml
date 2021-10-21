@@ -2,5 +2,5 @@
 # The Docker build context is always set to the directory containing the Dockerfile and cannot be configured independently.
 build:
   docker:
-    bot: Dockerfile.bot
-    server: Dockerfile.server
+    worker: Dockerfile.bot
+    web: Dockerfile.server
