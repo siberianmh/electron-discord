@@ -1,11 +1,11 @@
-FROM node:16-alpine AS deps
+FROM node:17-alpine AS deps
 
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
-FROM node:16-alpine AS builder
+FROM node:17-alpine AS builder
 WORKDIR /app
 
 COPY package.json yarn.lock tsconfig.base.json tsconfig.json ./
@@ -13,7 +13,7 @@ COPY ./packages/bot ./packages/bot/
 COPY --from=deps /app/node_modules ./node_modules
 RUN yarn workspace @sib-edis/bot build
 
-FROM node:16-alpine AS main
+FROM node:17-alpine AS main
 WORKDIR /app
 
 ENV NODE_ENV produdction
