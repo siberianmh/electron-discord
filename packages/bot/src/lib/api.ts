@@ -1,11 +1,11 @@
-import axios from 'axios'
+import axios, { AxiosRequestHeaders } from 'axios'
 
 const baseURL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:5000'
     : 'http://edis-server.default.svc.cluster.local:8080'
 
-const headers =
+const headers: AxiosRequestHeaders =
   process.env.NODE_ENV === 'development'
     ? {}
     : { Authorization: `Bot ${process.env.SERVER_TOKEN}` }
