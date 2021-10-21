@@ -1,0 +1,4 @@
+build:
+  docker:
+    bot: packages/bot/build/Dockerfile
+    server: packages/server/build/Dockerfile
