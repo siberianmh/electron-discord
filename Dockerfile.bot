@@ -21,9 +21,10 @@ ENV NODE_ENV produdction
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S edisbot -u 1001
 
-COPY --from=builder /app/packages/bot/dist /app
+COPY --from=builder /app/packages/bot/dist /app/bot
 COPY --from=builder /app/node_modules ./node_modules
+COPY ./packages/bot/resources ./resources
 
 USER edisbot
 
-CMD ["node", "index.js"]
+CMD ["node", "bot/index.js"]
