@@ -1,7 +1,5 @@
 if (process.env.NODE_ENV === 'development') {
-  require('dotenv').config({
-    path: `${process.env.BUILD_WORKSPACE_DIRECTORY}/.env` ?? undefined,
-  })
+  require('dotenv').config()
 }
 
 import { Stage } from '@siberianmh/lunawork'

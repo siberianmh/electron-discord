@@ -7,8 +7,6 @@ import { AccessToken } from '../entities/access-token'
 import { Report as ReportModel } from '../entities/report'
 
 export const connectMySQL = (): Promise<Connection> => {
-  const entitiesDir = path.resolve(__dirname, '../entities/**/*.js')
-
   return process.env.NODE_ENV === 'development'
     ? createConnection({
         type: 'mysql',
@@ -19,7 +17,7 @@ export const connectMySQL = (): Promise<Connection> => {
         database: 'edis_dev',
         synchronize: true,
         logging: true,
-        entities: [entitiesDir],
+        entities: ['src/entities/**/*.ts'],
         migrations: ['src/migration/**/*.ts'],
         subscribers: ['src/subscriber/**/*.ts'],
         charset: 'utf8mb4_unicode_ci',

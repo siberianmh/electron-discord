@@ -7,11 +7,8 @@ import { ExtendedModule } from '../../lib/extended-module'
 import { createSelfDestructMessage } from '../../lib/self-destruct-messages'
 
 export class TagsModule extends ExtendedModule {
-  // N.B.: Yep here maybe is prefer to use `process.env.RUNFILES`, but since
-  // this path is different from the internal path, we choose to use
-  // this strange magic path.
-  private tagsFolder = path.join(__dirname, '../../resources/tags')
-  private faqFolder = path.join(__dirname, '../../resources/faq')
+  private tagsFolder = path.join(__dirname, '../../../resources/tags')
+  private faqFolder = path.join(__dirname, '../../../resources/faq')
 
   public constructor(client: LunaworkClient) {
     super(client)
