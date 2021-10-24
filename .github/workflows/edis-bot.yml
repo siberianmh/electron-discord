@@ -27,17 +27,21 @@ jobs:
       # Docker Builds #
       #################
       - name: Login to Packages Container registry
-        if: github['ref'] == 'refs/heads/main'
         uses: docker/login-action@v1.10.0
         with:
           registry: ghcr.io
           username: pacificocean-bot
           password: ${{ secrets.CR_PAT }}
+      - name: Build Docker PR Image
+        if: github['ref'] != 'refs/heads/main'
+        run: |
+          docker build --pull -f "Dockerfile.bot" -t ghcr.io/siberianmh/edis-bot:${{ github.event.pull_request.head.sha }} .
+          docker push ghcr.io/siberianmh/edis-bot:${{ github.event.pull_request.head.sha }}
       - name: Build Docker Image
         if: github['ref'] == 'refs/heads/main'
         run: |
-          docker build --pull -f "packages/bot/build/Dockerfile" -t ghcr.io/siberianmh/edis-bot:${{ github.event.pull_request.head.sha }} .
-          docker push ghcr.io/siberianmh/edis-bot:${{ github.event.pull_request.head.sha }}
+          docker build --pull -f "Dockerfile.bot" -t ghcr.io/siberianmh/edis-bot:latest .
+          docker push ghcr.io/siberianmh/edis-bot:latest
       #############
       # Deploying #
       #############
