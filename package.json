@@ -45,7 +45,7 @@
     "@types/humanize-duration": "^3.25.1",
     "@types/ioredis": "^4.27.8",
     "@types/jest": "^27.0.2",
-    "@types/node": "^15.12.2",
+    "@types/node": "^16.11.6",
     "@types/semver": "^7.3.9",
     "@types/statsd-client": "^0.4.3",
     "@types/twit": "^2.2.30"
