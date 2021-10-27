@@ -22,7 +22,6 @@ import { CloseReason } from '../../lib/types/help-chan'
 import { claimedEmbed } from './embeds/claimed'
 import { closedSuccessfullyEmbed } from './embeds/closed-successfully'
 import { dormantEmbed } from './embeds/dormant'
-import { toBigIntLiteral } from '../../lib/to-bigint-literal'
 import { threadCloseCommand } from './threads/close-command'
 
 /**
@@ -230,7 +229,7 @@ export class HelpChanModule extends HelpChanBase {
 
     try {
       const member = await channel.guild.members.fetch({
-        user: toBigIntLiteral(helpChannel.user_id),
+        user: helpChannel.user_id,
       })
 
       await member.roles.remove(guild.roles.helpCooldown)
