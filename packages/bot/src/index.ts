@@ -7,7 +7,6 @@ import * as Sentry from '@sentry/node'
 import {
   DownloadModule,
   DocsModule,
-  CleanModule,
   EtcModule,
   ThreadHelpStage,
   HacktoberfestStage,
@@ -39,7 +38,6 @@ Sentry.init({
 const stages: Array<typeof Stage | Stage> = [
   DownloadModule,
   DocsModule,
-  CleanModule,
   EtcModule,
   HacktoberfestStage,
   HelpChanModule,
