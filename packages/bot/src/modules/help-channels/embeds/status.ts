@@ -8,6 +8,21 @@ import {
 } from 'discord.js'
 import { IListHelpChannelsRespone } from '../../../lib/types'
 
+/**
+ *
+ * @param client            The Lunawork client, used for the embed, to fetch Bot user.
+ *
+ * @param msg               The message from what happended intercation, used to
+ *                          take the guild.
+ *
+ * @param availableChannels List of available help channels which are available to be taken.
+ *
+ * @param ongoingChannels   List of active (ongoing) channels, they returns
+ *                          from the database, and not by Discord API. Contains the channel
+ *                          id and the user id.
+ *
+ * @param dormantChannels   List of dormant channels.
+ */
 export const helpChannelStatusEmbed = (
   client: LunaworkClient,
   msg: CommandInteraction,
