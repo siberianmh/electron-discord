@@ -27,7 +27,6 @@ import { enableThreadHelp } from './lib/runtime'
 import {
   AntimalwareStage,
   RaportStage,
-  FiltersStage,
   ModerationStuffStage,
 } from './private/modules'
 
@@ -59,7 +58,7 @@ if (enableThreadHelp) {
 }
 
 // Currently internal stages
-stages.push(AntimalwareStage, RaportStage, FiltersStage, ModerationStuffStage)
+stages.push(AntimalwareStage, RaportStage, ModerationStuffStage)
 
 client.registerStages(stages)
 
