@@ -33,7 +33,6 @@
     "parse-duration": "^1.0.2",
     "prettier": "^2.4.1",
     "reflect-metadata": "^0.1.13",
-    "statsd-client": "^0.4.7",
     "ts-jest": "^27.0.7",
     "twit": "^2.2.11",
     "typeorm": "^0.2.38",

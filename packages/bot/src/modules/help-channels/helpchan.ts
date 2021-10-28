@@ -236,7 +236,6 @@ export class HelpChanModule extends HelpChanBase {
       await member.roles.remove(guild.roles.helpCooldown)
     } catch {}
 
-    this.statsReportComplete(channel, helpChannel, closeReason)
     await this.api.delete(`/helpchan/${channel.id}`)
     await this.moveChannel(channel, guild.categories.helpDormant)
 
@@ -261,8 +260,6 @@ export class HelpChanModule extends HelpChanBase {
       guild.categories.helpOngoing,
     )
     await this.updateEmbedToClaimed(msg.channel as TextChannel, msg.author.id)
-
-    this.stats.increment('help.claimed')
 
     await this.populateHelpChannel(msg.member!, msg.channel as TextChannel, msg)
     await this.ensureAskChannels(msg.guild!)
@@ -341,35 +338,5 @@ export class HelpChanModule extends HelpChanBase {
       )
 
     return channel.send({ embeds: [embed] })
-  }
-
-  private statsReportComplete(
-    channel: TextChannel,
-    helpChanData: IGetHelpChanByChannelIdResponse,
-    closeReason: CloseReason,
-  ) {
-    this.stats.increment(`help.dormant_calls.${closeReason}`)
-
-    const inUseTime = this.getInUseTime(helpChanData)
-    if (inUseTime) {
-      this.stats.timing('help.in_use_time', inUseTime)
-    }
-
-    if (channel.lastMessage?.author.id !== helpChanData.user_id) {
-      return this.stats.increment('help.sessions.unanswered')
-    } else {
-      return this.stats.increment('help.sessions.answered')
-    }
-  }
-
-  private getInUseTime(helpChanData: IGetHelpChanByChannelIdResponse) {
-    const createdAt = helpChanData.created_at
-
-    if (createdAt) {
-      const claimDate = new Date(createdAt)
-      return +new Date() - +claimDate
-    }
-
-    return null
   }
 }

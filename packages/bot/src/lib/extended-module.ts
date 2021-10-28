@@ -1,13 +1,10 @@
 import { AxiosInstance, AxiosResponse } from 'axios'
-import * as StatsDClient from 'statsd-client'
 import { Stage } from '@siberianmh/lunawork'
 import { api } from './api'
-import { statsd } from './statsd'
 import { IInfraction } from './types'
 
 export class ExtendedModule extends Stage {
   protected api: AxiosInstance = api
-  protected stats: StatsDClient = statsd
 
   protected async addInfraction(
     opts: IInfraction,

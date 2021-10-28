@@ -18,9 +18,6 @@ import {
   RobloxGamePresenceModule,
   RolesModule,
   RulesModule,
-  SlowmodeModule,
-  SourceModule,
-  StatsModule,
   TagsModule,
   UnfurlModule,
 } from './modules'
@@ -53,9 +50,6 @@ const stages: Array<typeof Stage | Stage> = [
   RobloxGamePresenceModule,
   RolesModule,
   RulesModule,
-  SlowmodeModule,
-  SourceModule,
-  StatsModule,
   TagsModule,
   UnfurlModule,
 ]
