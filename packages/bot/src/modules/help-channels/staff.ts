@@ -1,4 +1,9 @@
-import { LunaworkClient, applicationCommand } from '@siberianmh/lunawork'
+import {
+  LunaworkClient,
+  applicationCommand,
+  ApplicationCommandOptionType,
+  ApplicationCommandTypes,
+} from '@siberianmh/lunawork'
 import {
   Guild,
   Message,
@@ -29,9 +34,7 @@ export class HelpChannelStaff extends HelpChanBase {
   //#region Commands
   @applicationCommand({
     name: 'Claim Message',
-    description: '',
-    // @ts-ignore | Will be fixed on the next @siberianmh/lunawork release
-    type: 'MESSAGE',
+    type: ApplicationCommandTypes.MESSAGE,
     inhibitors: [noAuthorizedClaim],
   })
   public async claimContextMenu(msg: ContextMenuInteraction) {
@@ -64,12 +67,12 @@ export class HelpChannelStaff extends HelpChanBase {
       {
         name: 'user',
         description: 'The user itself',
-        type: 'USER',
+        type: ApplicationCommandOptionType.User,
         required: true,
       },
       {
-        type: 'NUMBER',
         name: 'limit',
+        type: ApplicationCommandOptionType.Number,
         description:
           'The limit of messages which needed to be claimed (default to 10)',
       },
@@ -78,8 +81,7 @@ export class HelpChannelStaff extends HelpChanBase {
   })
   public async claim(
     msg: CommandInteraction,
-    member: GuildMember,
-    limit?: number,
+    { user: member, limit }: { user: GuildMember; limit?: number },
   ) {
     return await this.claimBase({ msg: msg, member: member, limit })
   }
@@ -125,26 +127,27 @@ export class HelpChannelStaff extends HelpChanBase {
   })
   public async helpchan(
     msg: CommandInteraction,
-    baseCommand: Subcommands,
-    arg1: string,
+    { subCommand, ...props }: { subCommand: Subcommands },
   ) {
-    if (baseCommand === 'cooldown') {
+    const value = Object.values(props)[0]
+    if (subCommand === 'cooldown') {
       return await this.fixOrTrustCooldown(msg)
     }
 
     const forbidden = await isTrustedMember(msg, this.client)
     if (forbidden) {
       return msg.reply({
+        // @ts-expect-error
         content: forbidden,
         ephemeral: true,
       })
     }
 
-    switch (baseCommand) {
+    switch (subCommand) {
       case 'status':
         return await this.showStatus(msg)
       case 'create':
-        return await this.createChannel(msg, arg1)
+        return await this.createChannel(msg, value)
       case 'update':
         return await this.updateHelpChannels(msg)
       case 'sync':
@@ -211,7 +214,7 @@ export class HelpChannelStaff extends HelpChanBase {
     limit = 10,
     replyMsg,
   }: {
-    msg: CommandInteraction
+    msg: CommandInteraction | ContextMenuInteraction
     member: GuildMember
     limit?: number
     replyMsg?: Message

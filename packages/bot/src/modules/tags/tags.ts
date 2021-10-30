@@ -1,4 +1,8 @@
-import { LunaworkClient, applicationCommand } from '@siberianmh/lunawork'
+import {
+  LunaworkClient,
+  applicationCommand,
+  ApplicationCommandOptionType,
+} from '@siberianmh/lunawork'
 import * as fs from 'fs-extra'
 import * as path from 'path'
 import grayMatter = require('gray-matter')
@@ -20,7 +24,7 @@ export class TagsModule extends ExtendedModule {
       {
         name: 'resource',
         description: 'A world which you want to see',
-        type: 'STRING',
+        type: ApplicationCommandOptionType.String,
         required: true,
         choices: [
           {
@@ -37,9 +41,7 @@ export class TagsModule extends ExtendedModule {
   })
   public async tags(
     msg: CommandInteraction,
-    resource: string,
-    // Requires update of @siberianmh/lunawork
-    // { resource }: { resource: string },
+    { resource }: { resource: string },
   ) {
     const tagData = await this.findItem(this.tagsFolder, resource)
 
@@ -70,11 +72,11 @@ export class TagsModule extends ExtendedModule {
       {
         name: 'entry',
         description: 'A FAQ entry to see',
-        type: 'STRING',
+        type: ApplicationCommandOptionType.String,
         required: true,
         choices: [
           {
-            name: '`Uncaught ReferenceError: require is not defined` even if `nodeIntegration` is set to `true`',
+            name: '`Uncaught ReferenceE rror: require is not defined` even if `nodeIntegration` is set to `true`',
             value: 'require-in-renderer',
           },
           {
@@ -93,7 +95,10 @@ export class TagsModule extends ExtendedModule {
       },
     ],
   })
-  public async faq(msg: CommandInteraction, entry: string): Promise<void> {
+  public async faq(
+    msg: CommandInteraction,
+    { entry }: { entry: string },
+  ): Promise<void> {
     const itemData = await this.findItem(this.faqFolder, entry)
 
     if (!itemData) {

@@ -1,4 +1,8 @@
-import { LunaworkClient, applicationCommand } from '@siberianmh/lunawork'
+import {
+  LunaworkClient,
+  applicationCommand,
+  ApplicationCommandOptionType,
+} from '@siberianmh/lunawork'
 import { CommandInteraction, MessageButton, MessageEmbed } from 'discord.js'
 import algoliasearch, { SearchClient, SearchIndex } from 'algoliasearch'
 import type { Hit } from '@algolia/client-search'
@@ -56,19 +60,19 @@ export class DocsModule extends ExtendedModule {
       {
         name: 'entry',
         description: 'Search entry',
-        type: 'STRING',
+        type: ApplicationCommandOptionType.String,
         required: true,
       },
     ],
   })
-  public async docs(msg: CommandInteraction, searchIndex: string) {
-    const { hits } = await this.newIndex.search<IHitResult>(searchIndex, {
+  public async docs(msg: CommandInteraction, { entry }: { entry: string }) {
+    const { hits } = await this.newIndex.search<IHitResult>(entry, {
       hitsPerPage: 5,
     })
 
     if (!hits.length) {
       return await createSelfDestructMessage(msg, {
-        embeds: [this.NOT_FOUND_EMBED(searchIndex)],
+        embeds: [this.NOT_FOUND_EMBED(entry)],
       })
     }
 

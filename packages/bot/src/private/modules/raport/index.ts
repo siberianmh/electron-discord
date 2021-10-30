@@ -3,6 +3,7 @@
 import {
   LunaworkClient,
   applicationCommand,
+  ApplicationCommandTypes,
   button,
 } from '@siberianmh/lunawork'
 import {
@@ -41,8 +42,10 @@ export class RaportStage extends ExtendedModule {
   }
 
   //#region Interactions
-  // @ts-expect-error
-  @applicationCommand({ name: 'Report message', type: 'MESSAGE' })
+  @applicationCommand({
+    name: 'Report message',
+    type: ApplicationCommandTypes.MESSAGE,
+  })
   public async reportMessage(msg: ContextMenuInteraction) {
     if (process.env.NODE_ENV !== 'development') {
       return
@@ -82,8 +85,10 @@ export class RaportStage extends ExtendedModule {
     })
   }
 
-  // @ts-expect-error
-  @applicationCommand({ name: 'Report user', type: 'USER' })
+  @applicationCommand({
+    name: 'Report user',
+    type: ApplicationCommandTypes.USER,
+  })
   public async reportUser(msg: ContextMenuInteraction) {
     if (process.env.NODE_ENV !== 'development') {
       return
