@@ -1,5 +1,14 @@
-import { LunaworkClient, applicationCommand } from '@siberianmh/lunawork'
-import { CommandInteraction, MessageButton, MessageEmbed } from 'discord.js'
+import {
+  LunaworkClient,
+  applicationCommand,
+  ApplicationCommandOptionType,
+} from '@siberianmh/lunawork'
+import {
+  AutocompleteInteraction,
+  CommandInteraction,
+  MessageButton,
+  MessageEmbed,
+} from 'discord.js'
 import algoliasearch, { SearchClient, SearchIndex } from 'algoliasearch'
 import type { Hit } from '@algolia/client-search'
 import { ExtendedModule } from '../../lib/extended-module'
@@ -45,34 +54,21 @@ export class DocsModule extends ExtendedModule {
     this.newIndex = this.newSearchClient.initIndex('electronjs')
   }
 
-  private NOT_FOUND_EMBED = (searchIndex: string) =>
-    new MessageEmbed()
-      .setTitle(`\`${searchIndex}\``)
-      .setDescription('Unable to find result for searching string.')
-
   @applicationCommand({
+    name: 'docs',
     description: 'Search in the docs',
     options: [
       {
         name: 'entry',
         description: 'Search entry',
-        type: 'STRING',
+        type: ApplicationCommandOptionType.String,
         required: true,
+        autocomplete: true,
       },
     ],
   })
-  public async docs(msg: CommandInteraction, searchIndex: string) {
-    const { hits } = await this.newIndex.search<IHitResult>(searchIndex, {
-      hitsPerPage: 5,
-    })
-
-    if (!hits.length) {
-      return await createSelfDestructMessage(msg, {
-        embeds: [this.NOT_FOUND_EMBED(searchIndex)],
-      })
-    }
-
-    const result = hits[0]
+  public async docs(msg: CommandInteraction, { entry }: { entry: string }) {
+    const result = await this.newIndex.getObject<IHitResult>(entry)
 
     const url = this.formatURL(result)
     const category = this.getHighlightedValue(result, 'lvl0')
@@ -121,6 +117,37 @@ export class DocsModule extends ExtendedModule {
     }
 
     return ''
+  }
+
+  public async ondocsAutocomplete(
+    msg: AutocompleteInteraction,
+    { entry }: { entry: string },
+  ): Promise<void> {
+    const { hits } = await this.newIndex.search<IHitResult>(entry, {
+      hitsPerPage: 25,
+    })
+
+    if (!hits.length) {
+      return msg.respond([])
+    }
+
+    const result: Array<{ name: string; value: string }> = []
+
+    for (const hit of hits) {
+      const category = this.getHighlightedValue(hit, 'lvl0')
+      const subcategory = this.getHighlightedValue(hit, 'lvl1') || category
+      const displayTitle = this.compact([
+        this.getHighlightedValue(hit, 'lvl2') || subcategory,
+        this.getHighlightedValue(hit, 'lvl3'),
+        this.getHighlightedValue(hit, 'lvl4'),
+        this.getHighlightedValue(hit, 'lvl5'),
+        this.getHighlightedValue(hit, 'lvl6'),
+      ]).join(' › ')
+
+      result.push({ name: displayTitle, value: hit.objectID })
+    }
+
+    return msg.respond(result)
   }
 
   private getHighlightedValue(

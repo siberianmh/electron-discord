@@ -1,6 +1,7 @@
 import {
   applicationCommand,
   LunaworkClient,
+  ApplicationCommandOptionType,
   listener,
   button,
 } from '@siberianmh/lunawork'
@@ -52,15 +53,18 @@ export class EtcModule extends ExtendedModule {
       {
         name: 'gist_id',
         description: 'The id of the gist',
-        type: 'STRING',
+        type: ApplicationCommandOptionType.String,
         required: true,
       },
     ],
     // Because it's test and i don't want to peoples to use this
     inhibitors: [isTrustedMember],
   })
-  public async fiddle(msg: CommandInteraction, gistId: string): Promise<void> {
-    if (gistId.startsWith('https://' || 'http://')) {
+  public async fiddle(
+    msg: CommandInteraction,
+    { gist_id }: { gist_id: string },
+  ): Promise<void> {
+    if (gist_id.startsWith('https://' || 'http://')) {
       return msg.reply({
         content: 'The id should be in format number',
         ephemeral: true,
@@ -69,7 +73,7 @@ export class EtcModule extends ExtendedModule {
 
     // Possible be to `gist/username/hash` and `gist/hash`
     // Documented on https://github.com/electron/fiddle/blob/master/src/main/protocol.ts#L29
-    const fiddleURL = `<electron-fiddle://gist/${gistId}>`
+    const fiddleURL = `<electron-fiddle://gist/${gist_id}>`
 
     const message = `Electron Fiddle lets you create and play with small Electron experiments.
 You can launch Electron Fiddle with the provided Gist using this URL: ${fiddleURL}

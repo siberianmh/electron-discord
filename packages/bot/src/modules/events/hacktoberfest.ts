@@ -46,6 +46,7 @@ export class HacktoberfestStage extends ExtendedModule {
         description: 'Get the random Hacktoberfest issue',
       },
     ],
+    disabled: true,
   })
   public async hacktoberfest(
     msg: CommandInteraction,
