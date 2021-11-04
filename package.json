@@ -34,7 +34,6 @@
     "prettier": "^2.4.1",
     "reflect-metadata": "^0.1.13",
     "ts-jest": "^27.0.7",
-    "twit": "^2.2.11",
     "typeorm": "^0.2.38",
     "typescript": "^4.4.4"
   },
@@ -44,9 +43,6 @@
     "@types/humanize-duration": "^3.27.0",
     "@types/ioredis": "^4.27.8",
     "@types/jest": "^27.0.2",
-    "@types/node": "^16.11.6",
-    "@types/semver": "^7.3.9",
-    "@types/statsd-client": "^0.4.3",
-    "@types/twit": "^2.2.30"
+    "@types/node": "^16.11.6"
   }
 }

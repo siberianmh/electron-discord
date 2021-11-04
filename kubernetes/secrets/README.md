@@ -6,7 +6,6 @@
 
 | Environment Variable | Description                       |
 | -------------------- | --------------------------------- |
-| `STATSD_HOST`        | the url to the statsd host        |
 | `REDIS_URL`          | the url to the redis db           |
 | `MYSQL_HOST`         | the url to the mysql db           |
 | `MYSQL_USENRAME`     | the username which connects to db |
