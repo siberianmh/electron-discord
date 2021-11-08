@@ -1,3 +1,7 @@
+// Copyright (c) 2021 Siberian, Inc. All rights reserved.
+// Use of this source code is governed by the MIT license that can be
+// found in the LICENSE file.
+
 import type { Inhibitor } from '@siberianmh/lunawork'
 import { Permissions } from 'discord.js'
 import { guild } from './config'

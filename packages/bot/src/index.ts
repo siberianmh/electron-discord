@@ -1,3 +1,7 @@
+// Copyright (c) 2021 Siberian, Inc. All rights reserved.
+// Use of this source code is governed by the MIT license that can be
+// found in the LICENSE file.
+
 if (process.env.NODE_ENV === 'development') {
   require('dotenv').config()
 }
@@ -5,6 +9,8 @@ if (process.env.NODE_ENV === 'development') {
 import { Stage } from '@siberianmh/lunawork'
 import * as Sentry from '@sentry/node'
 import {
+  AntimalwareStage,
+  FiltersStage,
   DownloadModule,
   DocsModule,
   EtcModule,
@@ -14,6 +20,7 @@ import {
   HelpChannelStaff,
   InfractionsModule,
   ModLogModule,
+  MiscStuffStage,
   RobloxGamePresenceModule,
   RolesModule,
   RulesModule,
@@ -23,13 +30,6 @@ import {
 import { client } from './lib/discord'
 import { enableThreadHelp } from './lib/runtime'
 
-import {
-  AntimalwareStage,
-  RaportStage,
-  FiltersStage,
-  ModerationStuffStage,
-} from './private/modules'
-
 Sentry.init({
   dsn: 'https://a22da8923d5f4ea7875fa8518335410b@o102026.ingest.sentry.io/5474186',
   enabled: process.env.NODE_ENV !== 'development',
@@ -37,6 +37,9 @@ Sentry.init({
 })
 
 const stages: Array<typeof Stage | Stage> = [
+  AntimalwareStage,
+  FiltersStage,
+  MiscStuffStage,
   DownloadModule,
   DocsModule,
   EtcModule,
@@ -55,9 +58,6 @@ const stages: Array<typeof Stage | Stage> = [
 if (enableThreadHelp) {
   stages.push(ThreadHelpStage)
 }
-
-// Currently internal stages
-stages.push(AntimalwareStage, RaportStage, FiltersStage, ModerationStuffStage)
 
 client.registerStages(stages)
 

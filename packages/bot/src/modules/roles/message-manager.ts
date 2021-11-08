@@ -1,3 +1,7 @@
+// Copyright (c) 2021 Siberian, Inc. All rights reserved.
+// Use of this source code is governed by the MIT license that can be
+// found in the LICENSE file.
+
 import { MessageEmbed, TextChannel } from 'discord.js'
 import { style } from '../../lib/config'
 import { ICreateMessageRoleResponse, IRoleMessage } from '../../lib/types'
