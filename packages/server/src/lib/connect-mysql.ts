@@ -1,10 +1,12 @@
+// Copyright (c) 2021 Siberian, Inc. All rights reserved.
+// Use of this source code is governed by the MIT license that can be
+// found in the LICENSE file.
+
 import { createConnection, Connection } from 'typeorm'
-import * as path from 'path'
 import { HelpChannel } from '../entities/help-channel'
 import { Infractions } from '../entities/infractions'
 import { MessageRoles, MessageRolesActions } from '../entities/roles'
 import { AccessToken } from '../entities/access-token'
-import { Report as ReportModel } from '../entities/report'
 
 export const connectMySQL = (): Promise<Connection> => {
   return process.env.NODE_ENV === 'development'
@@ -42,7 +44,6 @@ export const connectMySQL = (): Promise<Connection> => {
           Infractions,
           HelpChannel,
           MessageRoles,
-          ReportModel,
           MessageRolesActions,
         ],
         charset: 'utf8mb4_unicode_ci',
