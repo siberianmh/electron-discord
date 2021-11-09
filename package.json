@@ -6,6 +6,7 @@
     "packages/*"
   ],
   "scripts": {
+    "postinstall": "patch-package",
     "lint": "yarn lint:prettier && tsc -p tsconfig.json",
     "lint:prettier": "prettier --check \"./**/*.{ts,tsx,js,yaml,yml,md,mdx}\"",
     "lint:fix": "yarn lint:prettier --write"
