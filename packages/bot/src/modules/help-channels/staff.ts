@@ -87,6 +87,7 @@ export class HelpChannelStaff extends HelpChanBase {
     msg: CommandInteraction,
     { user: member, limit }: { user: GuildMember; limit?: number },
   ) {
+    console.log(member)
     return await this.claimBase({ msg: msg, member: member, limit })
   }
 

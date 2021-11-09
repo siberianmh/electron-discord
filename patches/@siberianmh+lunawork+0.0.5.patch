@@ -1,0 +1,14 @@
+diff --git a/node_modules/@siberianmh/lunawork/dist/core/executor.js b/node_modules/@siberianmh/lunawork/dist/core/executor.js
+index 8e9fbb2..b3afe2a 100644
+--- a/node_modules/@siberianmh/lunawork/dist/core/executor.js
++++ b/node_modules/@siberianmh/lunawork/dist/core/executor.js
+@@ -154,6 +154,9 @@ class ExecutorStage extends stage_1.Stage {
+         return output;
+     }
+     getPossibleResponseType(option) {
++        if (option.type === /* ApplicationCommandOptionType.User */ 'USER') {
++            return option.member || option.user;
++        }
+         return (option.user ||
+             option.member ||
+             option.role ||
