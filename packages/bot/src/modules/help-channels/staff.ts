@@ -30,6 +30,11 @@ import { availableEmbed } from './embeds/available'
 import { helpChannelStatusEmbed } from './embeds/status'
 import { Subcommands } from './subcommands'
 
+/**
+ * That class contains the interactions (commands, etc) that can be only
+ * used by the admin team. There shouldn't be stored commands that can
+ * be executed by standard members, except `/helpchan cooldown`
+ */
 export class HelpChannelStaff extends HelpChanBase {
   public constructor(client: LunaworkClient) {
     super(client)
@@ -87,7 +92,6 @@ export class HelpChannelStaff extends HelpChanBase {
     msg: CommandInteraction,
     { user: member, limit }: { user: GuildMember; limit?: number },
   ) {
-    console.log(member)
     return await this.claimBase({ msg: msg, member: member, limit })
   }
 
