@@ -8,10 +8,6 @@ import { ExtendedModule } from '../../lib/extended-module'
 import { guild } from '../../lib/config'
 import { initiateMessages } from './message-manager'
 import { MessageRoles, MessageRolesActions } from '../../entities/roles'
-import {
-  IGetMessageRoleResponse,
-  IGetMessageRolesActionsResponse,
-} from '../../lib/types'
 import { toBigIntLiteral } from '../../lib/to-bigint-literal'
 
 export class RolesModule extends ExtendedModule {

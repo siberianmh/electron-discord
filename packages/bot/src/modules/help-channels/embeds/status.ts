@@ -10,7 +10,7 @@ import {
   CommandInteraction,
   ThreadChannel,
 } from 'discord.js'
-import { IListHelpChannelsRespone } from '../../../lib/types'
+import { HelpChannel } from '../../../entities/help-channel'
 
 /**
  *
@@ -33,7 +33,7 @@ export const helpChannelStatusEmbed = (
   availableChannels:
     | Collection<string, GuildChannel | ThreadChannel>
     | undefined,
-  ongoingChannels: IListHelpChannelsRespone,
+  ongoingChannels: Array<HelpChannel>,
   dormantChannels: Collection<string, GuildChannel | ThreadChannel> | undefined,
 ) => {
   return new MessageEmbed()

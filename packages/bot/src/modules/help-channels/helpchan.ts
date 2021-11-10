@@ -19,7 +19,6 @@ import {
   ButtonInteraction,
 } from 'discord.js'
 import { HelpChannel } from '../../entities/help-channel'
-import { IGetHelpChanByChannelIdResponse } from '../../lib/types'
 import { helpChannels, guild } from '../../lib/config'
 import * as config from '../../lib/config'
 import { HelpChanBase } from './base'

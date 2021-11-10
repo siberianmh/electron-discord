@@ -22,10 +22,6 @@ import { isTrustedMember, noAuthorizedClaim, noDM } from '../../lib/inhibitors'
 import { guild } from '../../lib/config'
 import * as config from '../../lib/config'
 import { HelpChanBase } from './base'
-import {
-  IGetHelpChanByUserIdResponse,
-  IListHelpChannelsRespone,
-} from '../../lib/types'
 import { availableEmbed } from './embeds/available'
 import { helpChannelStatusEmbed } from './embeds/status'
 import { Subcommands } from './subcommands'

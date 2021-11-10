@@ -13,7 +13,6 @@ import {
 } from 'discord.js'
 import { ExtendedModule } from '../../../lib/extended-module'
 import { guild } from '../../../lib/config'
-import { IGetHelpChanByChannelIdResponse } from '../../../lib/types'
 import { HelpChannel } from '../../../entities/help-channel'
 
 export class ThreadHelpStage extends ExtendedModule {
