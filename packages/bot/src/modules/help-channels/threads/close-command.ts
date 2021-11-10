@@ -9,8 +9,6 @@ import {
   ThreadChannel,
 } from 'discord.js'
 import { guild } from '../../../lib/config'
-import { api } from '../../../lib/api'
-import { IGetHelpChanByChannelIdResponse } from '../../../lib/types'
 import { HelpChannel } from '../../../entities/help-channel'
 
 export async function threadCloseCommand(msg: CommandInteraction) {

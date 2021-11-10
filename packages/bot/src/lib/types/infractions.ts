@@ -15,3 +15,12 @@ export const infractionType = {
   [InfractionType.Warn]: InfractionType[InfractionType.Warn].toLowerCase(),
   [InfractionType.Mute]: InfractionType[InfractionType.Mute].toLowerCase(),
 }
+
+export interface IInfraction {
+  readonly user_id: string
+  readonly actor_id: string
+  readonly reason: string
+  readonly type: InfractionType
+  readonly active?: boolean
+  readonly expires_at?: Date
+}

@@ -20,10 +20,10 @@ export class Infractions extends BaseEntity {
   @Column('varchar')
   user_id: string
 
-  @Column('varchar', { nullable: true })
+  @Column('varchar', { nullable: false })
   actor_id: string
 
-  @Column('varchar', { nullable: true })
+  @Column('boolean', { nullable: true })
   active: boolean
 
   @Column('varchar', { nullable: false })

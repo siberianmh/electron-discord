@@ -2,27 +2,16 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
-import { AxiosInstance, AxiosResponse } from 'axios'
 import { Stage } from '@siberianmh/lunawork'
-import { api } from './api'
 import { IInfraction } from './types'
+import { Infractions } from '../entities/infractions'
 
 export class ExtendedModule extends Stage {
-  protected api: AxiosInstance = api
+  protected async addInfraction(opts: IInfraction) {
+    const infraction = await Infractions.create({
+      ...opts,
+    }).save()
 
-  protected async addInfraction(
-    opts: IInfraction,
-  ): Promise<AxiosResponse<IInfraction>> {
-    let resp: AxiosResponse<IInfraction>
-
-    try {
-      resp = await this.api.post('/infractions', {
-        ...opts,
-      })
-    } catch (err: any) {
-      throw new Error(err)
-    }
-
-    return resp
+    return infraction
   }
 }

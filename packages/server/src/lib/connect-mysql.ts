@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import { createConnection, Connection } from 'typeorm'
-import { Infractions } from '../entities/infractions'
 import { AccessToken } from '../entities/access-token'
 
 export const connectMySQL = (): Promise<Connection> => {
@@ -37,7 +36,7 @@ export const connectMySQL = (): Promise<Connection> => {
         // It's bad but we don't have here any strong data in db
         synchronize: true,
         logging: true,
-        entities: [AccessToken, Infractions],
+        entities: [AccessToken],
         charset: 'utf8mb4_unicode_ci',
         cache: {
           type: 'ioredis',
