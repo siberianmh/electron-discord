@@ -27,7 +27,7 @@ export const client = new LunaworkClient({
     activities: [
       {
         type: 'PLAYING',
-        name: 'Посмотри кем ты стал',
+        name: 'Ты здесь и это уже достижение',
       },
     ],
   },
