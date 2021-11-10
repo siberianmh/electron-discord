@@ -1,6 +1,4 @@
----
-title: Understanding Help Channels
----
+# Understanding Help Channels
 
 We have two diffent kind of help channels in community - **Topical help
 channels** and **general help channels**. Where you should go depends on what
