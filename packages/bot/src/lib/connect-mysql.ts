@@ -5,7 +5,7 @@
 import { createConnection, Connection } from 'typeorm'
 import { HelpChannel } from '../entities/help-channel'
 // import { Infractions } from '../entities/infractions'
-// import { MessageRoles, MessageRolesActions } from '../entities/roles'
+import { MessageRoles, MessageRolesActions } from '../entities/roles'
 // import { AccessToken } from '../entities/access-token'
 
 export const connectMySQL = (): Promise<Connection> => {
@@ -43,8 +43,8 @@ export const connectMySQL = (): Promise<Connection> => {
           // AccessToken,
           // Infractions,
           HelpChannel,
-          // MessageRoles,
-          // MessageRolesActions,
+          MessageRoles,
+          MessageRolesActions,
         ],
         charset: 'utf8mb4_unicode_ci',
         cache: {

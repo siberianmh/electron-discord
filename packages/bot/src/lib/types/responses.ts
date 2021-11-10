@@ -43,13 +43,3 @@ export interface IInfraction {
   readonly active?: boolean
   readonly expires_at?: Date
 }
-
-export interface IRaport {
-  readonly id: number
-  readonly user_id: string
-  readonly message_id: string
-  readonly thread_id: string
-  readonly count: number
-  readonly created_at: Date
-  readonly updated_at: Date
-}

@@ -49,7 +49,7 @@ export class ThreadHelpStage extends ExtendedModule {
       user_id: msg.member.user.id,
       channel_id: createdThread.id,
       message_id: msg.id,
-    })
+    }).save()
   }
 
   @listener({ event: 'threadUpdate' })
@@ -60,23 +60,22 @@ export class ThreadHelpStage extends ExtendedModule {
     }
 
     if (oldThread.archived === false && thread.archived === true) {
-      const { data: owner } =
-        await this.api.get<IGetHelpChanByChannelIdResponse>(
-          `/helpchan/${thread.id}`,
-        )
+      const channel = await HelpChannel.findOne({
+        where: { channel_id: thread.id },
+      })
 
-      if (!owner) {
+      if (!channel) {
         return
       }
 
       const roleManger = (
         await (
           await this.client.guilds.fetch(guild.id)
-        ).members.fetch(owner.user_id)
+        ).members.fetch(channel.user_id)
       ).roles
 
       await roleManger.remove(guild.roles.helpCooldown)
-      await this.api.delete(`/helpchan/${thread.id}`)
+      await channel.remove()
     }
   }
 
@@ -91,23 +90,23 @@ export class ThreadHelpStage extends ExtendedModule {
       return
     }
 
-    const { data: owner } = await this.api.get<IGetHelpChanByChannelIdResponse>(
-      `/helpchan/${newMembersMap[0].thread.id}`,
-    )
+    const channel = await HelpChannel.findOne({
+      where: { channel_id: newMembersMap[0].thread.id },
+    })
 
     const member = newMembersMap.find(
-      (x) => x.guildMember!.id === owner.user_id,
+      (x) => x.guildMember!.id === channel!.user_id,
     )
 
     if (!member) {
       const roleManger = (
         await (
           await this.client.guilds.fetch(guild.id)
-        ).members.fetch(owner.user_id)
+        ).members.fetch(channel!.user_id)
       ).roles
 
       await roleManger.remove(guild.roles.helpCooldown)
-      await this.api.delete(`/helpchan/${newMembersMap[0].thread.id}`)
+      await channel!.remove()
       await newMembersMap[0].thread.setArchived(true, 'User left the thread')
     }
   }
