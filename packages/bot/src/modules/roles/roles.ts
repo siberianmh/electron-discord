@@ -64,7 +64,9 @@ export class RolesModule extends ExtendedModule {
       return
     }
 
-    const rolesActions = await MessageRolesActions.find()
+    const rolesActions = await MessageRolesActions.find({
+      relations: ['message_role'],
+    })
 
     for (const role of rolesActions) {
       const msg = reaction.message
@@ -105,7 +107,9 @@ export class RolesModule extends ExtendedModule {
       return
     }
 
-    const rolesActions = await MessageRolesActions.find()
+    const rolesActions = await MessageRolesActions.find({
+      relations: ['message_role'],
+    })
 
     for (const role of rolesActions) {
       const msg = reaction.message
