@@ -4,8 +4,9 @@
 
 ### Heroku Configuration
 
-You still can use the [Heroku]() to deploy the bot, for them use the
-`heroku.yml` file which builds the Docker image and runs them on the Heroku.
+You still can use the [Heroku](https://www.heroku.com/) to deploy the bot, for
+him use the `heroku.yml` file which builds the Docker image and runs them on the
+Heroku.
 
 The following environment variables should be set:
 
