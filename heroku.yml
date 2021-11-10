@@ -3,4 +3,3 @@
 build:
   docker:
     worker: Dockerfile.bot
-    web: Dockerfile.server
