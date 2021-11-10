@@ -11,6 +11,7 @@ import {
   Guild,
   ThreadChannel,
 } from 'discord.js'
+import { HelpChannel } from '../../entities/help-channel'
 import { ExtendedModule } from '../../lib/extended-module'
 import { helpChannels, guild } from '../../lib/config'
 import * as config from '../../lib/config'
@@ -86,11 +87,11 @@ export class HelpChanBase extends ExtendedModule {
     channel: TextChannel,
     msg: Message,
   ) {
-    return await this.api.post('/helpchan', {
+    return await HelpChannel.create({
       user_id: member.user.id,
       channel_id: channel.id,
       message_id: msg.id,
-    })
+    }).save()
   }
 
   protected async ensureAskChannels(guild: Guild): Promise<void | Message> {

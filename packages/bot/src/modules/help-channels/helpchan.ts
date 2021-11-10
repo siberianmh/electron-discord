@@ -18,6 +18,7 @@ import {
   MessageButton,
   ButtonInteraction,
 } from 'discord.js'
+import { HelpChannel } from '../../entities/help-channel'
 import { IGetHelpChanByChannelIdResponse } from '../../lib/types'
 import { helpChannels, guild } from '../../lib/config'
 import * as config from '../../lib/config'
@@ -98,12 +99,11 @@ export class HelpChanModule extends HelpChanBase {
       return
     }
 
-    const { data: channel } =
-      await this.api.get<IGetHelpChanByChannelIdResponse>(
-        `/helpchan/${msg.channel.id}`,
-      )
+    const channel = await HelpChannel.findOne({
+      where: { channel_id: msg.channel.id },
+    })
 
-    if (msg.id === channel.message_id) {
+    if (msg.id === channel?.message_id) {
       return this.markChannelAsDormant(msg.channel, CloseReason.Deleted)
     }
 
@@ -152,12 +152,12 @@ export class HelpChanModule extends HelpChanBase {
       })
     }
 
-    const { data: owner } = await this.api.get<IGetHelpChanByChannelIdResponse>(
-      `/helpchan/${msg.channel!.id}`,
-    )
+    const channel = await HelpChannel.findOne({
+      where: { channel_id: msg.channel!.id },
+    })
 
     if (
-      (owner && owner.user_id === msg.user.id) ||
+      (channel && channel.user_id === msg.user.id) ||
       (typeof msg.member?.permissions !== 'string' &&
         msg.member?.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) ||
       (!Array.isArray(msg.member?.roles) &&
@@ -186,12 +186,12 @@ export class HelpChanModule extends HelpChanBase {
       return
     }
 
-    const { data: owner } = await this.api.get<IGetHelpChanByChannelIdResponse>(
-      `/helpchan/${msg.channel!.id}`,
-    )
+    const channel = await HelpChannel.findOne({
+      where: { channel_id: msg.channel!.id },
+    })
 
     if (
-      (owner && owner.user_id === msg.user.id) ||
+      (channel && channel.user_id === msg.user.id) ||
       (typeof msg.member?.permissions !== 'string' &&
         msg.member!.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) ||
       (!Array.isArray(msg.member?.roles) &&
@@ -227,20 +227,19 @@ export class HelpChanModule extends HelpChanBase {
     const pinned = await channel.messages.fetchPinned()
     await Promise.all(pinned.map((msg) => msg.unpin()))
 
-    const { data: helpChannel } =
-      await this.api.get<IGetHelpChanByChannelIdResponse>(
-        `/helpchan/${channel.id}`,
-      )
+    const helpChannel = await HelpChannel.findOne({
+      where: { channel_id: channel.id },
+    })
 
     try {
       const member = await channel.guild.members.fetch({
-        user: toBigIntLiteral(helpChannel.user_id),
+        user: toBigIntLiteral(helpChannel!.user_id),
       })
 
       await member.roles.remove(guild.roles.helpCooldown)
     } catch {}
 
-    await this.api.delete(`/helpchan/${channel.id}`)
+    await helpChannel!.remove()
     await this.moveChannel(channel, guild.categories.helpDormant)
 
     // Question resolved successfuly, aka `/close`

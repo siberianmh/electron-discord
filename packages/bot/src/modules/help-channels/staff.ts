@@ -29,6 +29,7 @@ import {
 import { availableEmbed } from './embeds/available'
 import { helpChannelStatusEmbed } from './embeds/status'
 import { Subcommands } from './subcommands'
+import { HelpChannel } from '../../entities/help-channel'
 
 /**
  * That class contains the interactions (commands, etc) that can be only
@@ -175,9 +176,7 @@ export class HelpChannelStaff extends HelpChanBase {
       )
       .filter((channel) => channel.name.startsWith(this.CHANNEL_PREFIX))
 
-    const { data: ongoing } = await this.api.get<IListHelpChannelsRespone>(
-      '/helpchan',
-    )
+    const ongoing = await HelpChannel.find()
 
     const dormant = msg
       .guild!.channels.cache.filter(
@@ -235,20 +234,15 @@ export class HelpChannelStaff extends HelpChanBase {
       })
     }
 
-    try {
-      const { data: helpChannel } =
-        await this.api.get<IGetHelpChanByUserIdResponse>(
-          `/helpchan/user/${member.id}`,
-        )
+    const helpChannel = await HelpChannel.findOne({
+      where: { user_id: member.id },
+    })
 
-      if (helpChannel) {
-        return msg.reply({
-          content: `${member.displayName} already has <#${helpChannel.channel_id}>`,
-          ephemeral: true,
-        })
-      }
-    } catch {
-      // It's fine because it's that what's we search
+    if (helpChannel) {
+      return msg.reply({
+        content: `${member.displayName} already has <#${helpChannel.channel_id}>`,
+        ephemeral: true,
+      })
     }
 
     const claimedChannel = msg.guild?.channels.cache.find(
@@ -361,19 +355,19 @@ export class HelpChannelStaff extends HelpChanBase {
       })
     }
 
-    try {
-      const { data } = await this.api.get<IGetHelpChanByUserIdResponse>(
-        `/helpchan/user/${msg.member?.user.id}`,
-      )
+    const channel = await HelpChannel.findOne({
+      where: { user_id: msg.member.user.id },
+    })
 
+    if (channel) {
       return msg.reply({
-        content: `<@${msg.member?.user.id}> has an active help channel: <#${data.channel_id}>`,
-      })
-    } catch {
-      await memberRoleManagger.remove(config.guild.roles.helpCooldown)
-      return msg.reply({
-        content: 'Cooldown successfully removed',
+        content: `<@${msg.member?.user.id}> has an active help channel: <#${channel.channel_id}>`,
       })
     }
+
+    await memberRoleManagger.remove(config.guild.roles.helpCooldown)
+    return msg.reply({
+      content: 'Cooldown successfully removed',
+    })
   }
 }

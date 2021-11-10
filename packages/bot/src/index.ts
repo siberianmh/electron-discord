@@ -22,12 +22,13 @@ import {
   ModLogModule,
   MiscStuffStage,
   RobloxGamePresenceModule,
-  RolesModule,
+  // RolesModule,
   RulesModule,
   TagsModule,
   UnfurlModule,
 } from './modules'
 import { client } from './lib/discord'
+import { connectMySQL } from './lib/connect-mysql'
 import { enableThreadHelp } from './lib/runtime'
 
 Sentry.init({
@@ -49,7 +50,7 @@ const stages: Array<typeof Stage | Stage> = [
   InfractionsModule,
   ModLogModule,
   RobloxGamePresenceModule,
-  RolesModule,
+  // RolesModule,
   RulesModule,
   TagsModule,
   UnfurlModule,
@@ -61,7 +62,9 @@ if (enableThreadHelp) {
 
 client.registerStages(stages)
 
-client.login(process.env.DISCORD_TOKEN)
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user?.tag}`)
+connectMySQL().then(() => {
+  client.login(process.env.DISCORD_TOKEN)
+  client.on('ready', () => {
+    console.log(`Logged in as ${client.user?.tag}`)
+  })
 })

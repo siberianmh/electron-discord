@@ -14,6 +14,7 @@ import {
 import { ExtendedModule } from '../../../lib/extended-module'
 import { guild } from '../../../lib/config'
 import { IGetHelpChanByChannelIdResponse } from '../../../lib/types'
+import { HelpChannel } from '../../../entities/help-channel'
 
 export class ThreadHelpStage extends ExtendedModule {
   public constructor(client: LunaworkClient) {
@@ -44,7 +45,7 @@ export class ThreadHelpStage extends ExtendedModule {
 
     await this.addCooldown(msg.member)
 
-    await this.api.post('/helpchan', {
+    return await HelpChannel.create({
       user_id: msg.member.user.id,
       channel_id: createdThread.id,
       message_id: msg.id,
