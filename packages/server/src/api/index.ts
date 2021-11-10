@@ -31,9 +31,6 @@ import {
   getMessageRolesActions,
   createMessageRolesAction,
 } from './message-roles'
-
-// Webhooks
-import { handleEpuppyHook } from './webhooks'
 //#endregion
 
 //#region Usage
@@ -56,9 +53,6 @@ router.get('/message-roles/:id', requiresBotAuth, getMessageRole)
 router.post('/message-roles', requiresBotAuth, createMessageRole)
 router.get('/message-roles/actions', requiresBotAuth, getMessageRolesActions)
 router.post('/message-roles/actions', requiresBotAuth, createMessageRolesAction)
-
-// Discord Webhooks
-router.post('/epuppy-hook', requiresBotAuth, handleEpuppyHook)
 
 //#endregion
 
