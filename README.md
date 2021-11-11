@@ -1,10 +1,3 @@
-# No longer maintained
-
-The team behind this project is no longer supports them, we will don't accept
-any pull requests, issues, or discussions. Thanks for being with us a year 💖.
-
----
-
 # Electron Discord
 
 [![Discord](https://img.shields.io/discord/745037351163527189?color=blue&logo=discord&style=flat-square)](https://discord.gg/electron)
@@ -15,10 +8,6 @@ any pull requests, issues, or discussions. Thanks for being with us a year 💖.
 ## Packages Structure
 
 - [`/bot`](packages/bot) - Contains the source codes for Electron bot.
-- [`/buttowski`](packages/buttowski) - The CLI tool for kick the big amount of
-  folks with specific role.
-- [`/server`](packages/server) - Constains the server source code for Electron
-  bot.
 
 ## License
 

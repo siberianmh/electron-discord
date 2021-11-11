@@ -10,24 +10,34 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
+import { InfractionType } from '../lib/types'
 
-@Entity('access-token')
-export class AccessToken extends BaseEntity {
+@Entity('infractions')
+export class Infractions extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column('varchar', { nullable: false })
-  name: string
-
-  @Column('varchar', { nullable: false })
-  token: string
-
-  @Column('varchar', { nullable: false })
+  @Column('varchar')
   user_id: string
+
+  @Column('varchar', { nullable: false })
+  actor_id: string
+
+  @Column('boolean', { nullable: true })
+  active: boolean
+
+  @Column('varchar', { nullable: false })
+  reason: string
+
+  @Column('int')
+  type: InfractionType
 
   @CreateDateColumn()
   created_at: Date
 
   @UpdateDateColumn()
   updated_at: Date
+
+  @Column({ type: 'bigint', nullable: true })
+  expires_at: Date
 }

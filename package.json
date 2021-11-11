@@ -7,6 +7,7 @@
   ],
   "scripts": {
     "postinstall": "patch-package",
+    "dev": "yarn workspace @sib-edis/bot serve",
     "lint": "yarn lint:prettier && tsc -p tsconfig.json",
     "lint:prettier": "prettier --check \"./**/*.{ts,tsx,js,yaml,yml,md,mdx}\"",
     "lint:fix": "yarn lint:prettier --write"

@@ -7,10 +7,7 @@ import { MessageReaction, TextChannel, User } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
 import { guild } from '../../lib/config'
 import { initiateMessages } from './message-manager'
-import {
-  IGetMessageRoleResponse,
-  IGetMessageRolesActionsResponse,
-} from '../../lib/types'
+import { MessageRoles, MessageRolesActions } from '../../entities/roles'
 import { toBigIntLiteral } from '../../lib/to-bigint-literal'
 
 export class RolesModule extends ExtendedModule {
@@ -33,12 +30,11 @@ export class RolesModule extends ExtendedModule {
 
     // TODO: Handle case if we don't have one of part messages
     allMessages.forEach(async (message) => {
-      const { data: messageDB } = await this.api.get<IGetMessageRoleResponse>(
-        `/message-roles/${message.id}`,
-      )
+      const messageDB = await MessageRoles.findOne({
+        where: { message_id: message.id },
+      })
 
-      // @ts-expect-error
-      if (messageDB.status === 404 || !messageDB) {
+      if (!messageDB) {
         return await message.delete()
       }
 
@@ -68,10 +64,10 @@ export class RolesModule extends ExtendedModule {
       return
     }
 
-    const { data: rolesActions } =
-      await this.api.get<IGetMessageRolesActionsResponse>(
-        '/message-roles/actions',
-      )
+    const rolesActions = await MessageRolesActions.find({
+      relations: ['message_role'],
+    })
+
     for (const role of rolesActions) {
       const msg = reaction.message
       if (
@@ -111,10 +107,10 @@ export class RolesModule extends ExtendedModule {
       return
     }
 
-    const { data: rolesActions } =
-      await this.api.get<IGetMessageRolesActionsResponse>(
-        '/message-roles/actions',
-      )
+    const rolesActions = await MessageRolesActions.find({
+      relations: ['message_role'],
+    })
+
     for (const role of rolesActions) {
       const msg = reaction.message
       if (

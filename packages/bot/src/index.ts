@@ -28,6 +28,7 @@ import {
   UnfurlModule,
 } from './modules'
 import { client } from './lib/discord'
+import { connectMySQL } from './lib/connect-mysql'
 import { enableThreadHelp } from './lib/runtime'
 
 Sentry.init({
@@ -61,7 +62,9 @@ if (enableThreadHelp) {
 
 client.registerStages(stages)
 
-client.login(process.env.DISCORD_TOKEN)
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user?.tag}`)
+connectMySQL().then(() => {
+  client.login(process.env.DISCORD_TOKEN)
+  client.on('ready', () => {
+    console.log(`Logged in as ${client.user?.tag}`)
+  })
 })
