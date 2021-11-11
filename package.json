@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@octokit/rest": "^18.12.0",
-    "@sentry/node": "^6.14.1",
-    "@sentry/tracing": "^6.14.1",
+    "@sentry/node": "^6.14.3",
+    "@sentry/tracing": "^6.14.3",
     "@siberianmh/lunawork": "^0.0.5",
     "algoliasearch": "^4.11.0",
     "axios": "^0.24.0",
