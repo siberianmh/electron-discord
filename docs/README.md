@@ -1,6 +1,4 @@
----
-title: Electron Discord Documentation
----
+# Electron Discord Documentation
 
 ## Contributing
 
