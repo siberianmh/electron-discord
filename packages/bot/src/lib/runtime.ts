@@ -7,6 +7,9 @@ const __dev__ = process.env.NODE_ENV === 'development'
 export const enableThreadHelp =
   __dev__ || process.env.ENABLE_THREAD_CHANNELS === 'true'
 
+export const enableRolesModule =
+  !__dev__ || process.env.ENALBE_ROLES_MODULE === 'true'
+
 /**
  * Does this should use Electron values. Use if some value in process of
  * migration is different from ours.

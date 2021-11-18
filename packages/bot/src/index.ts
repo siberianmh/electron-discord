@@ -29,7 +29,7 @@ import {
 } from './modules'
 import { client } from './lib/discord'
 import { connectMySQL } from './lib/connect-mysql'
-import { enableThreadHelp } from './lib/runtime'
+import { enableRolesModule, enableThreadHelp } from './lib/runtime'
 
 Sentry.init({
   dsn: 'https://a22da8923d5f4ea7875fa8518335410b@o102026.ingest.sentry.io/5474186',
@@ -51,13 +51,16 @@ const stages: Array<typeof Stage | Stage> = [
   ModLogModule,
   RobloxGamePresenceModule,
   RolesModule,
-  RulesModule,
   TagsModule,
   UnfurlModule,
 ]
 
 if (enableThreadHelp) {
   stages.push(ThreadHelpStage)
+}
+
+if (enableRolesModule) {
+  stages.push(RolesModule)
 }
 
 client.registerStages(stages)
