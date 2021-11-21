@@ -238,7 +238,9 @@ export class HelpChanModule extends HelpChanBase {
       await member.roles.remove(guild.roles.helpCooldown)
     } catch {}
 
-    await helpChannel!.remove()
+    if (helpChannel) {
+      await helpChannel.remove()
+    }
     await this.moveChannel(channel, guild.categories.helpDormant)
 
     // Question resolved successfuly, aka `/close`
