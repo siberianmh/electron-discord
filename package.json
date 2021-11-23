@@ -27,7 +27,7 @@
     "fuzzball": "^2.0.2",
     "gray-matter": "^4.0.3",
     "humanize-duration": "^3.27.0",
-    "ioredis": "^4.28.0",
+    "ioredis": "^4.28.1",
     "jest": "^27.3.1",
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.15",
