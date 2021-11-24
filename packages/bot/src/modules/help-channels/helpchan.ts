@@ -160,7 +160,8 @@ export class HelpChanModule extends HelpChanBase {
       (typeof msg.member?.permissions !== 'string' &&
         msg.member?.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) ||
       (!Array.isArray(msg.member?.roles) &&
-        msg.member?.roles.cache.has(guild.roles.maintainer))
+        (msg.member?.roles.cache.has(guild.roles.maintainer) ||
+          msg.member.roles.cache.has(guild.roles.helpChannelModerator)))
     ) {
       await msg.reply({
         content:
