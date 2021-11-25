@@ -3,3 +3,4 @@
 // found in the LICENSE file.
 
 export * from './docs'
+export * from './tags'

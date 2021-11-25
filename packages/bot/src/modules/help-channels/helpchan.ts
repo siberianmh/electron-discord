@@ -280,7 +280,6 @@ export class HelpChanModule extends HelpChanBase {
       return
     }
 
-    const flipper = Math.random()
     const row = new MessageActionRow().addComponents(
       new MessageButton()
         .setCustomId('closeClaimed')
@@ -290,7 +289,7 @@ export class HelpChanModule extends HelpChanBase {
 
     return await embedMessage.edit({
       embeds: [claimedEmbed(claimer)],
-      components: flipper > 0.5 ? [row] : undefined,
+      components: [row],
     })
   }
 

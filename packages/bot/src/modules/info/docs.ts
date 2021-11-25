@@ -58,6 +58,11 @@ export class DocsModule extends ExtendedModule {
     this.newIndex = this.newSearchClient.initIndex('electronjs')
   }
 
+  private NOT_FOUND_EMBED = (searchIndex: string) =>
+    new MessageEmbed()
+      .setTitle(`\`${searchIndex}\``)
+      .setDescription('Unable to find result for searching string.')
+
   @applicationCommand({
     name: 'docs',
     description: 'Search in the docs',
@@ -72,7 +77,26 @@ export class DocsModule extends ExtendedModule {
     ],
   })
   public async docs(msg: CommandInteraction, { entry }: { entry: string }) {
-    const result = await this.newIndex.getObject<IHitResult>(entry)
+    let result: IHitResult | null = null
+    // Probably there is a more perfect solution to this, but since I'm lazy let's leave this for now.
+    // In the perfect world, we should check if the provided string is `ObjectId`
+    // but I'm not found the specification about these magic id.
+    try {
+      result = await this.newIndex.getObject<IHitResult>(entry)
+    } catch {
+      const { hits } = await this.newIndex.search<IHitResult>(entry, {
+        hitsPerPage: 5,
+        facetFilters: ['language:en'],
+      })
+
+      if (!hits.length) {
+        return await createSelfDestructMessage(msg, {
+          embeds: [this.NOT_FOUND_EMBED(entry)],
+        })
+      }
+
+      result = hits[0]
+    }
 
     const url = this.formatURL(result)
     const category = this.getHighlightedValue(result, 'lvl0')
@@ -129,6 +153,7 @@ export class DocsModule extends ExtendedModule {
   ): Promise<void> {
     const { hits } = await this.newIndex.search<IHitResult>(entry, {
       hitsPerPage: 25,
+      facetFilters: ['language:en'],
     })
 
     if (!hits.length) {
