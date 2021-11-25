@@ -10,6 +10,10 @@ import {
   TextChannel,
   Guild,
   ThreadChannel,
+  CommandInteraction,
+  ContextMenuInteraction,
+  Permissions,
+  ButtonInteraction,
 } from 'discord.js'
 import { HelpChannel } from '../../entities/help-channel'
 import { ExtendedModule } from '../../lib/extended-module'
@@ -177,5 +181,34 @@ export class HelpChanBase extends ExtendedModule {
     } else {
       await lastMessage.edit(helpMessage(availHelpChannels))
     }
+  }
+
+  protected isAuthorizedUser(
+    msg: CommandInteraction | ContextMenuInteraction | ButtonInteraction,
+    channel?: HelpChannel,
+  ): boolean {
+    if (channel && channel.user_id === msg.user.id) {
+      return true
+    }
+
+    if (
+      typeof msg.member.permissions !== 'string' &&
+      msg.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)
+    ) {
+      return true
+    }
+
+    if (Array.isArray(msg.member.roles)) {
+      return false
+    }
+
+    if (
+      msg.member.roles.cache.has(guild.roles.maintainer) ||
+      msg.member.roles.cache.has(guild.roles.helpChannelModerator)
+    ) {
+      return true
+    }
+
+    return false
   }
 }

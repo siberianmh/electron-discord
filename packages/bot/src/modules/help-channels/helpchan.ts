@@ -155,14 +155,7 @@ export class HelpChanModule extends HelpChanBase {
       where: { channel_id: msg.channel!.id },
     })
 
-    if (
-      (channel && channel.user_id === msg.user.id) ||
-      (typeof msg.member?.permissions !== 'string' &&
-        msg.member?.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) ||
-      (!Array.isArray(msg.member?.roles) &&
-        (msg.member?.roles.cache.has(guild.roles.maintainer) ||
-          msg.member.roles.cache.has(guild.roles.helpChannelModerator)))
-    ) {
+    if (this.isAuthorizedUser(msg, channel)) {
       await msg.reply({
         content:
           'Thanks for using Help Channel, you can share feedback in #community-meta channel 💖.',
@@ -190,13 +183,7 @@ export class HelpChanModule extends HelpChanBase {
       where: { channel_id: msg.channel!.id },
     })
 
-    if (
-      (channel && channel.user_id === msg.user.id) ||
-      (typeof msg.member?.permissions !== 'string' &&
-        msg.member!.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) ||
-      (!Array.isArray(msg.member?.roles) &&
-        msg.member!.roles.cache.has(guild.roles.maintainer))
-    ) {
+    if (this.isAuthorizedUser(msg, channel)) {
       await msg.update({
         embeds: [...(msg.message.embeds as Array<MessageEmbed>)],
         components: [],
