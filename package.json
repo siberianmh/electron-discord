@@ -33,7 +33,7 @@
     "nodemon": "^2.0.15",
     "parse-duration": "^1.0.2",
     "patch-package": "^6.4.7",
-    "prettier": "^2.4.1",
+    "prettier": "^2.5.0",
     "reflect-metadata": "^0.1.13",
     "ts-jest": "^27.0.7",
     "typeorm": "^0.2.41",
