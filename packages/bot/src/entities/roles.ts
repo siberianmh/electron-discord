@@ -36,10 +36,6 @@ export class MessageRolesActions extends BaseEntity {
   @Column('boolean', { default: false })
   auto_remove: boolean
 
-  @ManyToOne(() => MessageRoles, (msgRole) => msgRole.id, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-    primary: true,
-  })
+  @ManyToOne(() => MessageRoles, (msgRole) => msgRole.id)
   message_role: MessageRoles
 }
