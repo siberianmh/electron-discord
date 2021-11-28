@@ -1,5 +1,7 @@
 # Secrets
 
+> Name: `edis-bot-secret`
+
 ## Bot
 
 | Environment Variable | Description                       |

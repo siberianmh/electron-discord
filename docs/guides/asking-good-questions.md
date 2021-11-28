@@ -1,6 +1,4 @@
----
-title: Asking Good Questions
----
+# Asking Good Questions
 
 This document is intended to provide you with the infromation to get help
 effectively.

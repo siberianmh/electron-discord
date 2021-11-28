@@ -1,6 +1,4 @@
----
-title: Creating a new Stage
----
+# Creating a new Stage
 
 Stage (or Module) is a class with a set of functions. For example, if we want to
 add a new
