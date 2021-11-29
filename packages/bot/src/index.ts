@@ -50,7 +50,7 @@ const stages: Array<typeof Stage | Stage> = [
   InfractionsModule,
   ModLogModule,
   RobloxGamePresenceModule,
-  RolesModule,
+  RulesModule,
   TagsModule,
   UnfurlModule,
 ]
