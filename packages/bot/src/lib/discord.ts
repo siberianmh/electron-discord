@@ -27,7 +27,7 @@ export const client = new LunaworkClient({
     activities: [
       {
         type: 'PLAYING',
-        name: 'squadron.dev',
+        name: 'влюбляйся когда готов, а не когда одиноко',
       },
     ],
   },

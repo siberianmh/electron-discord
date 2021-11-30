@@ -20,8 +20,7 @@ import {
   VoiceChannel,
 } from 'discord.js'
 import { ExtendedModule } from '../../lib/extended-module'
-import { formatUser } from '../../lib/format-user'
-import { formatTimestamp } from '../../lib/format'
+import { formatTimestamp, formatUser } from '../../lib/format'
 import * as constants from '../../lib/config'
 
 interface ISendLogMessageProps {
