@@ -105,18 +105,6 @@ You can launch Electron Fiddle with the provided Gist using this URL: ${fiddleUR
     return await msg.crosspost()
   }
 
-  @listener({ event: 'messageCreate' })
-  public async createPoll(msg: Message): Promise<void> {
-    if (msg.author.bot || !msg.content.toLowerCase().startsWith('poll:')) {
-      return
-    }
-    await msg.react('✅')
-    await msg.react('❌')
-    await msg.react('🤷')
-
-    return
-  }
-
   @button({ customID: 'trashIcon' })
   public async bucketButtonClicked(msg: ButtonInteraction) {
     const key = await redis.get(selfDestructMessage(msg.message.id))

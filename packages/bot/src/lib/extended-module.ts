@@ -3,15 +3,5 @@
 // found in the LICENSE file.
 
 import { Stage } from '@siberianmh/lunawork'
-import { IInfraction } from './types'
-import { Infractions } from '../entities/infractions'
 
-export class ExtendedModule extends Stage {
-  protected async addInfraction(opts: IInfraction) {
-    const infraction = await Infractions.create({
-      ...opts,
-    }).save()
-
-    return infraction
-  }
-}
+export class ExtendedModule extends Stage {}

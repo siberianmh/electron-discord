@@ -18,7 +18,8 @@ import {
 import { ExtendedModule } from '../../lib/extended-module'
 import { isTrustedMember } from '../../lib/inhibitors'
 import { guild } from '../../lib/config'
-import { InfractionType, infractionType } from '../../lib/types'
+import { IInfraction, InfractionType, infractionType } from '../../lib/types'
+import { Infractions } from '../../entities/infractions'
 
 interface IPerformInfractionProps {
   readonly user: User | GuildMember
@@ -318,6 +319,14 @@ export class InfractionsModule extends ExtendedModule {
       type: props.type,
       active: true,
     })
+  }
+
+  private async addInfraction(opts: IInfraction) {
+    const infraction = await Infractions.create({
+      ...opts,
+    }).save()
+
+    return infraction
   }
 
   private async notifyInfraction(props: INotifyInfractionProps) {
