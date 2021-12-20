@@ -27,7 +27,7 @@ jobs:
       # Docker Builds #
       #################
       - name: Login to Packages Container registry
-        uses: docker/login-action@v1.10.0
+        uses: docker/login-action@v1.12.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
