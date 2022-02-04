@@ -25,7 +25,7 @@
     "fs-extra": "^10.0.0",
     "fuzzball": "^2.1.2",
     "gray-matter": "^4.0.3",
-    "humanize-duration": "^3.27.0",
+    "humanize-duration": "^3.27.1",
     "ioredis": "^4.28.2",
     "jest": "^27.4.3",
     "mysql2": "^2.3.3",
@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
-    "@types/humanize-duration": "^3.27.0",
+    "@types/humanize-duration": "^3.27.1",
     "@types/ioredis": "^4.28.1",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.11"
