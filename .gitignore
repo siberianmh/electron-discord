@@ -6,6 +6,7 @@ dist
 .npmrc
 e2e-realtesting
 .eslintcache
+.idea
 
 config-that-just-used-for.dev.ts
 
