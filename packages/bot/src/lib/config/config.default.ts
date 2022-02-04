@@ -74,7 +74,7 @@ export const guild = {
     admin: b('745038904532402237'),
     maintainer: b('745039155498582067'),
     helpCooldown: b('772835574197256199'),
-    regular: b('828009346251227148'),
+    helpChannelModerator: b(''),
 
     //#region etc
 

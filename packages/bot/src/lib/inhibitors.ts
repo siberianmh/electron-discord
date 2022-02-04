@@ -36,7 +36,8 @@ export const noAuthorizedClaim: Inhibitor = async (msg) => {
     typeof msg.member?.permissions !== 'string' &&
     !msg.member?.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES) &&
     !Array.isArray(msg.member?.roles) &&
-    !msg.member?.roles.cache.has(guild.roles.maintainer)
+    (!msg.member?.roles.cache.has(guild.roles.maintainer) ||
+      msg.member.roles.cache.has(guild.roles.helpChannelModerator))
   ) {
     return `Hello <@${
       msg.member!.user.id
